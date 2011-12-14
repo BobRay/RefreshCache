@@ -49,8 +49,8 @@
  * To install, paste the code into a snippet called clear-cache. Create a resource
  * called ClearCache with just the snippet tag: [[!ClearCache]].
  *
- * IMPORTANT: The resource should not be cacheable and the alias should be
- * refresh-cache -- otherwise the snippet will run forever!!!.
+ * The resource should not be cacheable and the alias should be
+ * refresh-cache.
  *
  * Create an empty template with just this tag: [[*content]] and be sure to
  * assign that template to the resource.
@@ -129,7 +129,8 @@ foreach ($resources as $resource) {
     $pageId = $resource->get('id');
     $pagetitle = $resource->get('pagetitle');
     $url = $modx->makeUrl($pageId, '','', 'full');
-    if (strstr($url, 'refresh-cache')) {
+    /* Avoid infinite loop when requesting this page */
+    if (strstr($url, 'refresh-cache' || $modx->$resource->get('id') == $pageId)) {
         continue;
     }
 

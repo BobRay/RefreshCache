@@ -30,9 +30,8 @@ between page requests. The default is 1 second.
 To install, paste the code into a snippet called ClearCache. Create a resource
 called ClearCache with just the snippet tag: [[!ClearCache]].
  
-**IMPORTANT:** The resource should not be cacheable and the alias should be
-refresh-cache -- otherwise the snippet will run forever, launching a new version
-of itself every time it hits that page!!!.
+The resource should not be cacheable and the alias should be
+refresh-cache.
  
 Create an empty template with just this tag: [[*content]] and be sure to
 assign that template to the resource.

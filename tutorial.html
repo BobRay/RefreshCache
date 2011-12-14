@@ -23,9 +23,8 @@ between page requests. The default is 1 second.</p>
 <p>To install, paste the code into a snippet called ClearCache. Create a resource
 called ClearCache with just the snippet tag: <fixedpre>[[!ClearCache]]</fixedpre>.</p>
 
-<p>**IMPORTANT:** The resource should not be cacheable and the alias should be
-refresh-cache -- otherwise the snippet will run forever, launching a new version
-of itself every time it hits that page!!!.</p>
+<p>The resource should not be cacheable and the alias should be
+refresh-cache.</p>
 
 <p>Create an empty template with just this tag: <fixedpre>[[*content]]</fixedpre> and be sure to
 assign that template to the resource.</p>
