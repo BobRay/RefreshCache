@@ -3,8 +3,10 @@ RefreshCache Extra for MODx Revolution
 
 **Author:** Bob Ray [Bob's Guides](http://bobsguides.com)
 
+Documentation is available at [Bob's Guides](http://bobsguides.com/refreshcache-tutorial.html)
 
-RefreshCache refreshes the cache by visiting all site pages that are
+
+The RefreshCache snippet refreshes the cache by visiting all site pages that are
 published, undeleted, cacheable, and not hidden from menus.
  
 The point is for this program to spend time waiting for the pages so
