@@ -25,7 +25,7 @@ Larger sites can take much longer.
 The only settable property is &delay, which sets the number of seconds to sleep
 between page requests. The default is 1 second.
  
-To install, paste the code into a snippet called clear-cache. Create a resource
+To install, paste the code into a snippet called ClearCache. Create a resource
 called ClearCache with just the snippet tag: [[!ClearCache]].
  
 **IMPORTANT:** The resource should not be cacheable and the alias should be
