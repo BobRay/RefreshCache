@@ -99,6 +99,7 @@ $c = array(
   'class_key' => 'modDocument',
 
 );
+$count = $modx->getCount('modResource',$c);
 $resources = $modx->getCollection('modResource', $c);
 
 if (empty($resources)) {
@@ -119,12 +120,13 @@ ignore_user_abort(true);             // keep on going even if user pulls the plu
 while(ob_get_level())ob_end_clean(); // remove output buffers
 ob_implicit_flush(true);             // output stuff directly
 
-echo '<b>Refreshing ' . count($resources) . ' resources</b><br /><br />';
+echo '<b>Refreshing ' . $count . ' resources</b><br /><br />';
 
 /* convince the browser we mean business */
 echo str_pad('',4096);
 
 $i = 1;
+$endLine = $outsideModx? "\n" : '<br />';
 foreach ($resources as $resource) {
     $pageId = $resource->get('id');
     $pagetitle = $resource->get('pagetitle');
@@ -134,13 +136,10 @@ foreach ($resources as $resource) {
         continue;
     }
 
-    if ($outsideModx) {
-        echo 'Refreshing: ' .  $url . "\n";
-    } else {
-        echo sprintf("%1$04d",$i++) . ' -- Refreshing: ' .  $url . "<br />\n";
+    echo sprintf("%1$04d",$i) . ' -- Refreshing: ' .  $url . $endLine;
+    $i++;
 
-    }
-    sleep($delay);
+    //sleep($delay);
     flush();
 
 
