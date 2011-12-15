@@ -139,7 +139,7 @@ foreach ($resources as $resource) {
     echo sprintf("%1$04d",$i) . ' -- Refreshing: ' .  $url . $endLine;
     $i++;
 
-    //sleep($delay);
+    sleep($delay);
     flush();
 
 
