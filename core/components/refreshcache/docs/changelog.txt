@@ -1,0 +1,9 @@
+Changelog for RefreshCache
+
+RefreshCache 1.0.1
+------------------
+Added progress bar
+
+RefreshCache 1.0.0
+------------------
+Initial Version
