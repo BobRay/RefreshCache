@@ -206,7 +206,7 @@ if (isset($_POST['submit'])) { /* Ignore resources that are uncached, deleted, u
     $tend = $mtime;
     $seconds = ($tend - $tstart);
     $totalTime = sprintf( "%02.2d:%02.2d", floor( $seconds / 60 ), $seconds % 60 );
-    $install->save("<br />FINISHED -- Execution time (minutes:seconds): {$totalTime}");
+    $install->save("<br />FINISHED<br />Execution time (minutes:seconds): {$totalTime}");
     $install->delay($delay);
     $install->clearTemp(true);
 
