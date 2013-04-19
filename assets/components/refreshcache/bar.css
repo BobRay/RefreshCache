@@ -1,24 +1,25 @@
 form {
-    margin:auto;
+    margin: auto;
 }
 
-.meter-wrap{
+.meter-wrap {
     margin: 0 auto 1em auto;
     position: relative;
-	}
+}
 
 .meter-wrap, .meter-value, .meter-text {
     /* The width and height of your image */
-    width: 155px; height: 30px;
+    width: 155px;
+    height: 30px;
 
 }
 
 .meter-wrap, .meter-value {
     background: #bdbdbd url(meter-outline.png) top left no-repeat;
-
 }
-            
+
 .meter-text {
+    font: 16px helvetica, arial, freesans, clean, sans-serif;
     position: absolute;
     padding-top: 3px;
     color: #fff;
@@ -26,25 +27,35 @@ form {
     width: 50%;
 }
 
-.output-text
-{
-	
-	text-align: center;
-    color:#ECF1EF;
+.output-text {
+    font: 20px helvetica, arial, freesans, clean, sans-serif;
+    text-align: center;
+    color: #5E5E5E;
+}
+
+input#apisubmit {
+    margin-top: 40px;
 }
 
 div#apinstall {
-    position:absolute;
+    position: absolute;
     top: 15%;
     left: 50%;
-    width:30em;
-    height:130px;
-    margin-top: -65px; /*set to a negative number 1/2 of your height*/
+    width: 30em;
+    height: 130px;
+    margin-top: 20px; /*set to a negative number 1/2 of your height*/
     margin-left: -15em; /*set to a negative number 1/2 of your width*/
     border: 1px solid #ccc;
-    background-color:white;
-    padding-top:15px;
-        padding-bottom:7px;
+    background-color: white;
+    padding-top: 15px;
+    padding-bottom: 7px;
+
+    -moz-border-radius: 15px;
+    -webkit-border-radius: 15px;
+    border-radius: 15px;
+    box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.86);
+    -moz-box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.86);
+    -webkit-box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.86);
 
     /*position:absolute;
     width:30%;
