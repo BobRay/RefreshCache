@@ -12,18 +12,32 @@ class Installer {
     public $steps = 0;
     public $logData = NULL;
     public $path = '';
-    public $logFileName = '';
-    public $printFileName = '';
+    public $logFile = '';
+    public $printFile = '';
 
 
     public function __construct($jquery = NULL) {
         //we need to do this in case of windows users and usleep function
         set_time_limit(0);
-        //generate random number printfile name
-        $this->printFileName = 'refreshcache.php';
-        $this->logFileName = 'refreshcache.log';
+
         $this->path = MODX_ASSETS_PATH . 'components/refreshcache/';
+        $this->printFile = $this->path . 'refreshcache.php';
+        $this->logFile = $this->path . 'refreshcache.log';
         $this->url = MODX_ASSETS_URL . 'components/refreshcache/refreshcache.php';
+
+        if (file_exists($this->printFile)) {
+            file_put_contents($this->printFile, '');
+        } else {
+            $fp = fopen($this->printFile, 'w');
+            fclose($fp);
+        }
+        if (file_exists($this->logFile)) {
+            file_put_contents($this->logFile, '');
+        } else {
+            $fp = fopen($this->logFile, 'w');
+            fclose($fp);
+        }
+
 
         if (!is_dir($this->path)) {
             mkdir($this->path, true);
@@ -34,7 +48,7 @@ class Installer {
 
         //include google jQuery libraries
         if (!isset($jquery)) {
-            echo '<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.1/jquery.js"></script>';
+            echo '<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script>';
         } else if ($jquery == TRUE) {
             //echo 'Warning: jQuery libraries are not included!';
         }
@@ -55,13 +69,16 @@ class Installer {
         success: function(){
 
         $('#apinstall').load('" . $this->url . "?randval='+ Math.random());
-
+        if (xhr.statusCode == 404) {
+            clearInterval(intID);
+        //$('#apinstall').show();
+      }
 
                             },
     error : function (xhr, d, e) {
-      if (xhr.status == 404) {
+      if (xhr.statusCode == 404) {
         clearInterval(intID);
-        $('#apinstall').show();
+        //$('#apinstall').show();
       }
     }
  });
@@ -78,17 +95,6 @@ class Installer {
         </script>";
     }
 
-
-    /*public function setLogPath($path) {
-        if (! is_dir($path)) {
-            mkdir($path, true);
-        }
-
-    $this->path = $path.'/'.$this->logFileName = sha1($_SERVER['HTTP_USER_AGENT'].$_SERVER['REMOTE_ADDR']).'.log';
-    return $this->path;
-
-
-    }*/
 
     public function setSteps($count) {
         $this->steps = $count;
@@ -126,11 +132,11 @@ class Installer {
             $this->colour = $textColour;
         else $this->colour = '#84AEBE';
 
-        $fp = fopen($this->path . $this->printFileName, "a+");
+        $fp = fopen($this->printFile, "a+");
         $data = '<?php
 
 $steps = ' . $this->steps . ';
-$lines = count(file("' . $this->path . $this->logFileName . '"));
+$lines = count(file("' . $this->logFile . '"));
 
 $width = round(($lines/' . $this->steps . ')*100,1);
 ?>
@@ -145,13 +151,15 @@ $width = round(($lines/' . $this->steps . ')*100,1);
 
 <?php
 
-$f = file("' . $this->path . $this->logFileName . '");
+$f = file("' . $this->logFile . '");
 ?>
 <div class="output-text" style="color: ' . $this->colour . '">
 <?php
-echo $f[$lines - 1]."
-</div>"
-?>';
+if (isset($f[$lines - 1])) {
+echo $f[$lines - 1];
+}
+?>
+</div>';
 
         $fw = fwrite($fp, $data); //save
         fclose($fp);
@@ -160,13 +168,12 @@ echo $f[$lines - 1]."
     }
 
     public function delay($sec) {
-        return;
-        $sleepTime = abs($sec);
+        $this->sleepTime = abs($sec);
 
-        if ($sleepTime < 1)
-            usleep($sleepTime * 1000000);
+        if ($this->sleepTime < 1)
+            return usleep($this->sleepTime * 1000000);
         else
-            sleep($sleepTime);
+            return sleep($this->sleepTime);
 
     }
 
@@ -174,7 +181,7 @@ echo $f[$lines - 1]."
     public function save($output) {
         $this->logData = $output;
 
-        $fp = fopen($this->path . $this->logFileName, "a+");
+        $fp = fopen($this->logFile, "a+");
         $fw = fwrite($fp, $this->logData . "\r\n"); //save
         fclose($fp);
         $this->steps++;
@@ -182,15 +189,16 @@ echo $f[$lines - 1]."
     }
 
     public function clearTemp($delete = NULL) {
+        unlink($this->printFile);
         return;
         if ($delete == TRUE) {
             //delete files
-            unlink($this->path);
-            unlink($this->printFileName);
+            unlink($this->logFile);
+            unlink($this->printFile);
         } else {
             //clear temporary files made by our script
-            file_put_contents($this->path . $this->logFileName, '');
-            file_put_contents($this->path . $this->printFileName, '');
+            file_put_contents($this->logFile, '');
+            file_put_contents($this->printFile, '');
         }
     }
 
@@ -201,8 +209,8 @@ echo $f[$lines - 1]."
             unset($this->steps);
             unset($this->logData);
             unset($this->path);
-            unset($this->logFileName);
-            unset($this->printFileName);
+            unset($this->logFile);
+            unset($this->printFile);
         }
     }
 }
