@@ -93,8 +93,8 @@ echo '</head>
 <body>
 <!-- Remember to add form id="apiform" and target="progressFrame" to make script work -->
 <center><form id="apiform" target="progressFrame" method="post">
-					<input id="apisubmit" type="submit" name="submit" value="Refresh the Cache">
-					</form></center>';
+                    <input id="apisubmit" type="submit" name="submit" value="Refresh the Cache">
+                    </form></center>';
 
 //load form, define progress bar colours
 $install->placeholder();
@@ -121,32 +121,34 @@ $tstart = $mtime;
 
 
 
-if (isset($_POST['submit'])) { /* Ignore resources that are uncached, deleted, unpublished, or hidden from menus */
-    //set path to temp files *directory* (must exist and be writable)
-       $install->setLogPath(MODX_ASSETS_PATH . 'components/refreshcache'); //without trailing slash!
+if (isset($_POST['submit'])) {
 
-    $c = array(
-            'published' => '1',
-            'deleted' => '0',
-            'cacheable' => '1',
-            'hidemenu' => '0',
-            'class_key' => 'modDocument',
+    /* Ignore resources that are uncached, deleted,
+        or unpublished */
+    set_time_limit(0);
+    $query = $modx->newQuery('modResource');
+    $query->limit(5);
+    $query->where(array(
+           array(
+               'class_key:=' => 'modDocument',
+               'OR:class_key:=' => 'Article',
+           ),
+           array(
+               'AND:published:=' => '1',
+               'AND:deleted:=' => '0',
+               'AND:cacheable:=' => '1',
+           )
+    ));
+    $resources = $modx->getCollection('modResource', $query);
+    $count = count($resources);  //set number of process steps
+    $install->setSteps($count+2);
 
-    );
-    $count = $modx->getCount('modResource', $c);
-   //set number of process steps
-   $install->setSteps($count+2);
-
-   //define colours
-   //$install->defineBar('#E54000', '#E54000');
-   $install->defineBar('blue', 'navy');
-
-    $resources = $modx->getCollection('modResource', $c);
+    $install->defineBar('blue', 'navy');
 
     if (empty($resources)) {
         $output = 'No Cacheable Resources found';
         $install->save($output);
-        $install->delay(01.0);
+        $install->delay(01);
     }
 
 
@@ -155,7 +157,7 @@ if (isset($_POST['submit'])) { /* Ignore resources that are uncached, deleted, u
     if ($ch === false) {
         $output = "Failed to initialize cURL";
         $install->save($output);
-        $install->delay(015.0);
+        $install->delay(3);
     }
 
     @curl_setopt($ch, CURLOPT_NOBODY, TRUE);
@@ -171,6 +173,9 @@ if (isset($_POST['submit'])) { /* Ignore resources that are uncached, deleted, u
     $install->delay($delay);
 
     foreach ($resources as $resource) {
+        /*if ($i >= 5) {
+            break;
+        }*/
         $pageId = $resource->get('id');
         $pagetitle = $resource->get('pagetitle');
         $url = $modx->makeUrl($pageId, '', '', 'full');
@@ -179,7 +184,7 @@ if (isset($_POST['submit'])) { /* Ignore resources that are uncached, deleted, u
             continue;
         }
 
-        $output = '<p>Refreshing</p><p>' . $pagetitle . '</p>';
+        $output = '<p>(' . $i . ') Refreshing</p><p>' . $pagetitle . '</p>';
         $install->save($output);
         $install->delay($delay);
 
@@ -208,7 +213,7 @@ if (isset($_POST['submit'])) { /* Ignore resources that are uncached, deleted, u
     $totalTime = sprintf( "%02.2d:%02.2d", floor( $seconds / 60 ), $seconds % 60 );
     $install->save("<br />FINISHED -- Execution time (minutes:seconds): {$totalTime}");
     $install->delay($delay);
-    $install->clearTemp(true);
+    $install->clearTemp();
 
 }
 
