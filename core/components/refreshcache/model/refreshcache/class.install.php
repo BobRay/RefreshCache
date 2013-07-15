@@ -14,6 +14,7 @@ class Installer {
     public $path = '';
     public $logFile = '';
     public $printFile = '';
+    /** @var $modx modX */
     public $modx = null;
 
 
@@ -46,8 +47,10 @@ class Installer {
         }
 
         //include css file
-
-        echo '<link href="' . MODX_ASSETS_URL . 'components/refreshcache/bar.css" rel="stylesheet" type="text/css" />';
+        $cssUrl = $this->modx->getOption('refresh_cache_assets_url', null,
+                $this->modx->getOption('assets_path') . 'components/refreshcache/')
+                .'css/refreshcache.css';
+        $this->modx->regClientCSS($cssUrl);
 
 
 echo "<script type='text/javascript'>
