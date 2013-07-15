@@ -101,19 +101,6 @@ $install->placeholder();
 
 $delay = $modx->getOption('delay', $scriptProperties, 0.51);
 
-/*if (!defined('MODX_CORE_PATH')) {
-    $outsideModx = true;
-    define(MODX_CORE_PATH, 'c:/xampp/htdocs/addons/core/');
-    require_once MODX_CORE_PATH . '/model/modx/modx.class.php';
-    $modx = new modX();
-    if (!$modx) {
-        echo 'Could not create MODX class';
-    }
-    $modx->initialize('web');
-} else {
-    $outsideModx = false;
-}*/
-
 $mtime = microtime();
 $mtime = explode(" ", $mtime);
 $mtime = $mtime[1] + $mtime[0];

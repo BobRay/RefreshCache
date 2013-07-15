@@ -55,44 +55,44 @@ class Installer {
 
         //include jQuery javascript
 
-        echo "<script type='text/javascript'>
-
-
-        function refresh(){
-        $('#apisubmit').fadeOut('slow');
-        var intID = setInterval(function() {
+echo "<script type='text/javascript'>
+function refresh() {
+    $('#apisubmit').fadeOut('slow');
+    var intID = setInterval(function () {
 
         $.ajax({
-        type: 'GET',
-        url: '" . $this->url . "',
-        cache: false,
-        success: function(){
+            type: 'GET',
+            url: '" . $this->url . "',
+            cache: false,
+            success: function (data) {
+               $('#apinstall').load('" . $this->url . "?randval=' + Math.random());
 
-        $('#apinstall').load('" . $this->url . "?randval='+ Math.random());
-        if (xhr.statusCode == 404) {
-            clearInterval(intID);
-        //$('#apinstall').show();
-      }
+               var response = data.toString();
+               var searchTerm = 'FINISHED';
 
-                            },
-    error : function (xhr, d, e) {
-      if (xhr.statusCode == 404) {
-        clearInterval(intID);
-        //$('#apinstall').show();
-      }
-    }
- });
+               if (data != undefined) {
+                   if (response.indexOf(searchTerm) != -1) {
+                       clearInterval(intID);
+                   }
+               }
+            },
+            error: function (request, status, error) {
+               if (status == 404) {
+                   clearInterval(intID);
+                   alert(request.responseText);
+               }
+            }
+        });
 
     }, 800);
-        }
-            $(document).ready(function() {
-  $('#apiform').submit(function() {
-    refresh();
-  });
+}
+$(document).ready(function () {
+    $('#apiform').submit(function () {
+        refresh();
+    });
 
 });
-
-        </script>";
+</script>";
     }
 
 
@@ -168,13 +168,12 @@ echo $f[$lines - 1];
     }
 
     public function delay($sec) {
-        $this->sleepTime = abs($sec);
+        $sleepTime = abs($sec);
 
-        if ($this->sleepTime < 1)
-            return usleep($this->sleepTime * 1000000);
+        if ($sleepTime < 1)
+            usleep($sleepTime * 1000000);
         else
-            return sleep($this->sleepTime);
-
+            sleep($sleepTime);
     }
 
 
@@ -189,7 +188,7 @@ echo $f[$lines - 1];
     }
 
     public function clearTemp($delete = NULL) {
-        unlink($this->printFile);
+        // unlink($this->printFile);
         return;
         if ($delete == TRUE) {
             //delete files
