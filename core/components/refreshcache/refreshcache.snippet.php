@@ -68,20 +68,7 @@ if (! $modx->user->isMember('Administrator') ) {
     return 'This code can only be run by an administrator';
 }
 
-header("Cache-Control: no-cache, must-revalidate");
-header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");
-// no cache
-header('Pragma: no-cache');
-// HTTP/1.1
-// date in the past
-header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
-
-echo '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-<title>Refresh Cache</title>
-<meta http-equiv="content-type" content="text/html; charset=utf-8" />
-<script type="text/javascript" src="' . MODX_ASSETS_URL . 'components/refreshcache/jquery.js"></script>';
+echo "\n" . '<script type="text/javascript" src="' . MODX_ASSETS_URL . 'components/refreshcache/jquery.js"></script>';
 
 //include class
 $path = $modx->getOption('refresh_cache_core_path', null, $modx->getOption('core_path') . 'components/refreshcache/') . 'model/refreshcache/';
@@ -90,8 +77,7 @@ require_once($path . 'class.install.php');
 //initialize class
 $install = new Installer(true);
 
-echo '</head>
-<body>
+echo '
 <!-- Remember to add form id="apiform" and target="progressFrame" to make script work -->
 <center><form id="apiform" target="progressFrame" method="post">
                     <input id="apisubmit" type="submit" name="submit" value="Refresh the Cache">
@@ -139,8 +125,6 @@ if (isset($_POST['submit'])) {
         $install->delay(01);
     }
 
-
-
     $ch = curl_init(); // Initialize Curl
     if ($ch === false) {
         $output = "Failed to initialize cURL";
@@ -161,9 +145,7 @@ if (isset($_POST['submit'])) {
     $install->delay($delay);
 
     foreach ($resources as $resource) {
-        /*if ($i >= 5) {
-            break;
-        }*/
+
         $pageId = $resource->get('id');
         $pagetitle = $resource->get('pagetitle');
         $url = $modx->makeUrl($pageId, '', '', 'full');
@@ -205,7 +187,4 @@ if (isset($_POST['submit'])) {
 
 }
 
-echo '
-</body>
-</html>';
 return '';
