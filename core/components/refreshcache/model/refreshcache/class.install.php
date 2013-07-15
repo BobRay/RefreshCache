@@ -73,6 +73,7 @@ function refresh() {
                if (data != undefined) {
                    if (response.indexOf(searchTerm) != -1) {
                        clearInterval(intID);
+                       $('#apisubmit').fadeIn('slow');
                    }
                }
             },
