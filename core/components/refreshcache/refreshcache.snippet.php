@@ -84,7 +84,8 @@ echo '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www
 <script type="text/javascript" src="' . MODX_ASSETS_URL . 'components/refreshcache/jquery.js"></script>';
 
 //include class
-require_once(MODX_CORE_PATH . 'components/refreshcache/class.install.php');
+$path = $modx->getOption('refresh_cache_core_path', null, $modx->getOption('core_path') . 'components/refreshcache/') . 'model/refreshcache/';
+require_once($path . 'class.install.php');
 
 //initialize class
 $install = new Installer(true);
