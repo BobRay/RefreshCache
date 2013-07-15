@@ -17,10 +17,11 @@ class Installer {
     public $modx = null;
 
 
-    public function __construct($jquery = NULL) {
+    public function __construct(&$modx) {
         //we need to do this in case of windows users and usleep function
         set_time_limit(0);
 
+        $this->modx =& $modx;
         $this->path = MODX_ASSETS_PATH . 'components/refreshcache/';
         $this->printFile = $this->path . 'refreshcache.php';
         $this->logFile = $this->path . 'refreshcache.log';

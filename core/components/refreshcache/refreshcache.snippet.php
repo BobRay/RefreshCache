@@ -75,7 +75,7 @@ $path = $modx->getOption('refresh_cache_core_path', null, $modx->getOption('core
 require_once($path . 'class.install.php');
 
 //initialize class
-$install = new Installer(true);
+$install = new Installer($modx);
 
 echo "\n" . '
 <!-- Remember to add form id="apiform" and target="progressFrame" to make script work -->
