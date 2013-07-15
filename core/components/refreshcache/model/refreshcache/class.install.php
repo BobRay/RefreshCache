@@ -10,10 +10,11 @@ License: GPLv3
 class Installer {
 
     public $steps = 0;
-    public $logData = NULL;
+    public $logData = null;
     public $path = '';
     public $logFile = '';
     public $printFile = '';
+    public $modx = null;
 
 
     public function __construct($jquery = NULL) {
@@ -44,16 +45,9 @@ class Installer {
         }
 
         //include css file
+
         echo '<link href="' . MODX_ASSETS_URL . 'components/refreshcache/bar.css" rel="stylesheet" type="text/css" />';
 
-        //include google jQuery libraries
-        if (!isset($jquery)) {
-            echo '<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script>';
-        } else if ($jquery == TRUE) {
-            //echo 'Warning: jQuery libraries are not included!';
-        }
-
-        //include jQuery javascript
 
 echo "<script type='text/javascript'>
 function refresh() {
