@@ -68,7 +68,7 @@ if (! $modx->user->isMember('Administrator') ) {
     return 'This code can only be run by an administrator';
 }
 
-echo "\n" . '<script type="text/javascript" src="' . MODX_ASSETS_URL . 'components/refreshcache/jquery.js"></script>';
+$modx->regClientStartupScript("http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js");
 
 //include class
 $path = $modx->getOption('refresh_cache_core_path', null, $modx->getOption('core_path') . 'components/refreshcache/') . 'model/refreshcache/';
@@ -77,7 +77,7 @@ require_once($path . 'class.install.php');
 //initialize class
 $install = new Installer(true);
 
-echo '
+echo "\n" . '
 <!-- Remember to add form id="apiform" and target="progressFrame" to make script work -->
 <center><form id="apiform" target="progressFrame" method="post">
                     <input id="apisubmit" type="submit" name="submit" value="Refresh the Cache">
