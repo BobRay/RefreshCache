@@ -117,7 +117,7 @@ if (isset($_POST['submit'])) {
     $count = count($resources);  //set number of process steps
     $install->setSteps($count+2);
 
-    $install->defineBar('blue', 'navy');
+    $install->defineBar();
 
     if (empty($resources)) {
         $output = 'No Cacheable Resources found';

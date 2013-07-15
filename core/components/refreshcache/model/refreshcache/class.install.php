@@ -120,16 +120,7 @@ $(document).ready(function () {
 
     }
 
-    public function defineBar($barColour = NULL, $textColour = NULL) {
-
-
-        if (isset($barColour))
-            $this->colour = $barColour;
-        else $this->colour = '#84AEBE';
-
-        if (isset($textColour))
-            $this->colour = $textColour;
-        else $this->colour = '#84AEBE';
+    public function defineBar() {
 
         $fp = fopen($this->printFile, "a+");
         $data = '<?php
@@ -141,7 +132,7 @@ $width = round(($lines/' . $this->steps . ')*100,1);
 ?>
 
 <div class="meter-wrap">
-    <div class="meter-value" style="background-color: ' . $this->colour . '; width: <?php echo $width; ?>%;">
+    <div class="meter-value" style="width: <?php echo $width; ?>%;">
         <div class="meter-text">
         <?php echo $width; ?> %
         </div>
@@ -152,7 +143,7 @@ $width = round(($lines/' . $this->steps . ')*100,1);
 
 $f = file("' . $this->logFile . '");
 ?>
-<div class="output-text" style="color: ' . $this->colour . '">
+<div class="output-text">
 <?php
 if (isset($f[$lines - 1])) {
 echo $f[$lines - 1];
