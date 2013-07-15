@@ -2,7 +2,7 @@
 /**
  * RefreshCache
  *
- * Copyright 2011 Bob Ray
+ * Copyright 2011-2013 Bob Ray
  *
  * @author Bob Ray
  * 12/13/11
@@ -101,7 +101,7 @@ if (isset($_POST['submit'])) {
         or unpublished */
     set_time_limit(0);
     $query = $modx->newQuery('modResource');
-    $query->limit(5);
+    $query->limit(2);
     $query->where(array(
            array(
                'class_key:=' => 'modDocument',
@@ -143,6 +143,7 @@ if (isset($_POST['submit'])) {
     $output = '<p>Refreshing ' . $count . ' resources</p><p>&nbsp;</p>';
     $install->save($output);
     $install->delay($delay);
+    sleep(1);
 
     foreach ($resources as $resource) {
 
@@ -154,7 +155,7 @@ if (isset($_POST['submit'])) {
             continue;
         }
 
-        $output = '<p>(' . $i . ') Refreshing</p><p>' . $pagetitle . '</p>';
+        $output = '<p>(' . $i . '/' . $count . ') Refreshing</p><p>' . $pagetitle . '</p>';
         $install->save($output);
         $install->delay($delay);
 
@@ -181,7 +182,7 @@ if (isset($_POST['submit'])) {
     $tend = $mtime;
     $seconds = ($tend - $tstart);
     $totalTime = sprintf( "%02.2d:%02.2d", floor( $seconds / 60 ), $seconds % 60 );
-    $install->save("<br />FINISHED -- Execution time (minutes:seconds): {$totalTime}");
+    $install->save("<p>FINISHED -- Execution time</p><p>(minutes:seconds): {$totalTime}</p>");
     $install->delay($delay);
     $install->clearTemp();
 
