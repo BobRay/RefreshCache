@@ -59,9 +59,6 @@
  *
  * @package refreshCache
  *
- * @property
- *
- * delay (optional) int - seconds to delay between requests; default: 1;
  */
 
 /** @var $modx modX */
@@ -88,7 +85,8 @@ echo "\n" . '
 //load form, define progress bar colours
 $install->placeholder();
 
-$delay = $modx->getOption('delay', $scriptProperties, 0.51);
+/* Get curl delay from System Setting */
+$delay = $modx->getOption('refreshcache_curl_delay', null, 0);
 
 $mtime = microtime();
 $mtime = explode(" ", $mtime);
@@ -124,7 +122,7 @@ if (isset($_POST['submit'])) {
     if (empty($resources)) {
         $output = 'No Cacheable Resources found';
         $install->save($output);
-        $install->delay(01);
+        $install->delay(3);
     }
 
     $ch = curl_init(); // Initialize Curl
@@ -144,7 +142,7 @@ if (isset($_POST['submit'])) {
     $i = 1;
     $output = '<p>Refreshing ' . $count . ' resources</p><p>&nbsp;</p>';
     $install->save($output);
-    $install->delay($delay);
+    $install->delay(2);
     sleep(1);
 
     foreach ($resources as $resource) {
@@ -170,7 +168,7 @@ if (isset($_POST['submit'])) {
         if (curl_errno($ch)) {
             $output = 'cURL error: ' . curl_errno($ch) . " - " . curl_error($ch);
             $install->save($output);
-            $install->delay(08.0);
+            $install->delay($delay);
         }
     } /* end foreach($resources) loop */
 
@@ -185,8 +183,6 @@ if (isset($_POST['submit'])) {
     $seconds = ($tend - $tstart);
     $totalTime = sprintf( "%02.2d:%02.2d", floor( $seconds / 60 ), $seconds % 60 );
     $install->save("<p>FINISHED -- Execution time</p><p>(minutes:seconds): {$totalTime}</p>");
-    $install->delay($delay);
-    $install->clearTemp();
 
 }
 

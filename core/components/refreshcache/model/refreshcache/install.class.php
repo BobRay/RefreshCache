@@ -73,6 +73,8 @@ class Installer {
                 .'css/refreshcache.css';
         $this->modx->regClientCSS($cssUrl);
 
+        /* Get ajax_delay from System Setting */
+        $ajaxDelay = $this->modx->getOption('refreshcache_ajax_delay', 900);
 
 echo "<script type='text/javascript'>
 function refresh() {
@@ -104,7 +106,7 @@ function refresh() {
             }
         });
 
-    }, 800);
+    }," . $ajaxDelay . ");
 }
 $(document).ready(function () {
     $('#apiform').submit(function () {
@@ -182,6 +184,7 @@ echo $f[$lines - 1];
         $sleepTime = abs($sec);
 
         if ($sleepTime < 1)
+            /* usleep is in microseconds */
             usleep($sleepTime * 1000000);
         else
             sleep($sleepTime);
@@ -198,20 +201,6 @@ echo $f[$lines - 1];
 
     }
 
-    public function clearTemp($delete = NULL) {
-        // unlink($this->printFile);
-        return;
-        if ($delete == TRUE) {
-            //delete files
-            unlink($this->logFile);
-            unlink($this->printFile);
-        } else {
-            //clear temporary files made by our script
-            file_put_contents($this->logFile, '');
-            file_put_contents($this->printFile, '');
-        }
-    }
-
 
     public function __destruct() {
         //unset all variables defined by class
@@ -219,6 +208,7 @@ echo $f[$lines - 1];
             unset($this->steps);
             unset($this->logData);
             unset($this->path);
+            unset($this->url);
             unset($this->logFile);
             unset($this->printFile);
         }
