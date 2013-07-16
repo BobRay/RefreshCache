@@ -184,16 +184,6 @@ $components = array(
             ),
         ),
         'chunks' => array(
-            'ProgressBarJs' => array(
-                'category' => 'RefreshCache',
-                'description' => 'JavaScript for Progress Bar',
-                'filename' => 'progressbar.js',
-            ),
-            'PollingJs' => array(
-                'description' => 'JavaScript for Ajax polling',
-                'category' => 'RefreshCache',
-                'filename' => 'pollingjs.js',
-            ),
         ),
     ),
     /* (optional) will make all element objects static - 'static' field above will be ignored */

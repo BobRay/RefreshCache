@@ -47,8 +47,9 @@ class Installer {
         $this->path = MODX_ASSETS_PATH . 'components/refreshcache/';
         $this->printFile = $this->path . 'refreshcache.php';
         $this->logFile = $this->path . 'refreshcache.log';
-        $this->url = MODX_ASSETS_URL . 'components/refreshcache/refreshcache.php';
-
+        $url = MODX_ASSETS_URL . 'components/refreshcache/refreshcache.php';
+        /* Get ajax_delay from System Setting */
+        $ajaxDelay = $this->modx->getOption('refreshcache_ajax_delay', 900);
         if (file_exists($this->printFile)) {
             file_put_contents($this->printFile, '');
         } else {
@@ -73,20 +74,21 @@ class Installer {
                 .'css/refreshcache.css';
         $this->modx->regClientCSS($cssUrl);
 
-        /* Get ajax_delay from System Setting */
-        $ajaxDelay = $this->modx->getOption('refreshcache_ajax_delay', 900);
 
-echo "<script type='text/javascript'>
+
+
+        echo "<script type='text/javascript'>
 function refresh() {
     $('#apisubmit').fadeOut('slow');
     var intID = setInterval(function () {
 
         $.ajax({
             type: 'GET',
-            url: '" . $this->url . "',
+            url: '" . $url . "?randval=' + Math.random(),
             cache: false,
             success: function (data) {
-               $('#apinstall').load('" . $this->url . "?randval=' + Math.random());
+               /* $('#apinstall').load('" . $url . "?randval=' + Math.random()); */
+               $('#apinstall').html(data);
 
                var response = data.toString();
                var searchTerm = 'FINISHED';
@@ -144,9 +146,8 @@ $(document).ready(function () {
     }
 
     public function defineBar() {
-
         $fp = fopen($this->printFile, "a+");
-        $data = '<?php
+        $tpl = '<?php
 
 $steps = ' . $this->steps . ';
 $lines = count(file("' . $this->logFile . '"));
@@ -174,10 +175,8 @@ echo $f[$lines - 1];
 ?>
 </div>';
 
-        $fw = fwrite($fp, $data); //save
+        $fw = fwrite($fp, $tpl); //save
         fclose($fp);
-
-
     }
 
     public function delay($sec) {
@@ -208,7 +207,6 @@ echo $f[$lines - 1];
             unset($this->steps);
             unset($this->logData);
             unset($this->path);
-            unset($this->url);
             unset($this->logFile);
             unset($this->printFile);
         }

@@ -3,7 +3,7 @@
  * systemSettings transport file for RefreshCache extra
  *
  * Copyright 2011-2013 by Bob Ray <http://bobsguides.com>
- * Created on 07-15-2013
+ * Created on 07-16-2013
  *
  * @package refreshcache
  * @subpackage build
@@ -28,7 +28,7 @@ $systemSettings = array();
 $systemSettings[1] = $modx->newObject('modSystemSetting');
 $systemSettings[1]->fromArray(array (
   'key' => 'refreshcache_ajax_delay',
-  'value' => '900',
+  'value' => '1500',
   'xtype' => 'textfield',
   'namespace' => 'refreshcache',
   'area' => '',
