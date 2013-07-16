@@ -64,6 +64,8 @@
  * delay (optional) int - seconds to delay between requests; default: 1;
  */
 
+/** @var $modx modX */
+
 if (! $modx->user->isMember('Administrator') ) {
     return 'This code can only be run by an administrator';
 }
@@ -72,7 +74,7 @@ $modx->regClientStartupScript("http://ajax.googleapis.com/ajax/libs/jquery/1.9.1
 
 //include class
 $path = $modx->getOption('refresh_cache_core_path', null, $modx->getOption('core_path') . 'components/refreshcache/') . 'model/refreshcache/';
-require_once($path . 'class.install.php');
+require_once($path . 'install.class.php');
 
 //initialize class
 $install = new Installer($modx);
