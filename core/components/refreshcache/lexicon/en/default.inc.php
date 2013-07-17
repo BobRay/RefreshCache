@@ -34,3 +34,10 @@
  * @package refreshcache
  **/
 
+
+
+/* Used in transport.settings.php */
+$_lang['setting_refreshcache_ajax_delay'] = 'RefreshCache Ajax delay';
+$_lang['setting_refreshcache_ajax_delay_desc'] = 'Delay between JS polling checks (in milliseconds); default: 900';
+$_lang['setting_refreshcache_curl_delay'] = 'RefreshCache cUrl Delay';
+$_lang['setting_refreshcache_curl_delay_desc'] = 'Delay between cURL requests (in seconds); default: 0';
