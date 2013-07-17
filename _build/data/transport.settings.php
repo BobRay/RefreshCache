@@ -28,7 +28,7 @@ $systemSettings = array();
 $systemSettings[1] = $modx->newObject('modSystemSetting');
 $systemSettings[1]->fromArray(array (
   'key' => 'refreshcache_ajax_delay',
-  'value' => '1500',
+  'value' => '900',
   'xtype' => 'textfield',
   'namespace' => 'refreshcache',
   'area' => '',
