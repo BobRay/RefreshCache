@@ -41,3 +41,13 @@ $_lang['setting_refreshcache_ajax_delay'] = 'RefreshCache Ajax delay';
 $_lang['setting_refreshcache_ajax_delay_desc'] = 'Delay between JS polling checks (in milliseconds); default: 900';
 $_lang['setting_refreshcache_curl_delay'] = 'RefreshCache cUrl Delay';
 $_lang['setting_refreshcache_curl_delay_desc'] = 'Delay between cURL requests (in seconds); default: 0';
+
+/* Used in refreshcache.snippet.php */
+$_lang['rc_admin_only'] = 'This code can only be run by an administrator';
+$_lang['rc_button_message'] = 'Refresh the Cache';
+$_lang['rc_no_resources'] = 'No Cacheable Resources found';
+$_lang['rc_no_curl'] = 'Failed to initialize cURL';
+$_lang['rc_refreshing'] = 'Refreshing';
+
+/* Used in transport.menus.php */
+$_lang['rc_menu_desc'] = 'Refresh the cache for all cacheable resources';

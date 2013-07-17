@@ -3,7 +3,7 @@
  * menus transport file for RefreshCache extra
  *
  * Copyright 2011-2013 by Bob Ray <http://bobsguides.com>
- * Created on 07-16-2013
+ * Created on 07-17-2013
  *
  * @package refreshcache
  * @subpackage build
@@ -37,7 +37,7 @@ $menus[1] = $modx->newObject('modMenu');
 $menus[1]->fromArray( array (
   'text' => 'Refresh Cache',
   'parent' => 'components',
-  'description' => 'Refresh the cache for all cacheable resources',
+  'description' => 'rc_menu_desc~~Refresh the cache for all cacheable resources',
   'icon' => '',
   'menuindex' => 0,
   'params' => '',
@@ -46,29 +46,5 @@ $menus[1]->fromArray( array (
   'id' => 1,
 ), '', true, true);
 $menus[1]->addOne($action);
-$action = $modx->newObject('modAction');
-$action->fromArray( array (
-  'namespace' => 'refreshcache',
-  'controller' => 'index',
-  'haslayout' => 1,
-  'lang_topics' => 'refreshcache:default',
-  'assets' => '',
-  'help_url' => '',
-  'id' => 2,
-), '', true, true);
-
-$menus[2] = $modx->newObject('modMenu');
-$menus[2]->fromArray( array (
-  'text' => 'RefreshCache',
-  'parent' => 'components',
-  'description' => 'Refresh the MODX cache',
-  'icon' => '',
-  'menuindex' => 0,
-  'params' => '',
-  'handler' => '',
-  'permissions' => '',
-  'id' => 2,
-), '', true, true);
-$menus[2]->addOne($action);
 
 return $menus;

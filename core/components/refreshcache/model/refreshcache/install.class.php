@@ -79,40 +79,40 @@ class Installer {
 
         echo "<script type='text/javascript'>
 function refresh() {
-    $('#apisubmit').fadeOut('slow');
+    Ext.fly('apisubmit').fadeOut({duration:1.5});
     var intID = setInterval(function () {
 
-        $.ajax({
-            type: 'GET',
+        Ext.Ajax.request({
+
             url: '" . $url . "?randval=' + Math.random(),
-            cache: false,
             success: function (data) {
-               /* $('#apinstall').load('" . $url . "?randval=' + Math.random()); */
-               $('#apinstall').html(data);
+                var response = data.responseText;
+                var searchTerm = 'FINISHED';
 
-               var response = data.toString();
-               var searchTerm = 'FINISHED';
+                Ext.fly('apinstall').update(response);
 
-               if (data != undefined) {
+
+
+                if (response != undefined) {
                    if (response.indexOf(searchTerm) != -1) {
                        clearInterval(intID);
-                       $('#apisubmit').fadeIn('slow');
+                       Ext.fly('apisubmit').fadeIn({duration:1.5});
                    }
-               }
+                }
             },
             error: function (request, status, error) {
                if (status == 404) {
                    clearInterval(intID);
-                   alert(request.responseText);
+                   alert(error);
                }
             }
         });
 
     }," . $ajaxDelay . ");
 }
-$(document).ready(function () {
-    $('#apiform').submit(function () {
-        refresh();
+Ext.onReady(function () {
+    Ext.fly('apiform').on('submit', function () {
+            refresh();
     });
 
 });

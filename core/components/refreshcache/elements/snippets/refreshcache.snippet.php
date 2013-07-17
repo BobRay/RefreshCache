@@ -62,12 +62,13 @@
  */
 
 /** @var $modx modX */
-
+$modx->lexicon->load('refreshcache:default');
 if (! $modx->user->isMember('Administrator') ) {
-    return 'This code can only be run by an administrator';
+    $msg = $modx->lexicon('rc_admin_only~~This code can only be run by an administrator');
+    return $msg;
 }
 
-$modx->regClientStartupScript("http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js");
+// $modx->regClientStartupScript("http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js");
 
 //include class
 $path = $modx->getOption('refresh_cache_core_path', null, $modx->getOption('core_path') . 'components/refreshcache/') . 'model/refreshcache/';
@@ -75,11 +76,11 @@ require_once($path . 'install.class.php');
 
 //initialize class
 $install = new Installer($modx);
-
+$buttonMsg = $modx->lexicon('rc_button_message~~Refresh the Cache');
 echo "\n" . '
 <!-- Remember to add form id="apiform" and target="progressFrame" to make script work -->
 <center><form id="apiform" target="progressFrame" method="post">
-                    <input id="apisubmit" type="submit" name="submit" value="Refresh the Cache">
+                    <input id="apisubmit" type="submit" name="submit" value="' . $buttonMsg . '">
                     </form></center>';
 
 //load form, define progress bar colours
@@ -120,14 +121,14 @@ if (isset($_POST['submit'])) {
     $install->defineBar();
 
     if (empty($resources)) {
-        $output = 'No Cacheable Resources found';
+        $output = $modx->lexicon('rc_no_resources~~No Cacheable Resources found');
         $install->save($output);
         $install->delay(3);
     }
 
     $ch = curl_init(); // Initialize Curl
     if ($ch === false) {
-        $output = "Failed to initialize cURL";
+        $output = $modx->lexicon("rc_no_curl~~Failed to initialize cURL");
         $install->save($output);
         $install->delay(3);
     }
@@ -140,13 +141,15 @@ if (isset($_POST['submit'])) {
     ignore_user_abort(true); // keep on going even if user pulls the plug*
 
     $i = 1;
-    $output = '<p>Refreshing ' . $count . ' resources</p><p>&nbsp;</p>';
+    $refreshingMsg = $modx->lexicon('rc_refreshing~~Refreshing');
+    $resourceMsg = $modx->lexicon('resources');
+    $output = "<p>" . $refreshingMsg . " " . $count . " " . $resourceMsg . "</p><p>&nbsp;</p>";
     $install->save($output);
     $install->delay(2);
     sleep(1);
 
     foreach ($resources as $resource) {
-
+        /** @var $resource modResource */
         $pageId = $resource->get('id');
         $pagetitle = $resource->get('pagetitle');
         $url = $modx->makeUrl($pageId, '', '', 'full');
@@ -155,7 +158,7 @@ if (isset($_POST['submit'])) {
             continue;
         }
 
-        $output = '<p>(' . $i . '/' . $count . ') Refreshing</p><p>' . $pagetitle . '</p>';
+        $output = '<p>(' . $i . '/' . $count . ") " . $refreshingMsg . "</p><p>" . $pagetitle . '</p>';
         $install->save($output);
         $install->delay($delay);
 
@@ -182,8 +185,8 @@ if (isset($_POST['submit'])) {
     $tend = $mtime;
     $seconds = ($tend - $tstart);
     $totalTime = sprintf( "%02.2d:%02.2d", floor( $seconds / 60 ), $seconds % 60 );
+    /* No lex string here -- JS checks for this string to terminate loop */
     $install->save("<p>FINISHED -- Execution time</p><p>(minutes:seconds): {$totalTime}</p>");
-
 }
 
 return '';
