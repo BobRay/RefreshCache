@@ -102,7 +102,6 @@ if (isset($_POST['submit'])) {
         or unpublished */
     set_time_limit(0);
     $query = $modx->newQuery('modResource');
-    $query->limit(2);
     $query->where(array(
            array(
                'class_key:=' => 'modDocument',
