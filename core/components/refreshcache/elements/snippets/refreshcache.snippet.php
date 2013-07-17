@@ -64,7 +64,7 @@
 /** @var $modx modX */
 $modx->lexicon->load('refreshcache:default');
 if (! $modx->user->isMember('Administrator') ) {
-    $msg = $modx->lexicon('rc_admin_only~~This code can only be run by an administrator');
+    $msg = $modx->lexicon('rc_admin_only');
     return $msg;
 }
 
@@ -76,7 +76,7 @@ require_once($path . 'install.class.php');
 
 //initialize class
 $install = new Installer($modx);
-$buttonMsg = $modx->lexicon('rc_button_message~~Refresh the Cache');
+$buttonMsg = $modx->lexicon('rc_button_message');
 echo "\n" . '
 <!-- Remember to add form id="apiform" and target="progressFrame" to make script work -->
 <center><form id="apiform" target="progressFrame" method="post">
@@ -121,14 +121,14 @@ if (isset($_POST['submit'])) {
     $install->defineBar();
 
     if (empty($resources)) {
-        $output = $modx->lexicon('rc_no_resources~~No Cacheable Resources found');
+        $output = $modx->lexicon('rc_no_resources');
         $install->save($output);
         $install->delay(3);
     }
 
     $ch = curl_init(); // Initialize Curl
     if ($ch === false) {
-        $output = $modx->lexicon("rc_no_curl~~Failed to initialize cURL");
+        $output = $modx->lexicon("rc_no_curl");
         $install->save($output);
         $install->delay(3);
     }
@@ -141,7 +141,7 @@ if (isset($_POST['submit'])) {
     ignore_user_abort(true); // keep on going even if user pulls the plug*
 
     $i = 1;
-    $refreshingMsg = $modx->lexicon('rc_refreshing~~Refreshing');
+    $refreshingMsg = $modx->lexicon('rc_refreshing');
     $resourceMsg = $modx->lexicon('resources');
     $output = "<p>" . $refreshingMsg . " " . $count . " " . $resourceMsg . "</p><p>&nbsp;</p>";
     $install->save($output);

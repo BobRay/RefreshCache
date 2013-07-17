@@ -37,7 +37,7 @@ $menus[1] = $modx->newObject('modMenu');
 $menus[1]->fromArray( array (
   'text' => 'Refresh Cache',
   'parent' => 'components',
-  'description' => 'rc_menu_desc~~Refresh the cache for all cacheable resources',
+  'description' => 'rc_menu_desc',
   'icon' => '',
   'menuindex' => 0,
   'params' => '',
