@@ -1,33 +1,65 @@
 
 <p>The RefreshCache snippet refreshes the cache by visiting all site pages that are
-published, undeleted, cacheable, and not hidden from menus.</p>
+published, undeleted, and cacheable.</p>
 
 <p>The point is for this program to spend time waiting for the pages so
 the site visitors don't have to. They'll see cached pages, which will be
 delivered much faster.</p>
 
-<p>RefreshCache is an inelegant, brute-force snippet. It refreshes the cache by
-requesting every page with cURL.</p>
-
-<p>The larger the site, the longer it takes. It's intentionally slow to avoid
-stressing the server and to keep from running afoul of bot-blocking software.</p>
+<p>RefreshCache is an inelegant, brute-force extra. It refreshes the cache by
+requesting every page with cURL. The larger the site, the longer it takes.</p>
 
 <p>On a 100-page site, at broadband speeds, it can take 4-10 minutes to run,
 depending on the connection speed and how complex the pages are.
-Larger sites can take much longer.</p>
+Larger sites can take much longer, especially if there are lots of images to load, lengthy getResources calls, or complex conditional output modifiers. The longer it takes RefreshCache to run, the more valuable it is to your site's visitors.</p>
 
-<p>The only settable property is &amp;delay, which sets the number of seconds to sleep
-between page requests. The default is .51 seconds. It should not be set lower than this.</p>
+<div class="box">
+<p>As of Version 1.1.0-pl, RefreshCache has been refactored as a Custom Manager Page (CMP). It is more reliable, slightly prettier, and the RefreshCache Resource is no longer used. You can remove the RefreshCache Resource, but *don't* remove the RefreshCache snippet. The new version uses ExtJS/modExt rather than JQuery. It should run a little faster since the JavaScript is already loaded when you launch it in the Manager. The sleep times have also been shortened.</p>
+</div>
 
-<p>To install, paste the code into a snippet called RefreshCache. Create a resource
-called RefreshCache with just the snippet tag: <fixedpre>[[!RefreshCache]]</fixedpre>.</p>
+<h3>Installing RefreshCache</h3>
 
-<p>The resource should not be cacheable and the alias should be
-refresh-cache.</p>
+<p>
+Go to System | Package Management on the main menu in the MODX Manager and click on the &quot;Download Extras&quot; button. That will take you to the Revolution Repository (AKA Web Transport Facility). Put RefreshCache in the search box and press Enter. Click on the &quot;Download&quot; button, and when the download is finished, click on the &quot;Back to Package Manager&quot; button. That should bring you back to your Package Management grid. Click on the &quot;Install&quot; button next to RefreshCache in the grid. The RefreshCache package should now be installed.</p>
 
-<p>Create an empty template with just this tag: <fixedpre>[[*content]]</fixedpre> and be sure to
-assign that template to the resource.</p>
+<p>After installing RefreshCache, you'll need to reload the Manager page before it will show up under the Components menu. In fact, if you don't already have any components installed, the Components menu itself won't appear until after you install RefreshCache and then reload the Manager
+page.</p>
 
-<p>To run the snippet, preview the RefreshCache resource.</p>
-<p>Note that if you close the browser window during the run, the process will abort. The next time you run RefreshCache the display will be corrupted and you'll see multiple progress bars that will go beyond 100%. To fix this, just run RefreshCache again and let it finish.</p>
+<h3>Usage</h3>
+
+<p>To run RefreshCache, just select the RefreshCache menu item under Components in the Manager's Top Menu. Remember that you'll need to reload the Manager page after installing RefreshCache before the menu item will show up. Once RefreshCache has launched, click on the &quot;Refresh the Cache&quot; button at the top of the page. Important: Do not close the browser window or navigate to another page until RefreshCache has finished.</p>
+
+<p>For security, only members of the Administrator group can run RefreshCache and it can only be run from inside the MODX Manager.</p>
+
+<h3>Settings</h3>
+
+<p>The only settable options are the two System Settings in the <code>refreshcache</code> namespace. The <code>refreshcache_ajax_delay</code> System Setting sets the number of milliseconds to sleep between Ajax requests for the file that contains the progress messages. The default is 900 milliseconds (.9 seconds). You can reduce that if RefreshCache is skipping messages, but I recommend that you don't go below 510 milliseconds. You can also increase it to take some pressure off the server as long is it's less than the time of the fastest page load.</p>
+
+<p>The <code>refreshcache_curl_delay</code> sets the number of seconds to sleep between page requests. The default is 0 seconds. You can take some pressure off your server by setting it higher, but that will slow down the program. It shouldn't be necessary to change this because each cURL request won't be issued until the previous page has fully loaded in the browser.</p>
+
+<h3>Files</h3>
+
+<p>RefreshCache writes its Ajax log files to the <code>assets/components/refreshcache/</code> directory. Make sure that directory is writable. After RefreshCache has finished, the <code>refreshcache.log</code> file should contain a list of all Resources that were refreshed with the total execution time at the end of the file.</p>
+
+<h3>RefreshCache Properties</h3>
+
+<table class="properties">
+    <tr>
+        <th>Setting</th>
+        <th>Description</th>
+        <th>Default</th>
+    </tr>
+
+    <tr>
+        <td>refreshcache_ajax_delay</td>
+        <td>Delay between JS polling checks (in milliseconds)</td>
+        <td>1500</td>
+    </tr>
+    <tr>
+        <td>refreshcache_curl_delay</td>
+        <td>Delay between cURL requests (in seconds)</td>
+        <td>0</td>
+    </tr>
+</table>
+
 <p>&nbsp;</p>
