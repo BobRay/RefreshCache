@@ -1,5 +1,17 @@
 Changelog for RefreshCache
 
+RefreshCache 1.1.0-pl
+-------------------------
+Fixed bug in progress bar
+Works with Articles
+Refactored as CMP
+Converted JS to ExtJs/modExt
+Uses setInterval for better memory management
+More reliable
+Slightly faster
+Slightly prettier
+
+
 RefreshCache 1.0.1
 ------------------
 Added progress bar

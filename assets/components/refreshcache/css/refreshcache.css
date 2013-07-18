@@ -1,0 +1,93 @@
+form {
+    margin: auto;
+}
+
+.meter-wrap {
+    margin: 0 auto 1em auto;
+    position: relative;
+}
+
+.meter-wrap, .meter-value, .meter-text {
+    /* The width and height of your image */
+    width: 155px;
+    height: 30px;
+
+}
+
+.meter-wrap, .meter-value {
+    background: #DDDDDD url(meter-outline.png) top left no-repeat;
+
+}
+.meter-value {
+    background-color: #3d5be6;
+}
+.meter-text {
+    font-family: Arial, sans-serif;
+    font-size: 20px;
+    position: absolute;
+    padding-top: 5px;
+    color: #FAFAFA;
+    text-align: center;
+    width: 50%;
+}
+
+.output-text {
+    font-family: Arial, sans-serif;
+    font-size: 20px;
+    text-align: center;
+    color: #0A0A0A;
+}
+
+input#apisubmit {
+    position: absolute;
+    top: 10%;
+    left: 42%;
+    /* margin-top: 80px; */
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    background-color:#eaeaea;
+    font-weight: bold;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+    box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.86);
+    -moz-box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.86);
+    -webkit-box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.86);
+    z-index: 10;
+
+}
+
+input#apisubmit:hover {
+    cursor: pointer;
+    background-color: #829ce6;
+}
+
+div#apinstall {
+    position: absolute;
+    top: 20%;
+    left: 50%;
+    width: 30em;
+    height: 130px;
+    margin-top: 20px; /*set to a negative number 1/2 of your height*/
+    margin-left: -15em; /*set to a negative number 1/2 of your width*/
+    border: 1px solid #ccc;
+
+    background-color: white;
+
+    padding-top: 35px;
+    padding-bottom: 7px;
+
+    -moz-border-radius: 15px;
+    -webkit-border-radius: 15px;
+    border-radius: 15px;
+    box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.86);
+    -moz-box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.86);
+    -webkit-box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.86);
+    z-index:999;
+}
+
+div#apinstall p {
+    line-height: 1.5;
+
+}

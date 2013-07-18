@@ -2,7 +2,7 @@
 /**
  * RefreshCache
  *
- * Copyright 2011 Bob Ray
+ * Copyright 2011-2013 Bob Ray
  *
  * @author Bob Ray
  * 12/13/11
@@ -59,60 +59,35 @@
  *
  * @package refreshCache
  *
- * @property
- *
- * delay (optional) int - seconds to delay between requests; default: 1;
  */
 
+/** @var $modx modX */
+$modx->lexicon->load('refreshcache:default');
 if (! $modx->user->isMember('Administrator') ) {
-    return 'This code can only be run by an administrator';
+    $msg = $modx->lexicon('rc_admin_only');
+    return $msg;
 }
 
-header("Cache-Control: no-cache, must-revalidate");
-header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");
-// no cache
-header('Pragma: no-cache');
-// HTTP/1.1
-// date in the past
-header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
-
-echo '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-<title>Refresh Cache</title>
-<meta http-equiv="content-type" content="text/html; charset=utf-8" />
-<script type="text/javascript" src="' . MODX_ASSETS_URL . 'components/refreshcache/jquery.js"></script>';
+// $modx->regClientStartupScript("http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js");
 
 //include class
-require_once(MODX_CORE_PATH . 'components/refreshcache/class.install.php');
+$path = $modx->getOption('refresh_cache_core_path', null, $modx->getOption('core_path') . 'components/refreshcache/') . 'model/refreshcache/';
+require_once($path . 'install.class.php');
 
 //initialize class
-$install = new Installer(true);
-
-echo '</head>
-<body>
+$install = new Installer($modx);
+$buttonMsg = $modx->lexicon('rc_button_message');
+echo "\n" . '
 <!-- Remember to add form id="apiform" and target="progressFrame" to make script work -->
 <center><form id="apiform" target="progressFrame" method="post">
-					<input id="apisubmit" type="submit" name="submit" value="Refresh the Cache">
-					</form></center>';
+                    <input id="apisubmit" type="submit" name="submit" value="' . $buttonMsg . '">
+                    </form></center>';
 
 //load form, define progress bar colours
 $install->placeholder();
 
-$delay = $modx->getOption('delay', $scriptProperties, 0.51);
-
-/*if (!defined('MODX_CORE_PATH')) {
-    $outsideModx = true;
-    define(MODX_CORE_PATH, 'c:/xampp/htdocs/addons/core/');
-    require_once MODX_CORE_PATH . '/model/modx/modx.class.php';
-    $modx = new modX();
-    if (!$modx) {
-        echo 'Could not create MODX class';
-    }
-    $modx->initialize('web');
-} else {
-    $outsideModx = false;
-}*/
+/* Get curl delay from System Setting */
+$delay = $modx->getOption('refreshcache_curl_delay', null, 0);
 
 $mtime = microtime();
 $mtime = explode(" ", $mtime);
@@ -121,41 +96,40 @@ $tstart = $mtime;
 
 
 
-if (isset($_POST['submit'])) { /* Ignore resources that are uncached, deleted, unpublished, or hidden from menus */
-    //set path to temp files *directory* (must exist and be writable)
-       $install->setLogPath(MODX_ASSETS_PATH . 'components/refreshcache'); //without trailing slash!
+if (isset($_POST['submit'])) {
 
-    $c = array(
-            'published' => '1',
-            'deleted' => '0',
-            'cacheable' => '1',
-            'hidemenu' => '0',
-            'class_key' => 'modDocument',
+    /* Ignore resources that are uncached, deleted,
+        or unpublished */
+    set_time_limit(0);
+    $query = $modx->newQuery('modResource');
+    $query->where(array(
+           array(
+               'class_key:=' => 'modDocument',
+               'OR:class_key:=' => 'Article',
+           ),
+           array(
+               'AND:published:=' => '1',
+               'AND:deleted:=' => '0',
+               'AND:cacheable:=' => '1',
+           )
+    ));
+    $resources = $modx->getCollection('modResource', $query);
+    $count = count($resources);  //set number of process steps
+    $install->setSteps($count+2);
 
-    );
-    $count = $modx->getCount('modResource', $c);
-   //set number of process steps
-   $install->setSteps($count+2);
-
-   //define colours
-   //$install->defineBar('#E54000', '#E54000');
-   $install->defineBar('blue', 'navy');
-
-    $resources = $modx->getCollection('modResource', $c);
+    $install->defineBar();
 
     if (empty($resources)) {
-        $output = 'No Cacheable Resources found';
+        $output = $modx->lexicon('rc_no_resources');
         $install->save($output);
-        $install->delay(01.0);
+        $install->delay(3);
     }
-
-
 
     $ch = curl_init(); // Initialize Curl
     if ($ch === false) {
-        $output = "Failed to initialize cURL";
+        $output = $modx->lexicon("rc_no_curl");
         $install->save($output);
-        $install->delay(015.0);
+        $install->delay(3);
     }
 
     @curl_setopt($ch, CURLOPT_NOBODY, TRUE);
@@ -166,11 +140,15 @@ if (isset($_POST['submit'])) { /* Ignore resources that are uncached, deleted, u
     ignore_user_abort(true); // keep on going even if user pulls the plug*
 
     $i = 1;
-    $output = '<p>Refreshing ' . $count . ' resources</p><p>&nbsp;</p>';
+    $refreshingMsg = $modx->lexicon('rc_refreshing');
+    $resourceMsg = $modx->lexicon('resources');
+    $output = "<p>" . $refreshingMsg . " " . $count . " " . $resourceMsg . "</p><p>&nbsp;</p>";
     $install->save($output);
-    $install->delay($delay);
+    $install->delay(2);
+    sleep(1);
 
     foreach ($resources as $resource) {
+        /** @var $resource modResource */
         $pageId = $resource->get('id');
         $pagetitle = $resource->get('pagetitle');
         $url = $modx->makeUrl($pageId, '', '', 'full');
@@ -179,7 +157,7 @@ if (isset($_POST['submit'])) { /* Ignore resources that are uncached, deleted, u
             continue;
         }
 
-        $output = '<p>Refreshing</p><p>' . $pagetitle . '</p>';
+        $output = '<p>(' . $i . '/' . $count . ") " . $refreshingMsg . "</p><p>" . $pagetitle . '</p>';
         $install->save($output);
         $install->delay($delay);
 
@@ -192,7 +170,7 @@ if (isset($_POST['submit'])) { /* Ignore resources that are uncached, deleted, u
         if (curl_errno($ch)) {
             $output = 'cURL error: ' . curl_errno($ch) . " - " . curl_error($ch);
             $install->save($output);
-            $install->delay(08.0);
+            $install->delay($delay);
         }
     } /* end foreach($resources) loop */
 
@@ -206,13 +184,8 @@ if (isset($_POST['submit'])) { /* Ignore resources that are uncached, deleted, u
     $tend = $mtime;
     $seconds = ($tend - $tstart);
     $totalTime = sprintf( "%02.2d:%02.2d", floor( $seconds / 60 ), $seconds % 60 );
-    $install->save("<br />FINISHED<br />Execution time (minutes:seconds): {$totalTime}");
-    $install->delay($delay);
-    $install->clearTemp(true);
-
+    /* No lex string here -- JS checks for this string to terminate loop */
+    $install->save("<p>FINISHED -- Execution time</p><p>(minutes:seconds): {$totalTime}</p>");
 }
 
-echo '
-</body>
-</html>';
 return '';
