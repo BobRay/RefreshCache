@@ -79,8 +79,6 @@ class Installer {
 
         echo "<script type='text/javascript'>
 function refresh() {
-    Ext.fly('apisubmit').fadeOut({duration:1.5});
-    var intID = setInterval(function () {
 
         Ext.Ajax.request({
 
@@ -91,28 +89,31 @@ function refresh() {
 
                 Ext.fly('apinstall').update(response);
 
-
-
                 if (response != undefined) {
                    if (response.indexOf(searchTerm) != -1) {
-                       clearInterval(intID);
                        Ext.fly('apisubmit').fadeIn({duration:1.5});
+                       return;
                    }
                 }
+                setTimeout(function() {
+                    refresh();
+                }, " . $ajaxDelay . ");
             },
             error: function (request, status, error) {
                if (status == 404) {
-                   clearInterval(intID);
+                   clearTimeout(intID);
                    alert(error);
+                   return;
                }
             }
         });
 
-    }," . $ajaxDelay . ");
+
 }
 Ext.onReady(function () {
     Ext.fly('apiform').on('submit', function () {
-            refresh();
+        Ext.fly('apisubmit').fadeOut({duration:1.5});
+        refresh();
     });
 
 });
