@@ -31,15 +31,28 @@ page.</p>
 
 <p>For security, only members of the Administrator group can run RefreshCache and it can only be run from inside the MODX Manager.</p>
 
+<p>If you are using the Articles blog, RefreshCache will refresh Articles along with other Resources. It will refresh anything obtainable with <code>getCollection('modResource')</code>. If snippet results or chunks are processed and cached on any cacheable pages, it will refresh those as well.</p>
+
 <h3>Settings</h3>
 
-<p>The only settable options are the two System Settings in the <code>refreshcache</code> namespace. The <code>refreshcache_ajax_delay</code> System Setting sets the number of milliseconds to sleep between Ajax requests for the file that contains the progress messages. The default is 900 milliseconds (.9 seconds). You can reduce that if RefreshCache is skipping messages, but I recommend that you don't go below 510 milliseconds. You can also increase it to take some pressure off the server as long is it's less than the time of the fastest page load.</p>
+<p>The only settable options are the two System Settings in the <code>refreshcache</code> namespace. The <code>refreshcache_ajax_delay</code> System Setting sets the number of milliseconds to sleep between Ajax requests for the file that contains the progress messages. The default is 200 milliseconds (.2 seconds). You can reduce that if RefreshCache is skipping messages. You can also increase it to take some pressure off the server. A good value is 900 if you want to avoid bot- blocking software like BotBlockX.  At higher values, it will appear that some resources are being skipped, but in fact they are being refreshed (you can check the log to verify this). Only the progress message is being skipped. </p>
 
-<p>The <code>refreshcache_curl_delay</code> sets the number of seconds to sleep between page requests. The default is 0 seconds. You can take some pressure off your server by setting it higher, but that will slow down the program. It shouldn't be necessary to change this because each cURL request won't be issued until the previous page has fully loaded in the browser.</p>
+<div class="box">
+<p>Having the Ajax delay at .2 seconds does not mean that there will be 5 requests per second. The delay occurs after the Ajax request is completed, so the actual interval will be however long it takes for the Ajax request to complete, plus the delay. Setting the delay to 0 will put a little more stress on the server, but should still work. Note that setting the delay will have no effect on the time it takes for the full process to finish. The refreshing occurs in the PHP code and is unaffected by the Ajax delay.</p>
+</div>
+
+<p>The <code>refreshcache_curl_delay</code> sets the number of seconds to sleep between page requests. The default is 0 seconds. You can take some pressure off your server by setting it higher, but that will slow down the program and the time-to-completion will go up. It shouldn't be necessary to change the <code>refreshcache_curl_delay</code> setting unless you are being blocked by bot-blocking software like BotBlockX, because each cURL request won't be issued until the previous page has fully loaded in the browser.</p>
 
 <h3>Files</h3>
 
 <p>RefreshCache writes its Ajax log files to the <code>assets/components/refreshcache/</code> directory. Make sure that directory is writable. After RefreshCache has finished, the <code>refreshcache.log</code> file should contain a list of all Resources that were refreshed with the total execution time at the end of the file.</p>
+
+<h3>Program Speed</h3>
+<p>How long it takes the process to finish depends on the browser you use and the speed of your internet connection. I notice that on my localhost install, RefreshCache runs about 20 times faster in Firefox than it does in Chrome. I have no idea why. At Bob's Guides, there are just under 200 Resources. RefreshCache takes about 27 minutes in Chrome and about 17 minutes in Firefox, so it's worth experimenting.</p>
+
+<p>Important Warning!</p>
+
+<p>RefreshCache visits every published, cacheable page on your site. If you have snippet tags on such a page, the snippets will run. If you have a page with a snippet that automatically sends an email (e.g., QuickEmail), you'll get an email. If you have a utility snippet that modifies the database, the database will be modified. I generally leave such pages unpublished, but you might not, so think about what will happen if every cacheable, published page is visited.</p>
 
 <h3>RefreshCache Settings</h3>
 
