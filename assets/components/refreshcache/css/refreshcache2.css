@@ -1,0 +1,72 @@
+/***EDIT MARCINSKIBA.net***/
+form {
+    margin: auto;
+}
+
+.meter-wrap {
+    position: relative;
+}
+
+.meter-wrap, .meter-value, .meter-text {
+    width: 200px;
+    height: 2px;
+}
+
+.meter-wrap, .meter-value {
+    background: #DDDDDD;
+}
+
+.meter-value {
+    background-color: #67911d;
+}
+
+.meter-text {
+    font-family: Arial, sans-serif;
+    font-size: 20px;
+    position: absolute;
+    padding-top: 10px;
+    width: 50%;
+}
+
+.output-text {
+    font-family: Arial, sans-serif;
+    font-size: 12px;
+    margin-top: 30px;
+    color: #0A0A0A;
+}
+
+input#apisubmit {
+    position: absolute;
+    top: 8%;
+    left: 5%;
+    /* margin-top: 80px; */
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    background-color: #eaeaea;
+    z-index: 10;
+
+}
+
+input#apisubmit:hover {
+    cursor: pointer;
+    background-color: #67911d;
+    color: #fff;
+    border: 1px solid #67911d;
+}
+
+div#apinstall {
+    position: absolute;
+    top: 15%;
+    left: 5%;
+    border: 1px solid #ccc;
+    background-color: white;
+    padding: 20px;
+    z-index: 999;
+}
+
+div#apinstall p {
+    line-height: 1.5;
+}
+
+/*****END****/
