@@ -2,7 +2,7 @@
 /**
  * menus transport file for RefreshCache extra
  *
- * Copyright 2011-2013 by Bob Ray <http://bobsguides.com>
+ * Copyright 2011-2018 by Bob Ray <https://bobsguides.com>
  * Created on 07-18-2013
  *
  * @package refreshcache
@@ -22,29 +22,20 @@ if (! function_exists('stripPhpTags')) {
 /* @var $sources array */
 /* @var xPDOObject[] $menus */
 
-$action = $modx->newObject('modAction');
-$action->fromArray( array (
-  'namespace' => 'refreshcache',
-  'controller' => 'index',
-  'haslayout' => 1,
-  'lang_topics' => '',
-  'assets' => '',
-  'help_url' => '',
-  'id' => 1,
-), '', true, true);
 
 $menus[1] = $modx->newObject('modMenu');
 $menus[1]->fromArray( array (
-  'text' => 'Refresh Cache',
+  'text' => 'RefreshCache',
   'parent' => 'components',
-  'description' => 'rc_menu_desc',
+  'action' => 'index',
+  'description' => 'Refresh the MODX cache',
   'icon' => '',
   'menuindex' => 0,
   'params' => '',
   'handler' => '',
   'permissions' => '',
+  'namespace' => 'refreshcache',
   'id' => 1,
 ), '', true, true);
-$menus[1]->addOne($action);
 
 return $menus;
