@@ -1,5 +1,9 @@
 Changelog for RefreshCache
 
+RefreshCache 1.2.0-pl
+-------------------------
+Updates for MODX 2.7.0
+
 RefreshCache 1.1.0-pl
 -------------------------
 Fixed bug in progress bar

@@ -2,7 +2,7 @@
 /**
  * RefreshCache
  *
- * Copyright 2011-2013 Bob Ray
+ * Copyright 2011-2018 Bob Ray
  *
  * @author Bob Ray
  * 12/13/11
@@ -54,8 +54,6 @@
  *
  * Create an empty template with just this tag: [[*content]] and be sure to
  * assign that template to the resource.
- *
- * To run the snippet, preview the ClearCache resource.
  *
  * @package refreshCache
  *

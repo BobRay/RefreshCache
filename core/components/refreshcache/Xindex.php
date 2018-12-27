@@ -21,5 +21,6 @@
 * @package refreshcache
 */
 /** @var $modx modX */
+
 return $modx->runSnippet('RefreshCache');
 

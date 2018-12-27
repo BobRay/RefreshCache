@@ -71,7 +71,7 @@ class Installer {
         //include css file
         $cssUrl = $this->modx->getOption('refresh_cache_assets_url', null,
                 $this->modx->getOption('assets_url') . 'components/refreshcache/')
-                .'css/refreshcache.css';
+                .'css/refreshcache.css?v=1.2.0';
         $this->modx->regClientCSS($cssUrl);
 
 

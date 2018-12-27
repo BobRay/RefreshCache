@@ -16,14 +16,14 @@ $components = array(
     'packageName' => 'RefreshCache',  /* No spaces, no dashes */
     'packageNameLower' => $packageNameLower,
     'packageDescription' => 'RefreshCache project for MyComponent extra',
-    'version' => '1.1.0',
+    'version' => '1.2.0',
     'release' => 'pl',
     'author' => 'Bob Ray',
-    'email' => '<http://bobsguides.com>',
-    'authorUrl' => 'http://bobsguides.com',
+    'email' => '<https://bobsguides.com>',
+    'authorUrl' => 'https://bobsguides.com',
     'authorSiteName' => "Bob's Guides",
-    'packageDocumentationUrl' => 'http://bobsguides.com/refreshcache-tutorial.html',
-    'copyright' => '2011-2013',
+    'packageDocumentationUrl' => 'https://bobsguides.com/refreshcache-tutorial.html',
+    'copyright' => '2011-2018',
 
     /* no need to edit this except to change format */
     'createdon' => strftime('%m-%d-%Y'),
@@ -137,22 +137,15 @@ $components = array(
     'menus' => array(
         'RefreshCache' => array(
             'text' => 'RefreshCache',
-            'parent' => 'components',
+            'parent' => 'Extras',
             'description' => 'Refresh the MODX cache',
             'icon' => '',
             'menuindex' => 0,
             'params' => '',
             'handler' => '',
             'permissions' => '',
-
-            'action' => array(
-                'id' => '',
-                'namespace' => 'refreshcache',
-                'controller' => 'index',
-                'haslayout' => true,
-                'lang_topics' => 'refreshcache:default',
-                'assets' => '',
-            ),
+            'action' => 'index',
+            'namespace' => 'refreshcache',
         ),
     ),
 
@@ -268,6 +261,7 @@ $components = array(
      * (other resolvers may be created above for TVs and plugins).
      * Suffix 'resolver.php' will be added automatically */
     'resolvers' => array(
+        'default',
     ),
 
     /* (optional) Validators can abort the install after checking

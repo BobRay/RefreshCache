@@ -15,19 +15,17 @@ form {
 }
 
 .meter-wrap, .meter-value {
-    background-color: #67911d;
+    background: #DDDDDD url(meter-outline.png) top left no-repeat;
 
 }
-
 .meter-value {
-    background-color: #67911d;
+    background-color: #3d5be6;
 }
-
 .meter-text {
     font-family: Arial, sans-serif;
     font-size: 20px;
     position: absolute;
-    padding-top: 2px;
+    padding-top: 5px;
     color: #FAFAFA;
     text-align: center;
     width: 50%;
@@ -48,7 +46,7 @@ input#apisubmit {
     padding: 10px;
     font-size: 16px;
     border: 1px solid #ccc;
-    background-color: #eaeaea;
+    background-color:#eaeaea;
     font-weight: bold;
     -moz-border-radius: 5px;
     -webkit-border-radius: 5px;
@@ -62,7 +60,7 @@ input#apisubmit {
 
 input#apisubmit:hover {
     cursor: pointer;
-    background-color: #67911d;
+    background-color: #829ce6;
 }
 
 div#apinstall {
@@ -86,7 +84,7 @@ div#apinstall {
     box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.86);
     -moz-box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.86);
     -webkit-box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.86);
-    z-index: 999;
+    z-index:999;
 }
 
 div#apinstall p {
