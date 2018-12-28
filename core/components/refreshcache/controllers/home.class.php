@@ -16,46 +16,52 @@ class refreshcacheHomeManagerController extends modExtraManagerController {
         return 'RefreshCache';
     }
 
-    public function initialize() {
-        // $this->modx->log(modX::LOG_LEVEL_ERROR, 'In Controller');
+    public function getLanguageTopics() {
+        return array('refreshcache:default');
     }
 
+    public function initialize() {
+        $this->modx->lexicon->load('refreshcache:default');
+    }
 
+    public function normalize($paths) {
+        if (is_array($paths)) {
+            foreach ($paths as $k => $v) {
+                $v = str_replace('\\', '/', $v);
+                $paths[$k] = $v;
+            }
+        } else {
+            $paths = str_replace('\\', '/', $paths);
+        }
+        return $paths;
+    }
+
+    /**
+     * Gets Component Assets URL based on assets_path
+     * field of namespace
+     * @param $namespace
+     * @return string
+     */
+    public function getComponentAssetsUrl($namespace) {
+        $obj = $this->modx->getObject('modNamespace', array('name' => $namespace));
+        $nsAssetsPath = $obj->get('assets_path');
+        // $nsAssetsPath = '{assets_path}' . 'components/refreshcache/';
+        $nsAssetsPath = $this->normalize(str_replace('{assets_path}', MODX_ASSETS_PATH, $nsAssetsPath));
+        $nsAssetsPath = str_replace($this->normalize(dirname(MODX_BASE_PATH)), '', $nsAssetsPath);
+        $base = $this->normalize(dirname(MODX_ASSETS_URL)) . '/';
+        $short = str_replace($base, '', $this->normalize(MODX_SITE_URL));
+        return $short . $nsAssetsPath;
+    }
     public function loadCustomCssJs() {
-       // $this->modx->log(modX::LOG_LEVEL_ERROR, 'In loadCustomCssJs');
-       // parent::loadCustomCSSJs();
         $namespace = 'refreshcache';
-        $namespaceObj = $this->modx->getObject('modNamespace',array('name' => $namespace));
-        $assetsPath = $namespaceObj->getAssetsPath();
-        // $this->modx->log('modX::LOG_LEVEL_ERROR', 'Assets Path: ' . $assetsPath);
-        // C:/xampp/htdocs/addons/assets/mycomponents/refreshcache/assets/components/refreshcache/
-        $assetsUrl = str_replace('C:/xampp/htdocs/addons/', MODX_SITE_URL, $assetsPath);
-        // $this->modx->log('modX::LOG_LEVEL_ERROR', 'Assets URL: ' . $assetsUrl);
+        $assetsUrl = $this->getComponentAssetsUrl('refreshcache');
         $this->addJavascript('//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js');
-
         $this->addJavascript($assetsUrl . 'js/refreshcache.js');
     }
 
-    public function  xrender() {
-        /*$output = '<h3>XRefreshCache</h3>';
-        $output .= '<div class="rc_main_div" style="position:absolute; top:30%; left:20%;">Hello World</div>';
-
-        $output .= '<div id="refresh_cache">
-            <input type="submit" id="refresh_cache_button">
-            
-            <div id="refresh_cache_results"></div>
-        
-        </div>';
-
-        $output .= '<script>' . include '//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js' . '</script>';
-      //  $output .= '<script>' . include '//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js' . '</script >';
-
-        return $output; */
-    }
 
     public function process(array $scriptProperties = array()) {
-        // parent::process();
-       // $this->modx->log(modX::LOG_LEVEL_ERROR, 'In Process');
+        $buttonText = $this->modx->lexicon('rc_button_message');
         $output = '<div class="container">
     <h2  class="modx-page-header">RefreshCache</h2>
  
@@ -66,18 +72,13 @@ class refreshcacheHomeManagerController extends modExtraManagerController {
  
         <!-- <form action="#" id="refreshcache_form" method="post">-->
             <fieldset id="refreshcache_fieldset" style="padding: 0 30px 70px 30px;">
- 
-                <!--<div>
-                  <label for="search_term">Search For: </label>
-                  <input required class="x-form-text x-form-field" size=100 type="text" id="search_term" name="search_term">
-                </div>-->
                 <br class="clear"/>
  
                 <br class="clear">
  
  
                 <div class="refreshcache_submit">
-                    <input style="padding:5px;" type="submit" id="refreshcache_submit" name="refreshcache_submit" value="Refresh Cache"/>
+                    <input style="padding:5px;margin-bottom:20px;" type="submit" id="refreshcache_submit" name="refreshcache_submit" value="' . $buttonText . '"/>
                 </div>
                 <div id="refreshcache_results">
                     <div class="refresh_cache_inner"></div>
@@ -88,19 +89,6 @@ class refreshcacheHomeManagerController extends modExtraManagerController {
         </div>
 </div>';
 
-
-       /* $output = '<h3>XRefreshCache</h3>';
-        $output .= '<div class="rc_main_div" style="position:absolute; top:30%; left:20%;">Hello World</div>';
-
-        $output .= '<div id="refresh_cache">
-            <input type="submit" id="refresh_cache_button">
-            
-            <div id="refresh_cache_results"></div>
-        
-        </div>';*/
-
-        // $output .= '<script>' . include '//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js' . '</script>';
-        //  $output .= '<script>' . include '//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js' . '</script >';
         return $output;
 
     }

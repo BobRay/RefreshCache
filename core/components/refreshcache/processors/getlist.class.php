@@ -1,6 +1,7 @@
 <?php
 
 if (! defined('MODX_CORE_PATH')) {
+    /* For dev environment */
     include 'c:/xampp/htdocs/addons/assets/mycomponents/instantiatemodx/instantiatemodx.php';
     $modx->log(modX::LOG_LEVEL_ERROR, 'Instantiated MODX');
 }
@@ -14,13 +15,9 @@ class refreshcacheGetListProcessor extends modObjectGetListProcessor {
 
     public function initialize() {
         parent::initialize();
-        // $this->modx->log(modX::LOG_LEVEL_ERROR, 'In Processor');
+
         return true;
     }
-
-    /*public function process() {
-        parent::process();
-    }*/
 
     public function prepareQueryBeforeCount(xPDOQuery $c) {
         $c->select('id,pagetitle,uri');
@@ -29,16 +26,8 @@ class refreshcacheGetListProcessor extends modObjectGetListProcessor {
             'class_key:!=' => 'modWebLink',
             'published:!=' => '0',
             'AND:class_key:!=' => 'modSymLink',
-
-
         );
         $c->where($fields);
-
-        return $c;
-    }
-
-    public function prepareQueryAfterCount(xPDOQuery $c) {
-        // $c->select('id,pagetitle,uri');
 
         return $c;
     }
@@ -58,42 +47,6 @@ class refreshcacheGetListProcessor extends modObjectGetListProcessor {
         return $d;
     }
 
-    /**
-     * Get the data of the query
-     * @return array
-     */
-    public function xgetData() {
-        $data = array();
-        $limit = intval($this->getProperty('limit'));
-        $start = intval($this->getProperty('start'));
-
-        /* query for chunks */
-        $c = $this->modx->newQuery($this->classKey);
-        $c = $this->prepareQueryBeforeCount($c);
-        $data['total'] = $this->modx->getCount($this->classKey, $c);
-        $c = $this->prepareQueryAfterCount($c);
-
-        $sortClassKey = $this->getSortClassKey();
-        $sortKey = $this->modx->getSelectColumns($sortClassKey, $this->getProperty('sortAlias', $sortClassKey), '', array($this->getProperty('sort')));
-        if (empty($sortKey)) {
-            $sortKey = $this->getProperty('sort');
-        }
-        $c->sortby($sortKey, $this->getProperty('dir'));
-        if ($limit > 0) {
-            $c->limit($limit, $start);
-        }
-
-        $data['results'] = $this->modx->getCollection($this->classKey, $c);
-        return $data;
-    }
-
-
-
 }
-
-/*$p = new refreshcacheGetListProcessor($modx);
-$p->initialize();
-$result = $p->process();
-echo $result; */
 
 return 'refreshcacheGetListProcessor';

@@ -23,6 +23,7 @@
 /* @var $modx modX */
 
 $namespace = 'refreshcache';
+$extraCorePath = '';
 @include_once dirname(dirname(dirname(dirname(__FILE__)))) . '/config.core.php';
 if (! defined('MODX_CORE_PATH')) {
    /* For development environment */
