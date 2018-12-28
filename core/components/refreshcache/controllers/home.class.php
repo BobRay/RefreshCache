@@ -24,16 +24,13 @@ class refreshcacheHomeManagerController extends modExtraManagerController {
         $this->modx->lexicon->load('refreshcache:default');
     }
 
-    public function normalize($paths) {
-        if (is_array($paths)) {
-            foreach ($paths as $k => $v) {
-                $v = str_replace('\\', '/', $v);
-                $paths[$k] = $v;
-            }
+    public function normalize($path) {
+        if (strpos($path, '\\') === false) {
+            /* Nothing to do */
+            return $path;
         } else {
-            $paths = str_replace('\\', '/', $paths);
+            return str_replace('\\', '/', $path);
         }
-        return $paths;
     }
 
     /**
@@ -45,7 +42,9 @@ class refreshcacheHomeManagerController extends modExtraManagerController {
     public function getComponentAssetsUrl($namespace) {
         $obj = $this->modx->getObject('modNamespace', array('name' => $namespace));
         $nsAssetsPath = $obj->get('assets_path');
-        // $nsAssetsPath = '{assets_path}' . 'components/refreshcache/';
+        $nsAssetsPath = empty($nsAssetsPath)
+            ?  '{assets_path}components/refreshcache/'
+            : $nsAssetsPath;
         $nsAssetsPath = $this->normalize(str_replace('{assets_path}', MODX_ASSETS_PATH, $nsAssetsPath));
         $nsAssetsPath = str_replace($this->normalize(dirname(MODX_BASE_PATH)), '', $nsAssetsPath);
         $base = $this->normalize(dirname(MODX_ASSETS_URL)) . '/';
@@ -57,6 +56,7 @@ class refreshcacheHomeManagerController extends modExtraManagerController {
         $assetsUrl = $this->getComponentAssetsUrl('refreshcache');
         $this->addJavascript('//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js');
         $this->addJavascript($assetsUrl . 'js/refreshcache.js');
+        $this->addCss($assetsUrl . 'css/refreshcache.css');
     }
 
 
