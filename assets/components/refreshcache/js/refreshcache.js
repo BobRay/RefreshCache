@@ -40,21 +40,51 @@ $(document).ready(function (event) {
                 cache: false,
                 url: connectorUrl,
                 success: function (data) {
-                  console.log(data);
-                  //alert("To Here");
-                  // var parsedData = JSON.parse(data);
-                  //alert("success: " + data['success']);
-                  //alert("Parsed");
-                  /* if (parsedData['success'] == true) {
-                       alert('parse OK');
-                   }*/
-                  console.log(data.results);
+                  // console.log(data);
+                  // console.log(data.results);
                    //$("<ul>").appendTo(".refresh_cache_inner");
+                   console.log("Length: " + data.results.length);
                    $.each(data.results, function (i, item) {
-                        console.log(data.results[i].pagetitle);
-                       console.log(data.results[i].uri);
-                       $("<span class='rc_pagetitle' style='display:block'>" + data.results[i].pagetitle +
-                           "</span>").appendTo(".refresh_cache_inner");
+                        console.log("Before Ajax" + data.results[i].pagetitle);
+                    //   console.log(data.results[i].uri);
+                       // alert(connectorUrl);
+                       $.ajax({
+                           type: 'GET',
+                           url: connectorUrl,
+                           data: {
+                               'uri': data.results[i].uri,
+                               'action' : "refresh"
+                               /*'props': ugm_config,
+                               'version': selectedVersion*/
+                           },
+                           success: function (newData) {
+                               $("<span class='rc_pagetitle' style='display:block'>" + data.results[i].pagetitle +
+                                 ' (' + i + ')' +  "</span>").appendTo(".refresh_cache_inner");
+                               console.log("Success " + data.results[i].pagetitle);
+                               /*if (data.success === true) {
+                                   updateText(button_text, data.message);
+                                   //  alert("Got success return from preparesetup");
+                                   progress = 1;
+                                   instance._setProgress(progress);
+                                   instance._stop(1);
+                               } else {
+                                   displayError(data.message, progressInterval, instance);
+                               }*/
+                              // clearInterval(progressInterval);
+                               //console.log(ugm_setup_url);
+                              /* setTimeout(function () {
+                                   window.location.replace(ugm_setup_url);
+                               }, 1500);*/
+
+                           },
+                           error: function (XMLHttpRequest, textStatus, errorThrown) {
+                               console.log("Submit Error: " + errorThrown);
+                           },
+                           dataType: 'json'
+
+                       });
+                      /* $("<span class='rc_pagetitle' style='display:block'>" + data.results[i].pagetitle +
+                           "</span>").appendTo(".refresh_cache_inner");*/
 
                     });
 
