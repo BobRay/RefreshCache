@@ -8,6 +8,12 @@ j){h=h.match(s);var e,c=h[0],l=false;if("{"===c)e={};else if("["===c)e=[];else{e
 b=void 0;break;case 110:a=d[0];a[b||a.length]=null;b=void 0;break;case 116:a=d[0];a[b||a.length]=true;b=void 0;break;case 123:a=d[0];d.unshift(a[b||a.length]={});b=void 0;break;case 125:d.shift();break}}if(l){if(d.length!==1)throw new Error;e=e[0]}else if(d.length)throw new Error;if(j){var p=function(n,o){var f=n[o];if(f&&typeof f==="object"){var i=null;for(var g in f)if(x.call(f,g)&&f!==n){var q=p(f,g);if(q!==void 0)f[g]=q;else{i||(i=[]);i.push(g)}}if(i)for(g=i.length;--g>=0;)delete f[i[g]]}return j.call(n,
 o,f)};e=p({"":e},"")}return e}}();
 
+function progress(percent, $element) {
+    percent = (percent < 5) ? 5 : percent;
+    var progressBarWidth = percent * $element.width() / 100;
+    $element.find('div').animate({width: progressBarWidth}, 500).html(percent + "%&nbsp;");
+}
+
 $(document).ready(function (event) {
     $('#refreshcache_submit').click(function () {
       // alert("Submit Clicked");
@@ -27,11 +33,7 @@ $(document).ready(function (event) {
 
         var connectorUrl = "http://localhost/addons/assets/mycomponents/refreshcache/assets/components/refreshcache/connectors/connector.php";
 
-        function progress(percent, $element) {
-            percent = (percent < 5)? 5 : percent;
-            var progressBarWidth = percent * $element.width() / 100;
-            $element.find('div').animate({width: progressBarWidth}, 500).html(percent + "%&nbsp;");
-        }
+
         /* One or more actions selected */
 
         /* IF send_tweet is checked, call sendTweet processor */
@@ -78,12 +80,7 @@ $(document).ready(function (event) {
 
                                 progress(percent, pBar);
                                 if (index < lines.length) {
-                                    setTimeout(
-                                        function () {
-                                           sendToServer(lines, index + 1);
-                                        }, // function to call
-                                        200 // delay in ms
-                                    );
+                                    sendToServer(lines, index + 1);
                                 }
                             },
                             error: function (XMLHttpRequest, textStatus, errorThrown) {
