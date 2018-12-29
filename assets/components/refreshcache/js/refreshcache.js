@@ -40,54 +40,91 @@ $(document).ready(function (event) {
                 cache: false,
                 url: connectorUrl,
                 success: function (data) {
-                  // console.log(data);
-                  // console.log(data.results);
-                   //$("<ul>").appendTo(".refresh_cache_inner");
-                   console.log("Length: " + data.results.length);
-                   $.each(data.results, function (i, item) {
+                    // console.log(data);
+                    // console.log(data.results);
+
+                    var sendToServer = function (lines, index) {
+                        var length = lines.length;
+                        if (index < length) {
+                        var item = lines[index];
+                            $.ajax({
+                                type: 'GET',
+                                url: connectorUrl,
+                                dataType: 'json',
+                                data: {
+                                    //'uri': data.results[i].uri,
+                                    'uri' : item.uri,
+                                    'action': "refresh"
+                                    /*'props': ugm_config,
+                                    'version': selectedVersion*/
+                                },
+                                success: function (msg) {
+                                    $("<span class='rc_pagetitle' style='display:block'>" + data.results[index].pagetitle +
+                                        ' (' + index + ')' + "</span>").appendTo(".refresh_cache_inner");
+                                    if (index < lines.length) {
+                                        setTimeout(
+                                            function () {
+                                               sendToServer(lines, index + 1);
+                                            }, // function to call
+                                            200 // delay in ms
+                                        );
+                                    }
+                                },
+                                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                                    console.log("Error: " + errorThrown);
+                                }
+                            });
+                        }
+                    };
+
+                    sendToServer(data.results, 0);
+
+                    if (false) {
+                    console.log("Length: " + data.results.length);
+                    $.each(data.results, function (i, item) {
                         console.log("Before Ajax" + data.results[i].pagetitle);
-                    //   console.log(data.results[i].uri);
-                       // alert(connectorUrl);
-                       $.ajax({
-                           type: 'GET',
-                           url: connectorUrl,
-                           data: {
-                               'uri': data.results[i].uri,
-                               'action' : "refresh"
-                               /*'props': ugm_config,
-                               'version': selectedVersion*/
-                           },
-                           success: function (newData) {
-                               $("<span class='rc_pagetitle' style='display:block'>" + data.results[i].pagetitle +
-                                 ' (' + i + ')' +  "</span>").appendTo(".refresh_cache_inner");
-                               console.log("Success " + data.results[i].pagetitle);
-                               /*if (data.success === true) {
-                                   updateText(button_text, data.message);
-                                   //  alert("Got success return from preparesetup");
-                                   progress = 1;
-                                   instance._setProgress(progress);
-                                   instance._stop(1);
-                               } else {
-                                   displayError(data.message, progressInterval, instance);
-                               }*/
-                              // clearInterval(progressInterval);
-                               //console.log(ugm_setup_url);
-                              /* setTimeout(function () {
-                                   window.location.replace(ugm_setup_url);
-                               }, 1500);*/
+                        //   console.log(data.results[i].uri);
+                        // alert(connectorUrl);
+                        $.ajax({
+                            type: 'GET',
+                            url: connectorUrl,
+                            data: {
+                                'uri': data.results[i].uri,
+                                'action': "refresh"
+                                /*'props': ugm_config,
+                                'version': selectedVersion*/
+                            },
+                            success: function (response) {
+                                $("<span class='rc_pagetitle' style='display:block'>" + data.results[i].pagetitle +
+                                    ' (' + i + ')' + "</span>").appendTo(".refresh_cache_inner");
+                                console.log("Success " + data.results[i].pagetitle);
+                                /*if (data.success === true) {
+                                    updateText(button_text, data.message);
+                                    //  alert("Got success return from preparesetup");
+                                    progress = 1;
+                                    instance._setProgress(progress);
+                                    instance._stop(1);
+                                } else {
+                                    displayError(data.message, progressInterval, instance);
+                                }*/
+                                // clearInterval(progressInterval);
+                                //console.log(ugm_setup_url);
+                                /* setTimeout(function () {
+                                     window.location.replace(ugm_setup_url);
+                                 }, 1500);*/
 
-                           },
-                           error: function (XMLHttpRequest, textStatus, errorThrown) {
-                               console.log("Submit Error: " + errorThrown);
-                           },
-                           dataType: 'json'
+                            },
+                            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                                console.log("Submit Error: " + errorThrown);
+                            },
+                            dataType: 'json'
 
-                       });
-                      /* $("<span class='rc_pagetitle' style='display:block'>" + data.results[i].pagetitle +
-                           "</span>").appendTo(".refresh_cache_inner");*/
+                        });
+                        /* $("<span class='rc_pagetitle' style='display:block'>" + data.results[i].pagetitle +
+                             "</span>").appendTo(".refresh_cache_inner");*/
 
                     });
-
+                }
 
                    /*if (data['errors'] !== null) {
                        data['errors'].forEach(function (err, i) {
