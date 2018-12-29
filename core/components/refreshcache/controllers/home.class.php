@@ -53,45 +53,38 @@ class refreshcacheHomeManagerController extends modExtraManagerController {
     }
     public function loadCustomCssJs() {
         $namespace = 'refreshcache';
-        $assetsUrl = $this->getComponentAssetsUrl('refreshcache');
+        $assetsUrl = $this->getComponentAssetsUrl($namespace);
         $this->addJavascript('//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js');
         $this->addJavascript($assetsUrl . 'js/refreshcache.js');
         $this->addCss($assetsUrl . 'css/refreshcache.css');
     }
 
+    /* ToDo: move to file or template; move CSS to CSS file; Add new language strings */
 
     public function process(array $scriptProperties = array()) {
         $buttonText = $this->modx->lexicon('rc_button_message');
-        $output = '<div class="container">
+        $output = '
+<div class="container">
     <h2  class="modx-page-header">RefreshCache</h2>
  
     <div class="x-panel-body shadowbox">
-        <div class="panel-desc">Refreshed Resources</div>
+        <div class="panel-desc">Refresh Resource Cache</div>
         <div class="x-panel main-wrapper">
- 
- 
-        <!-- <form action="#" id="refreshcache_form" method="post">-->
             <fieldset id="refreshcache_fieldset" style="padding: 0 30px 70px 30px;height:60px;overflow:scroll">
                 <br class="clear"/>
- 
                 <br class="clear">
- 
- 
                 <div class="refreshcache_submit">
                     <input style="padding:5px;margin-bottom:20px;" type="submit" id="refreshcache_submit" name="refreshcache_submit" value="' . $buttonText . '"/>
                 </div>
                 <div id="refreshcache_results">
                     <div id="progressBar"><div></div></div>
-                     <div class="refresh_cache_inner"></div>
-                     <div class="refresh_cache_pagetitle"></div>
+                    <div class="refresh_cache_pagetitle"></div>
                 </div>
             </fieldset>
-        <!--  </form>-->
+
         </div>
-        </div>
+    </div>
 </div>';
-
         return $output;
-
     }
 }

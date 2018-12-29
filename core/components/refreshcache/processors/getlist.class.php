@@ -46,7 +46,6 @@ class refreshcacheGetListProcessor extends modObjectGetListProcessor {
         $d = parent::getData();
         return $d;
     }
-
 }
 
 return 'refreshcacheGetListProcessor';

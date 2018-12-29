@@ -16,6 +16,7 @@ class refreshcacheRefreshProcessor extends modProcessor {
     public $defaultSortDirection = 'asc';
     public $objectType = 'modResource';
     public $namespace = 'refreshcache';
+    /* @var $client \GuzzleHttp\Client */
     public $client = null;
 
     /**
@@ -34,6 +35,12 @@ class refreshcacheRefreshProcessor extends modProcessor {
         return $nsCorePath;
     }
 
+    /**
+     * Converts all backslashes to forward slashes
+     *
+     * @param $path
+     * @return mixed
+     */
     public function normalize($path) {
         if (strpos($path, '\\') === false) {
             /* Nothing to do */
@@ -44,8 +51,6 @@ class refreshcacheRefreshProcessor extends modProcessor {
     }
 
     public function initialize() {
-        // $corePath = $this->getComponentCorePath($this->namespace);
-        // require_once $corePath . 'vendor/autoload.php';
         $this->client = new \GuzzleHttp\Client();
         parent::initialize();
         return true;
@@ -56,15 +61,13 @@ class refreshcacheRefreshProcessor extends modProcessor {
         $this->modx->log(modX::LOG_LEVEL_ERROR, 'URI: ' . $uri);
         if (!empty($uri)) {
             try {
-                $x = $this->client->head($uri);
-                // echo "\n    Refreshed: " . $pagetitle;
+                $this->client->head($uri);
             } catch (GuzzleHttp\Exception\ClientException $e) {
                 $this->modx->log(modX::LOG_LEVEL_ERROR, "\nGuzzle Exception Thrown for " . $uri . ' ' .  $e->getMessage());
             } catch (Exception $e) {
                 $this->modx->log(modX::LOG_LEVEL_ERROR, "Exception: " . $e->getMessage());
             }
         }
-
         return(json_encode((array('success' => true))));
     }
 }
