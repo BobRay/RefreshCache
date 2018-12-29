@@ -71,7 +71,7 @@ class refreshcacheHomeManagerController extends modExtraManagerController {
  
  
         <!-- <form action="#" id="refreshcache_form" method="post">-->
-            <fieldset id="refreshcache_fieldset" style="padding: 0 30px 70px 30px;">
+            <fieldset id="refreshcache_fieldset" style="padding: 0 30px 70px 30px;height:60px;overflow:scroll">
                 <br class="clear"/>
  
                 <br class="clear">
@@ -81,7 +81,9 @@ class refreshcacheHomeManagerController extends modExtraManagerController {
                     <input style="padding:5px;margin-bottom:20px;" type="submit" id="refreshcache_submit" name="refreshcache_submit" value="' . $buttonText . '"/>
                 </div>
                 <div id="refreshcache_results">
-                    <div class="refresh_cache_inner"></div>
+                    <div id="progressBar"><div></div></div>
+                     <div class="refresh_cache_inner"></div>
+                     <div class="refresh_cache_pagetitle"></div>
                 </div>
             </fieldset>
         <!--  </form>-->

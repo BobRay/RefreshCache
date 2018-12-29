@@ -15,7 +15,7 @@ class refreshcacheGetListProcessor extends modObjectGetListProcessor {
 
     public function initialize() {
         parent::initialize();
-
+        $this->setProperty('limit', 0);
         return true;
     }
 

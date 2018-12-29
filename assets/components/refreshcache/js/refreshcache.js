@@ -23,134 +23,153 @@ $(document).ready(function (event) {
         $('#nf_results').find('br').remove();
         $('#nf_results').hide();*/
 
+        $('#refreshcache_submit').hide();
 
         var connectorUrl = "http://localhost/addons/assets/mycomponents/refreshcache/assets/components/refreshcache/connectors/connector.php";
 
-
+        function progress(percent, $element) {
+            percent = (percent < 5)? 5 : percent;
+            var progressBarWidth = percent * $element.width() / 100;
+            $element.find('div').animate({width: progressBarWidth}, 500).html(percent + "%&nbsp;");
+        }
         /* One or more actions selected */
 
         /* IF send_tweet is checked, call sendTweet processor */
-        if (true) {
-            $.ajax({
-                type: "get",
-                data: {
-                    'action': 'getlist'
-                },
-                dataType: "json",
-                cache: false,
-                url: connectorUrl,
-                success: function (data) {
-                    // console.log(data);
-                    // console.log(data.results);
+        var pBar = $('#progressBar');
+        var text = $('.refresh_cache_pagetitle');
+        var textPrefix = 'Refreshing: ';
+       // progress(5, pBar);
 
-                    var sendToServer = function (lines, index) {
-                        var length = lines.length;
-                        if (index < length) {
+        $.ajax({
+            type: "get",
+            data: {
+                'action': 'getlist'
+            },
+            dataType: "json",
+            cache: false,
+            url: connectorUrl,
+            success: function (data) {
+                // console.log(data);
+                // console.log(data.results);
+
+                var sendToServer = function (lines, index) {
+                    var length = lines.length;
+                    var percent = Math.round((index/length) * 100);
+
+
+                    if (index < length) {
                         var item = lines[index];
-                            $.ajax({
-                                type: 'GET',
-                                url: connectorUrl,
-                                dataType: 'json',
-                                data: {
-                                    //'uri': data.results[i].uri,
-                                    'uri' : item.uri,
-                                    'action': "refresh"
-                                    /*'props': ugm_config,
-                                    'version': selectedVersion*/
-                                },
-                                success: function (msg) {
-                                    $("<span class='rc_pagetitle' style='display:block'>" + data.results[index].pagetitle +
-                                        ' (' + index + ')' + "</span>").appendTo(".refresh_cache_inner");
-                                    if (index < lines.length) {
-                                        setTimeout(
-                                            function () {
-                                               sendToServer(lines, index + 1);
-                                            }, // function to call
-                                            200 // delay in ms
-                                        );
-                                    }
-                                },
-                                error: function (XMLHttpRequest, textStatus, errorThrown) {
-                                    console.log("Error: " + errorThrown);
-                                }
-                            });
-                        }
-                    };
-
-                    sendToServer(data.results, 0);
-
-                    if (false) {
-                    console.log("Length: " + data.results.length);
-                    $.each(data.results, function (i, item) {
-                        console.log("Before Ajax" + data.results[i].pagetitle);
-                        //   console.log(data.results[i].uri);
-                        // alert(connectorUrl);
                         $.ajax({
                             type: 'GET',
                             url: connectorUrl,
+                            dataType: 'json',
                             data: {
-                                'uri': data.results[i].uri,
+                                //'uri': data.results[i].uri,
+                                'uri' : item.uri,
                                 'action': "refresh"
                                 /*'props': ugm_config,
                                 'version': selectedVersion*/
                             },
-                            success: function (response) {
-                                $("<span class='rc_pagetitle' style='display:block'>" + data.results[i].pagetitle +
-                                    ' (' + i + ')' + "</span>").appendTo(".refresh_cache_inner");
-                                console.log("Success " + data.results[i].pagetitle);
-                                /*if (data.success === true) {
-                                    updateText(button_text, data.message);
-                                    //  alert("Got success return from preparesetup");
-                                    progress = 1;
-                                    instance._setProgress(progress);
-                                    instance._stop(1);
-                                } else {
-                                    displayError(data.message, progressInterval, instance);
-                                }*/
-                                // clearInterval(progressInterval);
-                                //console.log(ugm_setup_url);
-                                /* setTimeout(function () {
-                                     window.location.replace(ugm_setup_url);
-                                 }, 1500);*/
+                            success: function (msg) {
+                                // console.log(percent + '%');
+                                text.html ('<span class=pbar_text>' + textPrefix + data.results[index].pagetitle + '</span>');
+                                /*$("<span class='rc_pagetitle' style='display:block'>(" + index + ') ' + data.results[index].pagetitle +
+                                     "</span>" + ' ' + percent + '%').appendTo(".refresh_cache_inner");*/
 
+                                progress(percent, pBar);
+                                if (index < lines.length) {
+                                    setTimeout(
+                                        function () {
+                                           sendToServer(lines, index + 1);
+                                        }, // function to call
+                                        200 // delay in ms
+                                    );
+                                }
                             },
                             error: function (XMLHttpRequest, textStatus, errorThrown) {
-                                console.log("Submit Error: " + errorThrown);
-                            },
-                            dataType: 'json'
-
+                                console.log("Error: " + errorThrown);
+                            }
                         });
-                        /* $("<span class='rc_pagetitle' style='display:block'>" + data.results[i].pagetitle +
-                             "</span>").appendTo(".refresh_cache_inner");*/
+                    } else {
+                        progress(100, pBar);
+                    }
+                };
+
+                sendToServer(data.results, 0);
+
+
+                if (false) {
+                console.log("Length: " + data.results.length);
+                $.each(data.results, function (i, item) {
+                    console.log("Before Ajax" + data.results[i].pagetitle);
+                    //   console.log(data.results[i].uri);
+                    // alert(connectorUrl);
+                    $.ajax({
+                        type: 'GET',
+                        url: connectorUrl,
+                        data: {
+                            'uri': data.results[i].uri,
+                            'action': "refresh"
+                            /*'props': ugm_config,
+                            'version': selectedVersion*/
+                        },
+                        success: function (response) {
+                            $("<span class='rc_pagetitle' style='display:block'>" + data.results[i].pagetitle +
+                                ' (' + i + ')' + "</span>").appendTo(".refresh_cache_inner");
+                            console.log("Success " + data.results[i].pagetitle);
+                            /*if (data.success === true) {
+                                updateText(button_text, data.message);
+                                //  alert("Got success return from preparesetup");
+                                progress = 1;
+                                instance._setProgress(progress);
+                                instance._stop(1);
+                            } else {
+                                displayError(data.message, progressInterval, instance);
+                            }*/
+                            // clearInterval(progressInterval);
+                            //console.log(ugm_setup_url);
+                            /* setTimeout(function () {
+                                 window.location.replace(ugm_setup_url);
+                             }, 1500);*/
+
+                        },
+                        error: function (XMLHttpRequest, textStatus, errorThrown) {
+                            console.log("Submit Error: " + errorThrown);
+                        },
+                        dataType: 'json'
 
                     });
-                }
+                    /* $("<span class='rc_pagetitle' style='display:block'>" + data.results[i].pagetitle +
+                         "</span>").appendTo(".refresh_cache_inner");*/
 
-                   /*if (data['errors'] !== null) {
-                       data['errors'].forEach(function (err, i) {
-                           console.log("Error: " + err);
-                           $('<span class="nf_error">' + err + '</span><br />').appendTo("#nf_results")
+                });
+            }
 
-
-                       });
-                   }
-                   if (data['successMessages'] !== null) {
-                       data['successMessages'].forEach(function (msg, i) {
-                           console.log("Success: " + msg);
-                           $('<span class="nf_success">' + msg + '</span><br />').appendTo("#nf_results")
-                       });
-                   }
-                   $("#nf_results").slideDown("slow");
-                    var $target = $('html,body');
-                    $target.animate({scrollTop: $target.height()}, 1000);*/
-                },
-                error: function (XMLHttpRequest, textStatus, errorThrown) {
-                   console.log("Submit Error: " + errorThrown);
-                }
+               /*if (data['errors'] !== null) {
+                   data['errors'].forEach(function (err, i) {
+                       console.log("Error: " + err);
+                       $('<span class="nf_error">' + err + '</span><br />').appendTo("#nf_results")
 
 
-            });
-        }
+                   });
+               }
+               if (data['successMessages'] !== null) {
+                   data['successMessages'].forEach(function (msg, i) {
+                       console.log("Success: " + msg);
+                       $('<span class="nf_success">' + msg + '</span><br />').appendTo("#nf_results")
+                   });
+               }
+               $("#nf_results").slideDown("slow");
+                var $target = $('html,body');
+                $target.animate({scrollTop: $target.height()}, 1000);*/
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+               console.log("Submit Error: " + errorThrown);
+            }
+
+
+        });
+
 
         /* Send single Email */
         if ($("#nf_send_test_email").prop('checked') == true) {
