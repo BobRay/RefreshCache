@@ -12,6 +12,13 @@ if (! defined('MODX_CORE_PATH')) {
 }
 
 class refreshcacheHomeManagerController extends modExtraManagerController {
+    public $componentCorePath = '';
+    public $componentAssetsPath = '';
+    public $componentAssetsUrl = '';
+    public $namespace = 'refreshcache';
+    /** @var $namespaceObj modNamespace */
+    public $namespaceObj = null;
+
     public function getPageTitle() {
         return 'RefreshCache';
     }
@@ -22,6 +29,11 @@ class refreshcacheHomeManagerController extends modExtraManagerController {
 
     public function initialize() {
         $this->modx->lexicon->load('refreshcache:default');
+
+        $this->namespaceObj = $this->modx->getObject('modNamespace', array('name' => $this->namespace));
+        $this->componentCorePath = $this->getComponentCorePath();
+        $this->componentAssetsPath = $this->getComponentAssetsPath();
+        $this->componentAssetsUrl = $this->getComponentAssetsUrl();
     }
 
     public function normalize($path) {
@@ -33,15 +45,31 @@ class refreshcacheHomeManagerController extends modExtraManagerController {
         }
     }
 
+    public function getComponentCorePath() {
+        $nsCorePath = $this->namespaceObj->get('path');
+        $nsCorePath = empty($nsCorePath)
+            ? '{core_path}components/refreshcache/'
+            : $nsCorePath;
+        return $this->normalize(str_replace('{core_path}', MODX_ASSETS_PATH, $nsCorePath));
+    }
+
+    public function getComponentAssetsPath() {
+        $nsAssetsPath = $this->namespaceObj->get('assets_path');
+        $nsAssetsPath = empty($nsAssetsPath)
+            ? '{assets_path}components/refreshcache/'
+            : $nsAssetsPath;
+        return $this->normalize(str_replace('{assets_path}', MODX_ASSETS_PATH, $nsAssetsPath));
+    }
+
     /**
      * Gets Component Assets URL based on assets_path
      * field of namespace
      * @param $namespace
      * @return string
      */
-    public function getComponentAssetsUrl($namespace) {
-        $obj = $this->modx->getObject('modNamespace', array('name' => $namespace));
-        $nsAssetsPath = $obj->get('assets_path');
+    public function getComponentAssetsUrl() {
+
+        $nsAssetsPath = $this->componentAssetsPath;
         $nsAssetsPath = empty($nsAssetsPath)
             ?  '{assets_path}components/refreshcache/'
             : $nsAssetsPath;
@@ -51,17 +79,18 @@ class refreshcacheHomeManagerController extends modExtraManagerController {
         $short = str_replace($base, '', $this->normalize(MODX_SITE_URL));
         return $short . $nsAssetsPath;
     }
+
     public function loadCustomCssJs() {
         $namespace = 'refreshcache';
-        $assetsUrl = $this->getComponentAssetsUrl($namespace);
         $this->addJavascript('//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js');
-        $this->addJavascript($assetsUrl . 'js/refreshcache.js');
-        $this->addCss($assetsUrl . 'css/refreshcache.css');
+        $this->addJavascript($this->componentAssetsUrl . 'js/refreshcache.js');
+        $this->addCss($this->componentAssetsUrl . 'css/refreshcache.css');
     }
 
     /* ToDo: move to file or template; move CSS to CSS file; Add new language strings */
 
     public function process(array $scriptProperties = array()) {
+        // return $this->getTemplate();
         $buttonText = $this->modx->lexicon('rc_button_message');
         $output = '
 <div class="container">
