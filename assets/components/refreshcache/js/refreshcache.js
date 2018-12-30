@@ -20,12 +20,13 @@ function progress(percent, $element) {
 
 $(document).ready(function (event) {
     $('#refreshcache_submit').click(function () {
-        $('#refreshcache_submit').attr("disabled", "disabled");
-
         var connectorUrl = "http://localhost/addons/assets/mycomponents/refreshcache/assets/components/refreshcache/connectors/connector.php";
         var pBar = $('#progressBar');
-        var text = $('.refresh_cache_pagetitle');
-        var textPrefix = 'Refreshing: ';
+        var text = $('.pbar_text');
+        var pageTitleDiv = $('.refresh_cache_pagetitle');
+
+        pageTitleDiv.css('visibility', 'visible');
+        $('#refreshcache_submit').attr("disabled", "disabled");
 
         $.ajax({
             type: "get",
@@ -54,7 +55,7 @@ $(document).ready(function (event) {
                             },
                             /* Update progress bar and text */
                             success: function (msg) {
-                                text.html ('<span class=pbar_text>' + textPrefix + data.results[index].pagetitle + '</span>');
+                                text.text(data.results[index].pagetitle);
                                 progress(percent, pBar);
                                 if (index < lines.length) {
                                     sendToServer(lines, index + 1);
