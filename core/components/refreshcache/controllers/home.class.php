@@ -50,7 +50,8 @@ class refreshcacheHomeManagerController extends modExtraManagerController {
         $nsCorePath = empty($nsCorePath)
             ? '{core_path}components/refreshcache/'
             : $nsCorePath;
-        return $this->normalize(str_replace('{core_path}', MODX_ASSETS_PATH, $nsCorePath));
+        $nsCorePath = str_replace('{assets_path}', MODX_ASSETS_PATH, $nsCorePath);
+        return $this->normalize(str_replace('{core_path}', MODX_CORE_PATH, $nsCorePath));
     }
 
     public function getComponentAssetsPath() {
@@ -87,34 +88,36 @@ class refreshcacheHomeManagerController extends modExtraManagerController {
         $this->addCss($this->componentAssetsUrl . 'css/refreshcache.css');
     }
 
-    /* ToDo: move to file or template; move CSS to CSS file; Add new language strings */
+    public function getTemplate() {
+        /** @var $chunk modChunk */
+
+       //  return "Core Path: " . $this->componentCorePath;
+        $managerTheme = $this->modx->getOption('manager_theme', null, 'default', true);
+        $fields = array(
+            'rc_refreshing' => $this->modx->lexicon('rc_refreshing'),
+            'rc_button_message' => $this->modx->lexicon('rc_button_message'),
+            'rc_refresh_resource_cache' => $this->modx->lexicon('rc_refresh_resource_cache'),
+            'RefreshCache' => $this->modx->lexicon('RefreshCache'),
+        );
+
+        $file = $this->componentCorePath . "templates/{$managerTheme}/refreshcache.tpl.html";
+
+        if (! file_exists($file)) {
+            $file = $this->componentCorePath . "templates/default/refreshcache.tpl.html";
+        }
+
+        if (! file_exists($file)) {
+            return "No File: " . $file . "<br>";
+
+        }
+        // return file_get_contents($file);
+        $chunk = $this->modx->newObject('modChunk');
+        $chunk->setCacheable(false);
+        $chunk->setContent(file_get_contents($file));
+        return $chunk->process($fields);
+    }
 
     public function process(array $scriptProperties = array()) {
-        // return $this->getTemplate();
-        $buttonText = $this->modx->lexicon('rc_button_message');
-        $output = '
-<div class="container">
-    <h2  class="modx-page-header">RefreshCache</h2>
- 
-    <div class="x-panel-body shadowbox">
-        <div class="panel-desc">Refresh Resource Cache</div>
-        <div class="x-panel main-wrapper">
-            <fieldset id="refreshcache_fieldset">
-                <br class="clear"/>
-                <br class="clear">
-                <div class="refreshcache_submit">
-                    <input class="x-btn x-btn-text" type="submit" id="refreshcache_submit" 
-                        name="refreshcache_submit" value="' . $buttonText . '"/>
-                </div>
-                <div id="refreshcache_results">
-                    <div id="progressBar"><div></div></div>
-                    <div class="refresh_cache_pagetitle"></div>
-                </div>
-            </fieldset>
-
-        </div>
-    </div>
-</div>';
-        return $output;
+        return $this->getTemplate();
     }
 }
