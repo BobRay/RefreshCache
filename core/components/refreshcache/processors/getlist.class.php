@@ -22,10 +22,12 @@ class refreshcacheGetListProcessor extends modObjectGetListProcessor {
     public function prepareQueryBeforeCount(xPDOQuery $c) {
         $c->select('id,pagetitle,uri');
         $fields = array(
+            'cacheable:=' => '1',
             'deleted:!=' => '1',
             'class_key:!=' => 'modWebLink',
             'published:!=' => '0',
             'AND:class_key:!=' => 'modSymLink',
+
         );
         $c->where($fields);
 
