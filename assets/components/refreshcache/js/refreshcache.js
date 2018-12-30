@@ -13,6 +13,7 @@ function progress(percent, $element) {
     if (percent >= 100) {
         setTimeout(function () {
             $('#refreshcache_submit').removeAttr("disabled");
+            $('.refresh_cache_pagetitle').fadeOut('slow');
         }, 1000);
 
     }
@@ -25,7 +26,8 @@ $(document).ready(function (event) {
         var text = $('.pbar_text');
         var pageTitleDiv = $('.refresh_cache_pagetitle');
 
-        pageTitleDiv.css('visibility', 'visible');
+       //  pageTitleDiv.css('visibility', 'visible');
+        pageTitleDiv.fadeIn('slow');
         $('#refreshcache_submit').attr("disabled", "disabled");
 
         $.ajax({
