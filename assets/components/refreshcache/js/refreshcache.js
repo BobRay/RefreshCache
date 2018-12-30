@@ -9,12 +9,18 @@
 function progress(percent, $element) {
     percent = (percent < 5) ? 5 : percent;
     var progressBarWidth = percent * $element.width() / 100;
-    $element.find('div').animate({width: progressBarWidth}, 500).html(percent + "%&nbsp;");
+    $element.find('div').animate({width: progressBarWidth}, 500, 'linear').html( "&nbsp;"+ percent + "%");
+    if (percent >= 100) {
+        setTimeout(function () {
+            $('#refreshcache_submit').removeAttr("disabled");
+        }, 1000);
+
+    }
 }
 
 $(document).ready(function (event) {
     $('#refreshcache_submit').click(function () {
-        $('#refreshcache_submit').hide();
+        $('#refreshcache_submit').attr("disabled", "disabled");
 
         var connectorUrl = "http://localhost/addons/assets/mycomponents/refreshcache/assets/components/refreshcache/connectors/connector.php";
         var pBar = $('#progressBar');

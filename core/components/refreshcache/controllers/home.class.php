@@ -70,11 +70,12 @@ class refreshcacheHomeManagerController extends modExtraManagerController {
     <div class="x-panel-body shadowbox">
         <div class="panel-desc">Refresh Resource Cache</div>
         <div class="x-panel main-wrapper">
-            <fieldset id="refreshcache_fieldset" style="padding: 0 30px 70px 30px;height:60px;overflow:scroll">
+            <fieldset id="refreshcache_fieldset">
                 <br class="clear"/>
                 <br class="clear">
                 <div class="refreshcache_submit">
-                    <input style="padding:5px;margin-bottom:20px;" type="submit" id="refreshcache_submit" name="refreshcache_submit" value="' . $buttonText . '"/>
+                    <input class="x-btn x-btn-text" type="submit" id="refreshcache_submit" 
+                        name="refreshcache_submit" value="' . $buttonText . '"/>
                 </div>
                 <div id="refreshcache_results">
                     <div id="progressBar"><div></div></div>

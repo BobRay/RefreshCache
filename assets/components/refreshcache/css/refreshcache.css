@@ -1,111 +1,48 @@
-form {
-    margin: auto;
+
+#refreshcache_submit {
+    height:40px;
+    width:auto;
+    padding: 5px 15px;
+    margin-bottom: 20px;
 }
 
-.meter-wrap {
-    margin: 0 auto 1em auto;
-    position: relative;
+#refreshcache_submit[disabled] {
+    opacity: 0.4;
+    color:#888;
 }
 
-.meter-wrap, .meter-value, .meter-text {
-    /* The width and height of your image */
-    width: 155px;
-    height: 30px;
-
-}
-
-.meter-wrap, .meter-value {
-    background-color: #67911d;
+#refreshcache_submit[disabled]:hover {
+    opacity: 0.4;
+    background-color:#fff;
+    box-shadow: 0 0 0 1px #ddd;
 
 }
 
-.meter-value {
-    background-color: #67911d;
+#refreshcache_fieldset {
+    padding: 0 30px 70px 30px;
+    height: 106px;
+    width:40%;
+    overflow:hidden;
+    border: 1px solid #aaa;
 }
 
-.meter-text {
-    font-family: Arial, sans-serif;
-    font-size: 20px;
-    position: absolute;
-    padding-top: 2px;
-    color: #FAFAFA;
-    text-align: center;
-    width: 50%;
-}
-
-.output-text {
-    font-family: Arial, sans-serif;
-    font-size: 20px;
-    text-align: center;
-    color: #0A0A0A;
-}
-
-input#apisubmit {
-    position: absolute;
-    top: 10%;
-    left: 42%;
-    /* margin-top: 80px; */
-    padding: 10px;
+.refresh_cache_pagetitle {
+    margin-top:16px;
     font-size: 16px;
-    border: 1px solid #ccc;
-    background-color: #eaeaea;
-    font-weight: bold;
-    -moz-border-radius: 5px;
-    -webkit-border-radius: 5px;
-    border-radius: 5px;
-    box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.86);
-    -moz-box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.86);
-    -webkit-box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.86);
-    z-index: 10;
-
-}
-
-input#apisubmit:hover {
-    cursor: pointer;
-    background-color: #67911d;
-}
-
-div#apinstall {
-    position: absolute;
-    top: 20%;
-    left: 50%;
-    width: 30em;
-    height: 130px;
-    margin-top: 20px; /*set to a negative number 1/2 of your height*/
-    margin-left: -15em; /*set to a negative number 1/2 of your width*/
-    border: 1px solid #ccc;
-
-    background-color: white;
-
-    padding-top: 35px;
-    padding-bottom: 7px;
-
-    -moz-border-radius: 15px;
-    -webkit-border-radius: 15px;
-    border-radius: 15px;
-    box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.86);
-    -moz-box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.86);
-    -webkit-box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.86);
-    z-index: 999;
-}
-
-div#apinstall p {
-    line-height: 1.5;
-
 }
 
 #progressBar {
-    width: 400px;
+    width: 399px;
     height: 22px;
-    border: 1px solid #111;
+    border: 1px solid #338EC1;
     background-color: #eaeaea;
 }
 
-#progressBar div {
+ #progressBar div {
     height: 100%;
     color: #fff;
-    text-align: right;
-    line-height: 22px; /* same as #progressBar height if we want text middle aligned */
+    text-align: left;
+    line-height: 23px;
     width: 0;
-    background-color: #0099ff;
+    background: linear-gradient(#69a6cf, #338EC1);
 }
