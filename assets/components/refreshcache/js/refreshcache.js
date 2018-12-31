@@ -15,7 +15,7 @@ function progress(percent, $element, index) {
     if (percent >= 100) {
         setTimeout(function () {
             pageTitleDiv.fadeOut('slow',function () {
-                $(this).text('Refreshed ' + index + ' Resources')
+                $(this).text(_('rc_refreshed') + ' ' + index + ' ' + _('rc_resources'))
             }).fadeIn('slow');
         }, 1000);
 
