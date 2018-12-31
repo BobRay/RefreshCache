@@ -6,14 +6,17 @@
 */
 
 /* Function to update progress bar width and percent */
-function progress(percent, $element) {
+function progress(percent, $element, index) {
+    var pageTitleDiv = $('#refresh_cache_pagetitle');
     percent = (percent < 5) ? 5 : percent;
     var progressBarWidth = percent * $element.width() / 100;
-    $element.find('div').animate({width: progressBarWidth}, 500, 'linear').html( "&nbsp;"+ percent + "%");
+    $element.find('div').animate({width: progressBarWidth}, 300, 'linear').html( "&nbsp;"+ percent + "%");
+
     if (percent >= 100) {
         setTimeout(function () {
-            $('#refreshcache_submit').removeAttr("disabled");
-            $('.refresh_cache_pagetitle').fadeOut('slow');
+            pageTitleDiv.fadeOut('slow',function () {
+                $(this).text('Refreshed ' + index + ' Resources')
+            }).fadeIn('slow');
         }, 1000);
 
     }
@@ -26,9 +29,10 @@ $(document).ready(function (event) {
         var text = $('.pbar_text');
         var pageTitleDiv = $('.refresh_cache_pagetitle');
 
-       //  pageTitleDiv.css('visibility', 'visible');
-        pageTitleDiv.fadeIn('slow');
-        $('#refreshcache_submit').attr("disabled", "disabled");
+        $("#refreshcache_submit").fadeOut("slow", function () {
+            $('#refreshcache_results').fadeIn('slow');
+            $('#refresh_cache_pagetitle').fadeIn('slow');
+        });
 
         $.ajax({
             type: "get",
@@ -58,7 +62,7 @@ $(document).ready(function (event) {
                             /* Update progress bar and text */
                             success: function (msg) {
                                 text.text(data.results[index].pagetitle);
-                                progress(percent, pBar);
+                                progress(percent, pBar, index);
                                 if (index < lines.length) {
                                     sendToServer(lines, index + 1);
                                 }
@@ -68,7 +72,7 @@ $(document).ready(function (event) {
                             }
                         });
                     } else {
-                        progress(100, pBar);
+                        progress(100, pBar, index);
                     }
                 };
 

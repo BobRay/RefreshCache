@@ -4,8 +4,14 @@
     width:auto;
     padding: 5px 15px;
     margin-bottom: 20px;
+    -webkit-box-shadow: 0 0 5px #fff;
+    box-shadow: 1px 1px 2px 1px #555554;
+    background: linear-gradient(#eee, #ccc);
 }
 
+#refreshcache_submit:hover {
+    background: linear-gradient(#4A92C1, #649BC1)
+ }
 #refreshcache_submit[disabled] {
     opacity: 0.4;
     color:#888;
@@ -20,13 +26,13 @@
 
 #refreshcache_fieldset {
     padding: 0 30px 70px 30px;
-    height: 106px;
+    height: 54px;
     width:40%;
     overflow:hidden;
     border: 1px solid #aaa;
 }
 
-.refresh_cache_pagetitle {
+#refresh_cache_pagetitle {
     margin-top:16px;
     font-size: 16px;
 }
@@ -36,6 +42,7 @@
     height: 22px;
     border: 1px solid #338EC1;
     background-color: #eaeaea;
+    box-shadow: 1px 1px 1px 1px #ddd;
 }
 
  #progressBar div {
