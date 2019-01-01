@@ -35,6 +35,58 @@ if ($object->xpdo) {
            if ($action) {
                $action->remove();
            }
+
+           $snippet = $modx->getObject('modSnippet', array('name' => 'RefreshCache'));
+           if ($snippet) {
+               $snippet->remove();
+           }
+           $corePath = MODX_CORE_PATH . 'components/refreshcache';
+           $assetsPath = MODX_ASSETS_PATH . 'components/refreshcache';
+           $files = array(
+               $assetsPath . 'css/meter-outline.png',
+               $assetsPath . 'bar.css',
+               $assetsPath . 'jquery.js',
+               $assetsPath . 'meter-outline.png',
+               $assetsPath . 'refreshcache.log',
+               $assetsPath . 'refreshcache.png',
+               $corePath . 'elements/snippets/refreshcache.snippet.php',
+               $corePath . 'model/refreshcache/install.class.php',
+               $corePath . 'class.install.php',
+               $corePath . 'refreshcache.snippet.php',
+               $corePath . 'index.php',
+           );
+
+           foreach($files as $file) {
+               if (file_exists($file)) {
+                   unlink($file);
+               }
+           }
+
+           $dirs = array(
+               $corePath . 'elements/snippets',
+               $corePath . 'elements',
+               $corePath . 'model/refreshcache',
+               $corePath . 'model',
+           );
+
+           foreach($dirs as $dir) {
+               if (file_exists($dir)) {
+                   rmdir($dir);
+               }
+           }
+
+           $settings = array(
+               'refreshcache_curl_delay',
+               'refreshcache_ajax_delay',
+           );
+
+           foreach ($settings as $key) {
+               $setting = $modx->getObject('modSystemSetting', array( 'key' => $key));
+               if ($setting) {
+                   $setting->remove();
+               }
+           }
+
            break;
 
         case xPDOTransport::ACTION_UNINSTALL:
