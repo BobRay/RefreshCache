@@ -15,7 +15,7 @@ $components = array(
     /* These are used to define the package and set values for placeholders */
     'packageName' => 'RefreshCache',  /* No spaces, no dashes */
     'packageNameLower' => $packageNameLower,
-    'packageDescription' => 'RefreshCache project for MyComponent extra',
+    'packageDescription' => 'RefreshCache project',
     'version' => '1.2.0',
     'release' => 'pl',
     'author' => 'Bob Ray',
@@ -56,23 +56,14 @@ $components = array(
      * their namespace to the lowercase package name of your extra */
 
     'newSystemSettings' => array(
-        'refreshcache_curl_delay' => array( // key
-            'key' => 'refreshcache_curl_delay',
-            'name' => 'RefreshCache cUrl Delay',
-            'description' => 'Delay between cURL requests (in seconds); default: 0',
+        'refreshcache_request_delay' => array( // key
+            'key' => 'refreshcache_request_delay',
+            'name' => 'RefreshCache Request delay',
+            'description' => 'Delay between page requests (in milliseconds -- 1000 = 1 second); default: 0',
             'namespace' => 'refreshcache',
             'xtype' => 'textfield',
-            'value' => '0',
-            'area' => '',
-        ),
-        'refreshcache_ajax_delay' => array( // key
-            'key' => 'refreshcache_ajax_delay',
-            'name' => 'RefreshCache Ajax delay',
-            'description' => 'Delay between JS polling checks (in milliseconds); default: 900',
-            'namespace' => 'refreshcache',
-            'xtype' => 'textfield',
-            'value' => 900,
-            'area' => '',
+            'value' => 0,
+            'area' => 'RefreshCache',
         ),
     ),
 
@@ -144,7 +135,7 @@ $components = array(
             'params' => '',
             'handler' => '',
             'permissions' => '',
-            'action' => 'index',
+            'action' => 'home',
             'namespace' => 'refreshcache',
         ),
     ),
@@ -170,11 +161,7 @@ $components = array(
     'elements' => array(
 
         'snippets' => array(
-            'RefreshCache' => array(
-                'category' => 'RefreshCache',
-                'description' => 'RefreshCache snippet',
-                'static' => false,
-            ),
+
         ),
         'chunks' => array(
         ),
@@ -212,7 +199,7 @@ $components = array(
         'css' => true,
 
         /* If true, a default (empty) JS file will be created */
-        'js' => false,
+        'js' => true,
 
         'images' => false,
         'audio' => false,
@@ -311,7 +298,7 @@ $components = array(
      *
      * Set to array() if there are no classes. */
     'classes' => array(
-        'Installer' => 'refreshcache:install',
+
     ),
 
     /* ************************************
@@ -343,31 +330,25 @@ $components = array(
        Built-in processor classes include getlist, create, update, duplicate,
        import, and export. */
 
-/*    'processors' => array(
-        'mgr/snippet:getlist',
-        'mgr/snippet:changecategory',
-        'mgr/snippet:remove',
+    'processors' => array(
+        ':getlist',
+        ':refresh',
 
-        'mgr/chunk:getlist',
-        'mgr/chunk:changecategory',
-        'mgr/chunk:remove',
-    ),*/
+    ),
 
     /* These will automatically go to core/components/yourcomponent/controllers[/directory]/filename
        Format: directory:filename */
 
-/*    'controllers' => array(
-        ':index.php',
-        'mgr:header.php',
-        'mgr:home.php',
-    ),*/
+    'controllers' => array(
+        ':home.class.php',
+    ),
 
     /* These will automatically go in assets/components/yourcomponent/ */
 
-/*    'connectors' => array(
+    'connectors' => array(
         'connector.php'
 
-    ),*/
+    ),
     /* These will automatically go to assets/components/yourcomponent/js[/directory]/filename
        Format: directory:filename */
 
@@ -396,8 +377,6 @@ $components = array(
      * of desired resources
     */
     'process' => array(
-        'snippets',
-        'chunks',
         'systemSettings',
         'menus'
     ),
