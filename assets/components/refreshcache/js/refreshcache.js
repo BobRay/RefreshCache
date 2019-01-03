@@ -30,7 +30,7 @@ function progress(percent, $element, index) {
 $(document).ready(function (event) {
     $('#refreshcache_submit').click(function () {
 
-        var connectorUrl = "http://localhost/addons/assets/mycomponents/refreshcache/assets/components/refreshcache/connectors/connector.php";
+        var connectorUrl = RefreshCache.config.connectorUrl;
         var pBar = $('#progressBar');
         var text = $('.pbar_text');
         var pageTitleDiv = $('.refresh_cache_pagetitle');

@@ -80,6 +80,14 @@ class refreshcacheHomeManagerController extends modExtraManagerController {
     }
 
     public function loadCustomCssJs() {
+        $config = array(
+            'connectorUrl' => $this->componentAssetsUrl . 'connectors/connector.php',
+        );
+        $this->addHtml('<script>
+            $( document ).ready(function() {
+                RefreshCache.config = ' . $this->modx->toJSON($config) . ';
+            });
+        </script>');
         $namespace = 'refreshcache';
         $this->addJavascript('//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js');
         $this->addLastJavascript($this->componentAssetsUrl . 'js/refreshcache.js');
