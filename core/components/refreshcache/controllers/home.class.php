@@ -46,20 +46,19 @@ class refreshcacheHomeManagerController extends modExtraManagerController {
     }
 
     public function getComponentCorePath() {
-        $nsCorePath = $this->namespaceObj->get('path');
+        $nsCorePath = $this->namespaceObj->getCorePath();
         $nsCorePath = empty($nsCorePath)
-            ? '{core_path}components/refreshcache/'
+            ? MODX_CORE_PATH . 'components/' . $this->namespace . '/'
             : $nsCorePath;
-        $nsCorePath = str_replace('{assets_path}', MODX_ASSETS_PATH, $nsCorePath);
-        return $this->normalize(str_replace('{core_path}', MODX_CORE_PATH, $nsCorePath));
+        return $this->normalize($nsCorePath);
     }
 
     public function getComponentAssetsPath() {
-        $nsAssetsPath = $this->namespaceObj->get('assets_path');
+        $nsAssetsPath = $this->namespaceObj->getAssetsPath();
         $nsAssetsPath = empty($nsAssetsPath)
-            ? '{assets_path}components/refreshcache/'
+            ? MODX_ASSETS_PATH . 'components/refreshcache/'
             : $nsAssetsPath;
-        return $this->normalize(str_replace('{assets_path}', MODX_ASSETS_PATH, $nsAssetsPath));
+        return $this->normalize($nsAssetsPath);
     }
 
     /**
@@ -72,9 +71,8 @@ class refreshcacheHomeManagerController extends modExtraManagerController {
 
         $nsAssetsPath = $this->componentAssetsPath;
         $nsAssetsPath = empty($nsAssetsPath)
-            ?  '{assets_path}components/refreshcache/'
+            ? MODX_ASSETS_PATH . '/components/refreshcache'
             : $nsAssetsPath;
-        $nsAssetsPath = $this->normalize(str_replace('{assets_path}', MODX_ASSETS_PATH, $nsAssetsPath));
         $nsAssetsPath = str_replace($this->normalize(dirname(MODX_BASE_PATH)), '', $nsAssetsPath);
         $base = $this->normalize(dirname(MODX_ASSETS_URL)) . '/';
         $short = str_replace($base, '', $this->normalize(MODX_SITE_URL));
@@ -84,14 +82,13 @@ class refreshcacheHomeManagerController extends modExtraManagerController {
     public function loadCustomCssJs() {
         $namespace = 'refreshcache';
         $this->addJavascript('//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js');
-        $this->addJavascript($this->componentAssetsUrl . 'js/refreshcache.js');
+        $this->addLastJavascript($this->componentAssetsUrl . 'js/refreshcache.js');
         $this->addCss($this->componentAssetsUrl . 'css/refreshcache.css');
     }
 
     public function getTemplate() {
         /** @var $chunk modChunk */
 
-       //  return "Core Path: " . $this->componentCorePath;
         $managerTheme = $this->modx->getOption('manager_theme', null, 'default', true);
         $fields = array(
             'rc_refreshing' => $this->modx->lexicon('rc_refreshing'),
