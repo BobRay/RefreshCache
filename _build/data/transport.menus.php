@@ -27,7 +27,7 @@ $menus[1] = $modx->newObject('modMenu');
 $menus[1]->fromArray( array (
   'text' => 'RefreshCache',
   'parent' => 'components',
-  'action' => 'index',
+  'action' => 'home',
   'description' => 'Refresh the MODX cache',
   'icon' => '',
   'menuindex' => 0,
