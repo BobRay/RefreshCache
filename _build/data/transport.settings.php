@@ -27,22 +27,12 @@ $systemSettings = array();
 
 $systemSettings[1] = $modx->newObject('modSystemSetting');
 $systemSettings[1]->fromArray(array (
-  'key' => 'refreshcache_ajax_delay',
-  'value' => 900,
+  'key' => 'refreshcache_request_delay',
+  'value' => 0,
   'xtype' => 'textfield',
   'namespace' => 'refreshcache',
-  'area' => '',
-  'name' => 'RefreshCache Ajax delay',
-  'description' => 'Delay between JS polling checks (in milliseconds); default: 900',
-), '', true, true);
-$systemSettings[2] = $modx->newObject('modSystemSetting');
-$systemSettings[2]->fromArray(array (
-  'key' => 'refreshcache_curl_delay',
-  'value' => '0',
-  'xtype' => 'textfield',
-  'namespace' => 'refreshcache',
-  'area' => '',
-  'name' => 'RefreshCache cUrl Delay',
-  'description' => 'Delay between cURL requests (in seconds); default: 0',
+  'area' => 'RefreshCache',
+  'name' => 'RefreshCache Request delay',
+  'description' => 'Delay between page requests (in milliseconds -- 1000 = 1 second); default: 0',
 ), '', true, true);
 return $systemSettings;
