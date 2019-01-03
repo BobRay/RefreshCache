@@ -24,10 +24,13 @@ function progress(percent, $element, index) {
 
 $(document).ready(function (event) {
     $('#refreshcache_submit').click(function () {
+
         var connectorUrl = "http://localhost/addons/assets/mycomponents/refreshcache/assets/components/refreshcache/connectors/connector.php";
         var pBar = $('#progressBar');
         var text = $('.pbar_text');
         var pageTitleDiv = $('.refresh_cache_pagetitle');
+
+        text.text('Getting Data');
 
         $("#refreshcache_submit").fadeOut("slow", function () {
             $('#refreshcache_results').fadeIn('slow');
@@ -43,13 +46,17 @@ $(document).ready(function (event) {
             cache: false,
             url: connectorUrl,
             success: function (data) {
+                var lines = data.results;
+                var length = lines.length;
+                var percent = 0;
+                var index = 0;
                 /* Recursive function to make Ajax calls */
-                var sendToServer = function (lines, index) {
-                    var length = lines.length;
-                    var percent = Math.round((index/length) * 100);
+                var sendToServer = function (index) {
+                    percent = Math.round((index/length) * 100);
 
                     /* Recurse if not at end of data */
                     if (index < length) {
+
                         var item = lines[index];
                         $.ajax({
                             type: 'GET',
@@ -61,10 +68,10 @@ $(document).ready(function (event) {
                             },
                             /* Update progress bar and text */
                             success: function (msg) {
-                                text.text(data.results[index].pagetitle);
+                                text.text(lines[index].pagetitle);
                                 progress(percent, pBar, index);
-                                if (index < lines.length) {
-                                    sendToServer(lines, index + 1);
+                                if (index < lines.length +1 ) {
+                                        sendToServer(index + 1);
                                 }
                             },
                             error: function (XMLHttpRequest, textStatus, errorThrown) {
@@ -75,14 +82,12 @@ $(document).ready(function (event) {
                         progress(100, pBar, index);
                     }
                 };
-
-                sendToServer(data.results, 0);
+                sendToServer(0);
             },
             error: function (XMLHttpRequest, textStatus, errorThrown) {
                console.log("Outer Ajax Error: " + errorThrown);
             }
         });  // end outer Ajax
-
         return false;
     }) // end click function
 
