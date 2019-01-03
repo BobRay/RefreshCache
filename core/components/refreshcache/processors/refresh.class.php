@@ -58,7 +58,9 @@ class refreshcacheRefreshProcessor extends modProcessor {
 
     public function process(array $scriptProperties = array()) {
         $uri = $this->getProperty('uri');
-        $this->modx->log(modX::LOG_LEVEL_ERROR, 'URI: ' . $uri);
+        $delay = $this->modx->getOption('refreshcache_request_delay', null, 0, true);
+        usleep((int) $delay * 1000);
+
         if (!empty($uri)) {
             try {
                 $this->client->head($uri);
