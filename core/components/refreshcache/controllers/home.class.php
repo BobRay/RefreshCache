@@ -68,15 +68,8 @@ class refreshcacheHomeManagerController extends modExtraManagerController {
      * @return string
      */
     public function getComponentAssetsUrl() {
-
-        $nsAssetsPath = $this->componentAssetsPath;
-        $nsAssetsPath = empty($nsAssetsPath)
-            ? MODX_ASSETS_PATH . '/components/refreshcache'
-            : $nsAssetsPath;
-        $nsAssetsPath = str_replace($this->normalize(dirname(MODX_BASE_PATH)), '', $nsAssetsPath);
-        $base = $this->normalize(dirname(MODX_ASSETS_URL)) . '/';
-        $short = str_replace($base, '', $this->normalize(MODX_SITE_URL));
-        return $short . $nsAssetsPath;
+        return $this->modx->getOption('refresh_cache_assets_url', null,
+            MODX_ASSETS_URL . 'components/refreshcache/', true);
     }
 
     public function loadCustomCssJs() {
