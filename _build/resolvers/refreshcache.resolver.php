@@ -40,8 +40,8 @@ if ($object->xpdo) {
            if ($snippet) {
                $snippet->remove();
            }
-           $corePath = MODX_CORE_PATH . 'components/refreshcache';
-           $assetsPath = MODX_ASSETS_PATH . 'components/refreshcache';
+           $corePath = MODX_CORE_PATH . 'components/refreshcache/';
+           $assetsPath = MODX_ASSETS_PATH . 'components/refreshcache/';
            $files = array(
                $assetsPath . 'css/meter-outline.png',
                $assetsPath . 'bar.css',
