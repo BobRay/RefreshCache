@@ -27,27 +27,7 @@ class refreshcacheRefreshProcessor extends modProcessor {
      */
     public function getComponentCorePath($namespace) {
         $obj = $this->modx->getObject('modNamespace', array('name' => $namespace));
-        $nsCorePath = $obj->get('path');
-        $nsCorePath = empty($npCorePath)
-            ? '{path}components/refreshcache/'
-            : $nsCorePath;
-        $nsCorePath = $this->normalize(str_replace('{path}', MODX_CORE_PATH, $nsCorePath));
-        return $nsCorePath;
-    }
-
-    /**
-     * Converts all backslashes to forward slashes
-     *
-     * @param $path
-     * @return mixed
-     */
-    public function normalize($path) {
-        if (strpos($path, '\\') === false) {
-            /* Nothing to do */
-            return $path;
-        } else {
-            return str_replace('\\', '/', $path);
-        }
+        return $obj->getCorePath() . 'components/' . $namespace . '/';
     }
 
     public function initialize() {
@@ -65,7 +45,7 @@ class refreshcacheRefreshProcessor extends modProcessor {
             try {
                 $this->client->head($uri);
             } catch (GuzzleHttp\Exception\ClientException $e) {
-                $this->modx->log(modX::LOG_LEVEL_ERROR, "\nGuzzle Exception Thrown for " . $uri . ' ' .  $e->getMessage());
+                /* Ignore - these will mainly be unauthorized URLs or 404s */
             } catch (Exception $e) {
                 $this->modx->log(modX::LOG_LEVEL_ERROR, "Exception: " . $e->getMessage());
             }
