@@ -7,7 +7,7 @@
 
 /* Function to update progress bar width and percent */
 function progress(percent, $element, index) {
-    var pageTitleDiv = $('#refresh_cache_pagetitle');
+    var pageTitleDiv = $('#refreshcache_pagetitle');
     var progressBarWidth = percent * $element.width() / 100;
     if (percent >= 8) {
         $element.find('div').animate({width: progressBarWidth}, 300, 'linear').html("&nbsp;" + percent + "%");
@@ -15,16 +15,20 @@ function progress(percent, $element, index) {
         $element.find('div').animate({width: progressBarWidth}, 300, 'linear');
     }
 
-
-
     if (percent >= 100) {
         setTimeout(function () {
             pageTitleDiv.fadeOut('slow',function () {
                 $(this).text(_('rc_refreshed') + ' ' + index + ' ' + _('rc_resources'))
             }).fadeIn('slow');
         }, 1000);
-
     }
+}
+
+function displayError(msg) {
+
+    $("#progressBar").hide();
+    $("#refreshcache_pagetitle").html('<span class="sc_error" style="color:red;">' + msg + '</span>').show(1000);
+    $("#refreshcache_results").show();
 }
 
 $(document).ready(function (event) {
@@ -33,14 +37,10 @@ $(document).ready(function (event) {
         var connectorUrl = RefreshCache.config.connectorUrl;
         var pBar = $('#progressBar');
         var text = $('.pbar_text');
-        var pageTitleDiv = $('.refresh_cache_pagetitle');
+        var results = $('#refreshcache_results');
+        var pageTitleDiv = $('#refreshcache_pagetitle');
 
-        text.text('Getting Data');
-
-        $("#refreshcache_submit").fadeOut("slow", function () {
-            $('#refreshcache_results').fadeIn('slow');
-            $('#refresh_cache_pagetitle').fadeIn('slow');
-        });
+        $("#refreshcache_submit").fadeOut("slow");
 
         $.ajax({
             type: "get",
@@ -51,6 +51,12 @@ $(document).ready(function (event) {
             cache: false,
             url: connectorUrl,
             success: function (data) {
+                pBar.fadeIn('slow');
+                results.fadeIn('slow');
+                pageTitleDiv.fadeIn('slow', function() {
+                    text.text('('+ _('rc_getting_data') + ')');
+                });
+
                 var lines = data.results;
                 var length = lines.length;
                 var percent = 0;
@@ -80,7 +86,7 @@ $(document).ready(function (event) {
                                 }
                             },
                             error: function (XMLHttpRequest, textStatus, errorThrown) {
-                                console.log("Inner Ajax Error: " + errorThrown);
+                                displayError("Inner Ajax Error: " + errorThrown);
                             }
                         });
                     } else {
@@ -90,7 +96,7 @@ $(document).ready(function (event) {
                 sendToServer(0);
             },
             error: function (XMLHttpRequest, textStatus, errorThrown) {
-               console.log("Outer Ajax Error: " + errorThrown);
+                displayError("Outer Ajax Error: " + errorThrown)
             }
         });  // end outer Ajax
         return false;

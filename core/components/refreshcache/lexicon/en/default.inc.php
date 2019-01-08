@@ -52,3 +52,4 @@ $_lang['rc_menu_desc'] = 'Refresh the cache for all cacheable resources';
 $_lang['RefreshCache'] = 'RefreshCache';
 $_lang['rc_refreshed'] = 'Refreshed';
 $_lang['rc_resources'] = 'Resources';
+$_lang['rc_getting_data'] = 'Getting Data';
