@@ -2,7 +2,7 @@
 /**
  * systemSettings transport file for RefreshCache extra
  *
- * Copyright 2011-2018 by Bob Ray <https://bobsguides.com>
+ * Copyright 2011-2019 by Bob Ray <https://bobsguides.com>
  * Created on 07-18-2013
  *
  * @package refreshcache
