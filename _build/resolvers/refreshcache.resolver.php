@@ -44,6 +44,7 @@ if ($object->xpdo) {
            $assetsPath = MODX_ASSETS_PATH . 'components/refreshcache/';
            $files = array(
                $assetsPath . 'css/meter-outline.png',
+               $assetsPath . 'css/refreshcache.css.old',
                $assetsPath . 'bar.css',
                $assetsPath . 'jquery.js',
                $assetsPath . 'meter-outline.png',
