@@ -32,9 +32,9 @@ if (! defined('MODX_CORE_PATH')) {
 require_once MODX_CORE_PATH . 'config/' . MODX_CONFIG_KEY . '.inc.php';
 require_once MODX_CONNECTORS_PATH . 'index.php';
 
-$modx->lexicon->load('refreshcache:default');
+$modx->lexicon->load($namespace . ':default');
 /** @var modNamespace $namespaceObject */
-$namespaceObject = $modx->getObject('modNamespace', array('name' => 'refreshcache'));
+$namespaceObject = $modx->getObject('modNamespace', array('name' => $namespace));
 if ($namespaceObject) {
     $extraCorePath = $namespaceObject->getCorePath();
 } else {
