@@ -45,7 +45,10 @@ class refreshcacheRefreshProcessor extends modProcessor {
             try {
                 $this->client->head($uri);
             } catch (GuzzleHttp\Exception\ClientException $e) {
-                /* Ignore - these will mainly be unauthorized URLs or 404s */
+                /* These will mainly be unauthorized URLs or 404s */
+                if ($this->modx->getOption('refreshcache_log_all_errors', null, false, true)) {
+                    $this->modx->log(modX::LOG_LEVEL_ERROR, "Exception: " . $e->getMessage());
+                }
             } catch (Exception $e) {
                 $this->modx->log(modX::LOG_LEVEL_ERROR, "Exception: " . $e->getMessage());
             }

@@ -35,4 +35,14 @@ $systemSettings[1]->fromArray(array (
   'name' => 'RefreshCache Request delay',
   'description' => 'Delay between page requests (in milliseconds -- 1000 = 1 second); default: 0',
 ), '', true, true);
+$systemSettings[2] = $modx->newObject('modSystemSetting');
+$systemSettings[2]->fromArray(array (
+  'key' => 'refreshcache_log_all_errors',
+  'value' => '0',
+  'xtype' => 'combo-boolean',
+  'namespace' => 'refreshcache',
+  'area' => 'RefreshCache',
+  'name' => 'RefreshCache Log All Errors',
+  'description' => 'Log all access errors in the MODX error log when refreshing the cache; default: no.',
+), '', true, true);
 return $systemSettings;
