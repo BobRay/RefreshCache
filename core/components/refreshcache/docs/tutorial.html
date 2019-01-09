@@ -1,54 +1,64 @@
 
 <p>The RefreshCache snippet refreshes the cache by visiting all site pages that are
-published, undeleted, and cacheable.</p>
+published, undeleted, and cacheable, as long as they are not hidden in some way.</p>
 
 <p>The point is for this program to spend time waiting for the pages so
 the site visitors don't have to. They'll see cached pages, which will be
 delivered much faster.</p>
 
 <p>RefreshCache is an inelegant, brute-force extra. It refreshes the cache by
-requesting every page with cURL. The larger the site, the longer it takes.</p>
+requesting every page with Guzzle (which uses cURL or streams). The larger the site, the longer it takes.</p>
 
 <p>On a 100-page site, at broadband speeds, it can take 4-10 minutes to run,
 depending on the connection speed and how complex the pages are.
 Larger sites can take much longer, especially if there are lots of images to load, lengthy getResources calls, or complex conditional output modifiers. The longer it takes RefreshCache to run, the more valuable it is to your site's visitors.</p>
 
+<br>
 <div class="box">
-<p>As of Version 1.1.0-pl, RefreshCache has been refactored as a Custom Manager Page (CMP). It is more reliable, slightly prettier, and the RefreshCache Resource is no longer used. You can remove the RefreshCache Resource, but *don't* remove the RefreshCache snippet. The new version uses ExtJS/modExt rather than JQuery. It should run a little faster since the JavaScript is already loaded when you launch it in the Manager. The sleep times have also been shortened.</p>
+<p>As of Version 1.2.0-pl, RefreshCache has been completely refactored to eliminate PHP timeouts. It has been tested by simulating a site with over 100,000 pages. It is much simpler, slightly prettier, and the RefreshCache Resource and snippet are no longer used. You can remove the RefreshCache Resource if it's still there. The RefreshCache snippet should be removed automatically during the upgrade. The new version reverts to using JQuery and requires Guzzle 6. It should run a little faster since the sleep times have been shortened.</p>
+
+<p>Important: Guzzle 6 requires PHP >= 5.4.</p>
 </div>
 
+<br>
 <h3>Installing RefreshCache</h3>
 
 <p>
-Go to System | Package Management on the main menu in the MODX Manager and click on the &quot;Download Extras&quot; button. That will take you to the Revolution Repository (AKA Web Transport Facility). Put RefreshCache in the search box and press Enter. Click on the &quot;Download&quot; button, and when the download is finished, click on the &quot;Back to Package Manager&quot; button. That should bring you back to your Package Management grid. Click on the &quot;Install&quot; button next to RefreshCache in the grid. The RefreshCache package should now be installed.</p>
+Go to System | Package Management on the main menu in the MODX Manager and click on the &quot;Download Extras&quot; button. That will take you to the Revolution Repository. Put RefreshCache in the search box and press Enter. Click on the &quot;Download&quot; button, and when the download is finished, click on the &quot;Back to Package Manager&quot; button. That should bring you back to your Package Management grid. Click on the &quot;Install&quot; button next to RefreshCache in the grid. The RefreshCache package should now be installed.</p>
 
-<p>After installing RefreshCache, you'll need to reload the Manager page before it will show up under the Components menu. In fact, if you don't already have any components installed, the Components menu itself won't appear until after you install RefreshCache and then reload the Manager
+<p>After installing RefreshCache, you'll need to reload the Manager page before it will show up under the Extras menu. In fact, if you don't already have any components installed, the Components menu itself won't appear until after you install RefreshCache and then reload the Manager
 page.</p>
 
+<br>
 <h3>Usage</h3>
 
 <p>To run RefreshCache, just select the RefreshCache menu item under Components in the Manager's Top Menu. Remember that you'll need to reload the Manager page after installing RefreshCache before the menu item will show up. Once RefreshCache has launched, click on the &quot;Refresh the Cache&quot; button at the top of the page. Important: Do not close the browser window or navigate to another page until RefreshCache has finished.</p>
 
 <p>For security, only members of the Administrator group can run RefreshCache and it can only be run from inside the MODX Manager.</p>
 
-<p>If you are using the Articles blog, RefreshCache will refresh Articles along with other Resources. It will refresh anything obtainable with <code>getCollection('modResource')</code>. If snippet results or chunks are processed and cached on any cacheable pages, it will refresh those as well.</p>
+<p>If you are using the Articles blog, RefreshCache will refresh Articles along with other Resources. It will refresh anything obtainable with <code>getCollection('modResource')</code>. If snippet results or chunks are processed and cached on any cacheable pages, it will refresh those as well. It will not refresh the cache for resources that are unpublished or restricted in some way. </p>
 
+<br>
 <h3>Settings</h3>
 
-<p>The only settable options are the two System Settings in the <code>refreshcache</code> namespace. The <code>refreshcache_ajax_delay</code> System Setting sets the number of milliseconds to sleep between Ajax requests for the file that contains the progress messages. The default is 200 milliseconds (.2 seconds). You can reduce that if RefreshCache is skipping messages. You can also increase it to take some pressure off the server. A good value is 900 if you want to avoid bot- blocking software like BotBlockX.  At higher values, it will appear that some resources are being skipped, but in fact they are being refreshed (you can check the log to verify this). Only the progress message is being skipped. </p>
+<p>The only settable options are the two System Settings in the <code>refreshcache</code> namespace. The <code>refreshcache_request_delay</code> System Setting sets the number of milliseconds to sleep between Ajax requests for the file that contains the progress messages. The default is 0 milliseconds, though there is some inherent delay in the process. You increase it to take some pressure off the server. A good value is 900 if you want to avoid bot- blocking software like BotBlockX. </p>
 
 <div class="box">
-<p>Having the Ajax delay at .2 seconds does not mean that there will be 5 requests per second. The delay occurs after the Ajax request is completed, so the actual interval will be however long it takes for the Ajax request to complete, plus the delay. Setting the delay to 0 will put a little more stress on the server, but should still work. Note that setting the delay will have no effect on the time it takes for the full process to finish. The refreshing occurs in the PHP code and is unaffected by the Ajax delay.</p>
+    <p>Having the Request delay at 0 seconds does not mean that there will be many requests per second. RefreshCache now uses a tail-call-optimized, recursive Ajax function, so every request is started after the previous one has finished. The Request delay (if any) occurs after the Ajax request is completed, so the actual interval will be however long it takes for the Ajax request to complete, plus the delay. The initial delay is set to 0 and will vary depending on each page's load time.</p>
+
+<p>Some servers may complain about the repeated calls and could throttle them. You might also experience trouble with your browser popping up a message about excessive looping. Usually you can click on &quot;wait,&quot; &quot;OK,&quot; or &quot;Continue&quot; to resume RefreshCache. The results may depend on how well your browser optimizes recursions in JavaScript and on it's stack limit.</p>
 </div>
 
-<p>The <code>refreshcache_curl_delay</code> sets the number of seconds to sleep between page requests. The default is 0 seconds. You can take some pressure off your server by setting it higher, but that will slow down the program and the time-to-completion will go up. It shouldn't be necessary to change the <code>refreshcache_curl_delay</code> setting unless you are being blocked by bot-blocking software like BotBlockX, because each cURL request won't be issued until the previous page has fully loaded in the browser.</p>
+<p>The <code>refreshcache_request_delay</code> sets the number of milliseconds to sleep between page requests. The default is 0. You can take some pressure off your server by setting it higher, but that will slow down the program and the time-to-completion will go up.</p>
+
+<p>The <code>refreshcache_log_all_errors</code> setting determines if all page access errors are logged to the MODX error log. Most of these will be 401, 403, or 404 errors caused by inaccessible pages that require login or special conditions for access. </p>
 
 <h3>Files</h3>
 
-<p>RefreshCache writes its Ajax log files to the <code>assets/components/refreshcache/</code> directory. Make sure that directory is writable. After RefreshCache has finished, the <code>refreshcache.log</code> file should contain a list of all Resources that were refreshed with the total execution time at the end of the file.</p>
+<p>RefreshCache now shows the pagetitles of resources it is refreshing the cache for, and no longer writes a log (though the <code>refreshcache_log_all_errors</code> System Setting will let you log all refresh failures). When finished, it will report how many resources were updated.</p>
 
 <h3>Program Speed</h3>
-<p>How long it takes the process to finish depends on the browser you use and the speed of your internet connection. I notice that on my localhost install, RefreshCache runs about 20 times faster in Firefox than it does in Chrome. I have no idea why. At Bob's Guides, there are just under 200 Resources. RefreshCache takes about 27 minutes in Chrome and about 17 minutes in Firefox, so it's worth experimenting.</p>
+<p>How long it takes the process to finish depends on the browser you use, the speed of your internet connection, and the page-load time of each resource. I notice that on my localhost install, RefreshCache runs faster in  some browsers than others. This depends on how well the browser optimizes JavaScript code. I ran a simulation with over 100,000 resources on Chrome and it took around 24 hours.</p>
 
 <p>Important Warning!</p>
 
@@ -64,14 +74,14 @@ page.</p>
     </tr>
 
     <tr>
-        <td>refreshcache_ajax_delay</td>
-        <td>Delay between JS polling checks (in milliseconds)</td>
-        <td>900</td>
+        <td>refreshcache_request_delay</td>
+        <td>Delay between JS calls (in milliseconds &mdash; 1000 = 1 second)</td>
+        <td>0</td>
     </tr>
     <tr>
-        <td>refreshcache_curl_delay</td>
-        <td>Delay between cURL requests (in seconds)</td>
-        <td>0</td>
+        <td>refreshcache_log_all_errors</td>
+        <td>Log all access errors to the MODX error log</td>
+        <td>No</td>
     </tr>
 </table>
 

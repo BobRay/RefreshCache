@@ -3,6 +3,16 @@ Changelog for RefreshCache
 RefreshCache 1.2.0-pl
 -------------------------
 Updates for MODX 2.7.0
+Add Guzzle 6 as a dependency
+Now requires PHP >= 5.4
+Refactor to eliminate PHP timeouts
+Redesign display
+Add more reliable progress indicator
+Add class-based controller and processor
+Exclude non-cacheable resources
+Create getList processor to assemble data
+Create refresh processor to
+
 
 RefreshCache 1.1.0-pl
 -------------------------
