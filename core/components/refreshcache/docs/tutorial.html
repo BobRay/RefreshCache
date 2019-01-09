@@ -1,5 +1,5 @@
 
-<p>The RefreshCache snippet refreshes the cache by visiting all site pages that are
+<p>RefreshCache refreshes the cache by visiting all site pages that are
 published, undeleted, and cacheable, as long as they are not hidden in some way.</p>
 
 <p>The point is for this program to spend time waiting for the pages so
@@ -7,10 +7,10 @@ the site visitors don't have to. They'll see cached pages, which will be
 delivered much faster.</p>
 
 <p>RefreshCache is an inelegant, brute-force extra. It refreshes the cache by
-requesting every page with Guzzle (which uses cURL or streams). The larger the site, the longer it takes.</p>
+    requesting every page with Guzzle (which uses cURL or streams). The larger the site, the longer it takes. In many cases, <a href="https://bobsguides.com/cachemaster-tutorial.html" target="_blank">CacheMaster</a>, which clears only the cache for the current resource being saved is a better choice, especially on very large sites.</p>
 
-<p>On a 100-page site, at broadband speeds, it can take 4-10 minutes to run,
-depending on the connection speed and how complex the pages are.
+<p>On a 100-page site, at broadband speeds, RefreshCache can take 4-10 minutes to run,
+depending on the connection speed, the browser, and how complex the pages are.
 Larger sites can take much longer, especially if there are lots of images to load, lengthy getResources calls, or complex conditional output modifiers. The longer it takes RefreshCache to run, the more valuable it is to your site's visitors.</p>
 
 <br>
@@ -46,17 +46,17 @@ page.</p>
 <div class="box">
     <p>Having the Request delay at 0 seconds does not mean that there will be many requests per second. RefreshCache now uses a tail-call-optimized, recursive Ajax function, so every request is started after the previous one has finished. The Request delay (if any) occurs after the Ajax request is completed, so the actual interval will be however long it takes for the Ajax request to complete, plus the delay. The initial delay is set to 0 and will vary depending on each page's load time.</p>
 
-<p>Some servers may complain about the repeated calls and could throttle them. You might also experience trouble with your browser popping up a message about excessive looping. Usually you can click on &quot;wait,&quot; &quot;OK,&quot; or &quot;Continue&quot; to resume RefreshCache. The results may depend on how well your browser optimizes recursions in JavaScript and on it's stack limit.</p>
+<p>Some servers may complain about the repeated calls and could throttle them. You might also experience trouble with your browser popping up a message about excessive looping. Usually you can click on &quot;wait,&quot; &quot;OK,&quot; or &quot;Continue&quot; to resume RefreshCache. The results may depend on how well your browser optimizes recursions in JavaScript and on its stack limit.</p>
 </div>
-
-<p>The <code>refreshcache_request_delay</code> sets the number of milliseconds to sleep between page requests. The default is 0. You can take some pressure off your server by setting it higher, but that will slow down the program and the time-to-completion will go up.</p>
 
 <p>The <code>refreshcache_log_all_errors</code> setting determines if all page access errors are logged to the MODX error log. Most of these will be 401, 403, or 404 errors caused by inaccessible pages that require login or special conditions for access. </p>
 
+<br>
 <h3>Files</h3>
 
 <p>RefreshCache now shows the pagetitles of resources it is refreshing the cache for, and no longer writes a log (though the <code>refreshcache_log_all_errors</code> System Setting will let you log all refresh failures). When finished, it will report how many resources were updated.</p>
 
+<br>
 <h3>Program Speed</h3>
 <p>How long it takes the process to finish depends on the browser you use, the speed of your internet connection, and the page-load time of each resource. I notice that on my localhost install, RefreshCache runs faster in  some browsers than others. This depends on how well the browser optimizes JavaScript code. I ran a simulation with over 100,000 resources on Chrome and it took around 24 hours.</p>
 
@@ -64,7 +64,8 @@ page.</p>
 
 <p>RefreshCache visits every published, cacheable page on your site. If you have snippet tags on such a page, the snippets will run. If you have a page with a snippet that automatically sends an email (e.g., QuickEmail), you'll get an email. If you have a utility snippet that modifies the database, the database will be modified. I generally leave such pages unpublished, but you might not, so think about what will happen if every cacheable, published page is visited.</p>
 
-<h3>RefreshCache Settings</h3>
+<br>
+<h3>RefreshCache System Settings</h3>
 
 <table class="properties">
     <tr>
