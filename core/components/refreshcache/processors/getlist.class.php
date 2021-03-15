@@ -21,7 +21,7 @@ class refreshcacheGetListProcessor extends modObjectGetListProcessor {
     }
 
     public function prepareQueryBeforeCount(xPDOQuery $c) {
-        $c->select('id,pagetitle,uri');
+        $c->select('id,pagetitle,uri,context_key');
         $fields = array(
             'cacheable:=' => '1',
             'deleted:!=' => '1',
@@ -37,11 +37,10 @@ class refreshcacheGetListProcessor extends modObjectGetListProcessor {
 
     public function prepareRow(xPDOObject $object) {
         $ta = $object->toArray('', false, true, true);
-        if (empty($ta['uri'])) {
-            $this->modx->makeUrl($ta['id'], "", "", "full");
-        } else {
-            $ta['uri'] = MODX_SITE_URL . $ta['uri'];
-        }
+
+        $ta['uri'] = $this->modx->makeUrl($ta['id'],
+            $ta['context_key'], "", "full");
+
         return $ta;
     }
 
@@ -50,5 +49,4 @@ class refreshcacheGetListProcessor extends modObjectGetListProcessor {
         return $d;
     }
 }
-
 return 'refreshcacheGetListProcessor';
