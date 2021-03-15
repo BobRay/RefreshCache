@@ -1,5 +1,9 @@
 Changelog for RefreshCache
 
+RefreshCache 1.2.1-pl
+-------------------------
+Fix bug with multi-context sites
+
 RefreshCache 1.2.0-pl
 -------------------------
 Updates for MODX 2.7.0

@@ -16,14 +16,14 @@ $components = array(
     'packageName' => 'RefreshCache',  /* No spaces, no dashes */
     'packageNameLower' => $packageNameLower,
     'packageDescription' => 'RefreshCache project',
-    'version' => '1.2.0',
+    'version' => '1.2.1',
     'release' => 'pl',
     'author' => 'Bob Ray',
     'email' => '<https://bobsguides.com>',
     'authorUrl' => 'https://bobsguides.com',
     'authorSiteName' => "Bob's Guides",
     'packageDocumentationUrl' => 'https://bobsguides.com/refreshcache-tutorial.html',
-    'copyright' => '2011-2019',
+    'copyright' => '2011-2021',
 
     /* no need to edit this except to change format */
     'createdon' => strftime('%m-%d-%Y'),
