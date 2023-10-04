@@ -8,7 +8,6 @@ if (! defined('MODX_CORE_PATH')) {
     $modx->log(modX::LOG_LEVEL_ERROR, 'Instantiated MODX');
 }
 require_once MODX_CORE_PATH . 'model/modx/modprocessor.class.php';
-require_once MODX_CORE_PATH . 'components/guzzle6/vendor/autoload.php';
 
 class refreshcacheRefreshProcessor extends modProcessor {
     public $classKey = 'modResource';
