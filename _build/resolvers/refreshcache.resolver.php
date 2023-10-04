@@ -26,73 +26,86 @@
 
 /* @var array $options */
 
-if ($object->xpdo) {
+
+/* @var modTransportPackage $transport */
+
+if ($transport) {
+    $modx =& $transport->xpdo;
+} else {
     $modx =& $object->xpdo;
-    switch ($options[xPDOTransport::PACKAGE_ACTION]) {
-        case xPDOTransport::ACTION_INSTALL:
-        case xPDOTransport::ACTION_UPGRADE:
-           $action = $modx->getObject('modAction', array('namespace' => 'refreshcache'));
-           if ($action) {
-               $action->remove();
-           }
-
-           $snippet = $modx->getObject('modSnippet', array('name' => 'RefreshCache'));
-           if ($snippet) {
-               $snippet->remove();
-           }
-           $corePath = MODX_CORE_PATH . 'components/refreshcache/';
-           $assetsPath = MODX_ASSETS_PATH . 'components/refreshcache/';
-           $files = array(
-               $assetsPath . 'css/meter-outline.png',
-               $assetsPath . 'css/refreshcache.css.old',
-               $assetsPath . 'bar.css',
-               $assetsPath . 'jquery.js',
-               $assetsPath . 'meter-outline.png',
-               $assetsPath . 'refreshcache.log',
-               $assetsPath . 'refreshcache.png',
-               $corePath . 'elements/snippets/refreshcache.snippet.php',
-               $corePath . 'model/refreshcache/install.class.php',
-               $corePath . 'class.install.php',
-               $corePath . 'refreshcache.snippet.php',
-               $corePath . 'index.php',
-           );
-
-           foreach($files as $file) {
-               if (file_exists($file)) {
-                   unlink($file);
-               }
-           }
-
-           $dirs = array(
-               $corePath . 'elements/snippets',
-               $corePath . 'elements',
-               $corePath . 'model/refreshcache',
-               $corePath . 'model',
-           );
-
-           foreach($dirs as $dir) {
-               if (file_exists($dir)) {
-                   rmdir($dir);
-               }
-           }
-
-           $settings = array(
-               'refreshcache_curl_delay',
-               'refreshcache_ajax_delay',
-           );
-
-           foreach ($settings as $key) {
-               $setting = $modx->getObject('modSystemSetting', array( 'key' => $key));
-               if ($setting) {
-                   $setting->remove();
-               }
-           }
-
-           break;
-
-        case xPDOTransport::ACTION_UNINSTALL:
-            break;
-    }
 }
+
+ /* Make it run in either MODX 2 or MODX 3 */
+ $prefix = $modx->getVersionData()['version'] >= 3
+   ? 'MODX\Revolution\\'
+   : '';
+
+
+switch ($options[xPDOTransport::PACKAGE_ACTION]) {
+    case xPDOTransport::ACTION_INSTALL:
+    case xPDOTransport::ACTION_UPGRADE:
+       $action = $modx->getObject($prefix . 'modAction', array('namespace' => 'refreshcache'));
+       if ($action) {
+           $action->remove();
+       }
+
+       $snippet = $modx->getObject($prefix . 'modSnippet', array('name' => 'RefreshCache'));
+       if ($snippet) {
+           $snippet->remove();
+       }
+       $corePath = MODX_CORE_PATH . 'components/refreshcache/';
+       $assetsPath = MODX_ASSETS_PATH . 'components/refreshcache/';
+       $files = array(
+           $assetsPath . 'css/meter-outline.png',
+           $assetsPath . 'css/refreshcache.css.old',
+           $assetsPath . 'bar.css',
+           $assetsPath . 'jquery.js',
+           $assetsPath . 'meter-outline.png',
+           $assetsPath . 'refreshcache.log',
+           $assetsPath . 'refreshcache.png',
+           $corePath . 'elements/snippets/refreshcache.snippet.php',
+           $corePath . 'model/refreshcache/install.class.php',
+           $corePath . 'class.install.php',
+           $corePath . 'refreshcache.snippet.php',
+           $corePath . 'index.php',
+       );
+
+       foreach($files as $file) {
+           if (file_exists($file)) {
+               unlink($file);
+           }
+       }
+
+       $dirs = array(
+           $corePath . 'elements/snippets',
+           $corePath . 'elements',
+           $corePath . 'model/refreshcache',
+           $corePath . 'model',
+       );
+
+       foreach($dirs as $dir) {
+           if (file_exists($dir)) {
+               rmdir($dir);
+           }
+       }
+
+       $settings = array(
+           'refreshcache_curl_delay',
+           'refreshcache_ajax_delay',
+       );
+
+       foreach ($settings as $key) {
+           $setting = $modx->getObject($prefix . 'modSystemSetting', array( 'key' => $key));
+           if ($setting) {
+               $setting->remove();
+           }
+       }
+
+       break;
+
+    case xPDOTransport::ACTION_UNINSTALL:
+        break;
+}
+
 
 return true;
