@@ -69,12 +69,14 @@ $(document).ready(function (event) {
                     if (index < length) {
 
                         var item = lines[index];
+
                         $.ajax({
                             type: 'GET',
                             url: connectorUrl,
                             dataType: 'json',
                             data: {
                                 'uri' : item.uri,
+                                'id' : item.id,
                                 'action': "refresh"
                             },
                             /* Update progress bar and text */

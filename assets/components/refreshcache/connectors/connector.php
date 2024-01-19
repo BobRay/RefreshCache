@@ -35,12 +35,15 @@ require_once MODX_CONNECTORS_PATH . 'index.php';
 $modx->lexicon->load($namespace . ':default');
 /** @var modNamespace $namespaceObject */
 $namespaceObject = $modx->getObject('modNamespace', array('name' => $namespace));
+
+$errorLevel = error_reporting();
+error_reporting($errorLevel & ~E_DEPRECATED);
 if ($namespaceObject) {
     $extraCorePath = $namespaceObject->getCorePath();
 } else {
     $modx->log(modX::LOG_LEVEL_ERROR, 'Could not get namespace: ' . $namespace);
 }
-
+error_reporting($errorLevel);
 $path = $extraCorePath . 'processors/';
 
 /* handle request */

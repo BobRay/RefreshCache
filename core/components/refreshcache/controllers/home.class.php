@@ -31,9 +31,13 @@ class refreshcacheHomeManagerController extends modExtraManagerController {
         $this->modx->lexicon->load('refreshcache:default');
 
         $this->namespaceObj = $this->modx->getObject('modNamespace', array('name' => $this->namespace));
+        $errorLevel = error_reporting();
+        error_reporting($errorLevel & ~E_DEPRECATED);
+
         $this->componentCorePath = $this->getComponentCorePath();
         $this->componentAssetsPath = $this->getComponentAssetsPath();
         $this->componentAssetsUrl = $this->getComponentAssetsUrl();
+        error_reporting($errorLevel);
     }
 
     public function normalize($path) {
