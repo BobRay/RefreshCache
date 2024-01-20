@@ -3,12 +3,12 @@
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ClientException;
 
+/** @var modX $modx */
 if (!defined('MODX_CORE_PATH')) {
     /* For dev environment */
-    include 'c:/xampp/htdocs/addons/assets/mycomponents/instantiatemodx/instantiatemodx.php';
+    include_once 'c:/xampp/htdocs/addons/assets/mycomponents/instantiatemodx/instantiatemodx.php';
     $modx->log(modX::LOG_LEVEL_ERROR, 'Instantiated MODX');
 }
-
 
 if (file_exists(MODX_CORE_PATH . 'model/modx/modprocessor.class.php')) {
     include_once MODX_CORE_PATH . 'model/modx/modprocessor.class.php';
@@ -21,6 +21,7 @@ class refreshcacheRefreshProcessor extends modProcessor {
     public $defaultSortDirection = 'asc';
     public $objectType = 'modResource';
     public $namespace = 'refreshcache';
+    public int $maxExecutionTime;
     /* @var $client \GuzzleHttp\Client */
     public $client = null;
 
@@ -41,6 +42,7 @@ class refreshcacheRefreshProcessor extends modProcessor {
 
     public function initialize() {
         $this->client = new \GuzzleHttp\Client();
+        $this->maxExecutionTime = ini_get('max_execution_time');
         parent::initialize();
         return true;
     }
@@ -54,7 +56,7 @@ class refreshcacheRefreshProcessor extends modProcessor {
         $doc = $this->modx->getObject('modResource', $id);
         $delay = $this->modx->getOption('refreshcache_request_delay', null, 0, true);
         usleep((int)$delay * 1000);
-
+        set_time_limit($this->maxExecutionTime);
         if (!empty($uri)) {
             if ($doc && $doc->checkPolicy('view_resource') && strpos($doc->get('alias'), 'cache') === false ) {
             try {
@@ -68,7 +70,9 @@ class refreshcacheRefreshProcessor extends modProcessor {
                 $this->modx->log(modX::LOG_LEVEL_ERROR, "Exception: " . $e->getMessage());
             }
             } else {
-                /* $this->modx->log(modX::LOG_LEVEL_ERROR, 'Skipping unavailable Resource: ' . $id); */
+                if ($this->modx->getOption('refreshcache_log_all_errors', null, false, true)) {
+                    $this->modx->log(modX::LOG_LEVEL_ERROR, 'Skipping unavailable Resource: ' . $id);
+                }
             }
         }
         error_reporting($errorLevel);
