@@ -8,7 +8,7 @@ RefreshCache 1.3.0-pl
  - Add honor_hidemenu System Setting
  - Improve timeout prevention
  - Add cron job code
- 
+
 RefreshCache 1.2.1-pl
 -------------------------
  - Fix bug with multi-context sites
