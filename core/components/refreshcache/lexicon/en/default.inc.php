@@ -35,10 +35,14 @@
  **/
 
 /* Used in transport.settings.php */
-$_lang['setting_refreshcache_ajax_delay'] = 'RefreshCache Ajax delay';
-$_lang['setting_refreshcache_ajax_delay_desc'] = 'Delay between JS calls (in milliseconds); default: 0';
-$_lang['setting_refreshcache_curl_delay'] = 'RefreshCache cUrl Delay';
-$_lang['setting_refreshcache_curl_delay_desc'] = 'Delay between cURL requests (in seconds); default: 0';
+$_lang['setting_refreshcache_log_all_errors'] = 'Log all errors';
+$_lang['setting_refreshcache_log_all_errors_desc'] = 'Log all errors to MODX Error Log; default: no';
+$_lang['setting_refreshcache_request_delay'] = 'RefreshCache Request Delay';
+$_lang['setting_refreshcache_request_delay_desc'] = 'Delay between cURL requests (in seconds); default: 0';
+$_lang['setting_honor_hidemenu'] = 'Honor hidemenu';
+$_lang['setting_honor_hidemenu_desc'] = 'Do not refresh resources hidden from menus; default; yes ';
+
+
 
 /* Used in refreshcache.snippet.php */
 $_lang['rc_admin_only'] = 'This code can only be run by an administrator';
