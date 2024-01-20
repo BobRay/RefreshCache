@@ -39,6 +39,11 @@ class refreshcacheGetListProcessor extends modObjectGetListProcessor {
             'published:!=' => '0',
             'AND:class_key:!=' => 'modSymLink',
         );
+        $honorHidemenu = $this->modx->getOption('refreshcache_honor_hidemenu', null, false, false);
+        if ($honorHidemenu) {
+            $fields = array_merge(array('hidemenu:!=' => '1'), $fields);
+        }
+
         if ((!empty($templates)) && is_array($templates)) {
             $fields = array_merge(array('template:IN' => $templates), $fields);
         }
