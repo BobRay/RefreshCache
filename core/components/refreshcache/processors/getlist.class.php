@@ -1,12 +1,16 @@
 <?php
 
-if (! defined('MODX_CORE_PATH')) {
+if (!defined('MODX_CORE_PATH')) {
     /* For dev environment */
     include 'c:/xampp/htdocs/addons/assets/mycomponents/instantiatemodx/instantiatemodx.php';
     /** @var modX $modx */
     $modx->log(modX::LOG_LEVEL_ERROR, '[RefreshCache GetList processor] Instantiated MODX');
 }
-require_once MODX_CORE_PATH . 'model/modx/modprocessor.class.php';
+
+
+if (file_exists(MODX_CORE_PATH . 'model/modx/modprocessor.class.php')) {
+    include_once MODX_CORE_PATH . 'model/modx/modprocessor.class.php';
+}
 
 class refreshcacheGetListProcessor extends modObjectGetListProcessor {
     public $classKey = 'modResource';
@@ -21,27 +25,27 @@ class refreshcacheGetListProcessor extends modObjectGetListProcessor {
         return true;
     }
 
-  public function prepareQueryBeforeCount(xPDOQuery $c) {
-    $c->select('id,template,pagetitle,uri,context_key');
-    $templates = $this->modx->getOption('refreshcache_templates_enabled',
-        null, array(), false);
-    if ($templates) {
-        $templates = explode(',', $templates);
-    }
-    $fields = array(
-        'cacheable:=' => '1',
-        'deleted:!=' => '1',
-        'class_key:!=' => 'modWebLink',
-        'published:!=' => '0',
-        'AND:class_key:!=' => 'modSymLink',
-    );
-    if ( (!empty($templates)) && is_array($templates)) {
-        $fields = array_merge(array('template:IN' => $templates), $fields);
-    }
-    $c->where($fields);
+    public function prepareQueryBeforeCount(xPDOQuery $c) {
+        $c->select('id,template,pagetitle,uri,context_key');
+        $templates = $this->modx->getOption('refreshcache_templates_enabled',
+            null, array(), false);
+        if ($templates) {
+            $templates = explode(',', $templates);
+        }
+        $fields = array(
+            'cacheable:=' => '1',
+            'deleted:!=' => '1',
+            'class_key:!=' => 'modWebLink',
+            'published:!=' => '0',
+            'AND:class_key:!=' => 'modSymLink',
+        );
+        if ((!empty($templates)) && is_array($templates)) {
+            $fields = array_merge(array('template:IN' => $templates), $fields);
+        }
+        $c->where($fields);
 
-    return $c;
-  }
+        return $c;
+    }
 
     public function prepareRow(xPDOObject $object) {
         $ta = $object->toArray('', false, true, true);
@@ -58,4 +62,5 @@ class refreshcacheGetListProcessor extends modObjectGetListProcessor {
         return $d;
     }
 }
+
 return 'refreshcacheGetListProcessor';
