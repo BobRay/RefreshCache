@@ -748,6 +748,9 @@ foreach ($categories as $k => $categoryName) {
                                        'source' => $sources['source_core'],
                                        'target' => "return MODX_CORE_PATH . 'components/';",
                                   ));
+        $vehicle->resolve('php', array(
+            'source' => $sources['resolvers'] . 'dependencies.resolver.php',
+        ));
     }
 
     /* This section transfers every file in the local
@@ -862,13 +865,7 @@ $attr = array(
     'license' => file_get_contents($sources['docs'] . 'license.txt'),
     'readme' => file_get_contents($sources['docs'] . 'readme.txt'),
     'changelog' => file_get_contents($sources['docs'] . 'changelog.txt'),
-    'requires' => array(
-        'guzzle6' => '>=1.0.0',
-    )
 );
-
-
-
 
 if ($hasSetupOptions && !empty($props['install.options'])) {
     $attr['setup-options'] = array(
