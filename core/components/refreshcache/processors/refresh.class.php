@@ -48,7 +48,7 @@ class refreshcacheRefreshProcessor extends modProcessor {
     }
 
     public function process(array $scriptProperties = array()) {
-        $uri = $this->getProperty('uri');
+        $uri = MODX_SITE_URL . $this->getProperty('uri');
         $errorLevel = error_reporting();
         error_reporting($errorLevel & ~E_DEPRECATED);
 
