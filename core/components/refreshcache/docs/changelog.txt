@@ -7,7 +7,7 @@ RefreshCache 1.3.0-pl
  - Updates for PHP 8
  - Add honor_hidemenu System Setting
  - Improve timeout prevention
- - Add cron job code
+ - Add cron job code -- thanks to Snow Creative
 
 RefreshCache 1.2.1-pl
 -------------------------
