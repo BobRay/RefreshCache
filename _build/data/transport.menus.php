@@ -2,7 +2,7 @@
 /**
  * menus transport file for RefreshCache extra
  *
- * Copyright 2011-2021 Bob Ray <https://bobsguides.com>
+ * Copyright 2011-2024 Bob Ray <https://bobsguides.com>
  * Created on 07-18-2013
  *
  * @package refreshcache
@@ -30,7 +30,7 @@ $menus[1]->fromArray( array (
   'action' => 'home',
   'description' => 'Refresh the MODX cache',
   'icon' => '',
-  'menuindex' => 0,
+  'menuindex' => 3,
   'params' => '',
   'handler' => '',
   'permissions' => '',
