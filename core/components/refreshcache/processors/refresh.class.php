@@ -21,7 +21,7 @@ class refreshcacheRefreshProcessor extends modProcessor {
     public $defaultSortDirection = 'asc';
     public $objectType = 'modResource';
     public $namespace = 'refreshcache';
-    public int $maxExecutionTime;
+    public $maxExecutionTime;
     /* @var $client \GuzzleHttp\Client */
     public $client = null;
 
