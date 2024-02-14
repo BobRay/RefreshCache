@@ -2,7 +2,7 @@
 /**
  * systemSettings transport file for RefreshCache extra
  *
- * Copyright 2011-2021 Bob Ray <https://bobsguides.com>
+ * Copyright 2011-2024 Bob Ray <https://bobsguides.com>
  * Created on 07-18-2013
  *
  * @package refreshcache
@@ -28,12 +28,12 @@ $systemSettings = array();
 $systemSettings[1] = $modx->newObject('modSystemSetting');
 $systemSettings[1]->fromArray(array (
   'key' => 'refreshcache_request_delay',
-  'value' => 0,
+  'value' => '0',
   'xtype' => 'textfield',
   'namespace' => 'refreshcache',
   'area' => 'RefreshCache',
-  'name' => 'RefreshCache Request delay',
-  'description' => 'Delay between page requests (in milliseconds -- 1000 = 1 second); default: 0',
+  'name' => 'Refresh Cache Request Delay',
+  'description' => 'Delay between cURL requests (in seconds); note that there is a built-in delay of about 1 second; default: 0',
 ), '', true, true);
 $systemSettings[2] = $modx->newObject('modSystemSetting');
 $systemSettings[2]->fromArray(array (
@@ -42,7 +42,17 @@ $systemSettings[2]->fromArray(array (
   'xtype' => 'combo-boolean',
   'namespace' => 'refreshcache',
   'area' => 'RefreshCache',
-  'name' => 'RefreshCache Log All Errors',
-  'description' => 'Log all access errors in the MODX error log when refreshing the cache; default: no.',
+  'name' => 'Refresh Cache Log All Errors',
+  'description' => 'Log all errors to MODX Error Log; default: no',
+), '', true, true);
+$systemSettings[3] = $modx->newObject('modSystemSetting');
+$systemSettings[3]->fromArray(array (
+  'key' => 'refreshcache_honor_hidemenu',
+  'value' => '1',
+  'xtype' => 'combo-boolean',
+  'namespace' => 'refreshcache',
+  'area' => 'RefreshCache',
+  'name' => 'Honor hidemenu',
+  'description' => 'Do not refresh resources hidden from menus; default; yes',
 ), '', true, true);
 return $systemSettings;

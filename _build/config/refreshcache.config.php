@@ -9,6 +9,28 @@
 
 
 
+/**
+ * RefreshCache processor for RefreshCache extra
+ *
+ * Copyright 2017-2024 Bob Ray <http://bobsguides.com>
+ * Created on 07-15-2013
+ *
+ * RefreshCache is free software; you can redistribute it and/or modify it under the
+ * terms of the GNU General Public License as published by the Free Software
+ * Foundation; either version 2 of the License, or (at your option) any later
+ * version.
+ *
+ * RefreshCache is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
+ * A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License along with
+ * RefreshCache; if not, write to the Free Software Foundation, Inc., 59 Temple
+ * Place, Suite 330, Boston, MA 02111-1307 USA
+ *
+ * @package refreshcache
+ */
+
 $packageNameLower = 'refreshcache'; /* No spaces, no dashes */
 
 $components = array(
@@ -16,14 +38,14 @@ $components = array(
     'packageName' => 'RefreshCache',  /* No spaces, no dashes */
     'packageNameLower' => $packageNameLower,
     'packageDescription' => 'RefreshCache project',
-    'version' => '1.2.1',
+    'version' => '1.3.0',
     'release' => 'pl',
     'author' => 'Bob Ray',
     'email' => '<https://bobsguides.com>',
     'authorUrl' => 'https://bobsguides.com',
     'authorSiteName' => "Bob's Guides",
     'packageDocumentationUrl' => 'https://bobsguides.com/refreshcache-tutorial.html',
-    'copyright' => '2011-2021',
+    'copyright' => '2011-2024',
 
     /* no need to edit this except to change format */
     'createdon' => strftime('%m-%d-%Y'),
@@ -58,25 +80,43 @@ $components = array(
     'newSystemSettings' => array(
         'refreshcache_request_delay' => array( // key
             'key' => 'refreshcache_request_delay',
-            'name' => 'RefreshCache Request delay',
-            'description' => 'Delay between page requests (in milliseconds -- 1000 = 1 second); default: 0',
+            'name' => 'RefreshCache Request Delay',
+            'description' => 'Delay between cURL requests (in seconds); note that there is a built-in delay of about 1 second; default: 0',
             'namespace' => 'refreshcache',
             'xtype' => 'textfield',
             'value' => 0,
             'area' => 'RefreshCache',
+        ),
+        'refreshcache_log_all_errors' => array(
+            'key' => 'refreshcache_log_all_errors',
+            'value' => '0',
+            'xtype' => 'combo-boolean',
+            'namespace' => 'refreshcache',
+            'area' => 'RefreshCache',
+            'name' => 'Refresh Cache Log All Errors',
+            'description' => 'Log all errors to MODX Error Log; default: no',
+        ),
+        'refreshcache_honor_hidemenu' => array(
+            'key' => 'refreshcache_honor_hidemenu',
+            'value' => '1',
+            'xtype' => 'combo-boolean',
+            'namespace' => 'refreshcache',
+            'area' => 'RefreshCache',
+            'name' => 'Honor hidemenu',
+            'description' => 'Do not refresh resources hidden from menus; default; yes'
         ),
     ),
 
     /* ************************ NEW SYSTEM EVENTS ************************* */
 
     /* Array of your new System Events (not default
-     * MODX System Events). Listed here so they can be created during
+     * MODX System Events). Listed here, so they can be created during
      * install and removed during uninstall.
      *
      * Warning: Do *not* list regular MODX System Events here !!! */
 
     /* ************************ NAMESPACE(S) ************************* */
-    /* (optional) Typically, there's only one namespace which is set
+    /* (optional) Typically, there's only one namespace, which is set
      * to the $packageNameLower value. Paths should end in a slash
     */
 
@@ -86,7 +126,6 @@ $components = array(
             'path' => '{core_path}components/refreshcache/',
             'assets_path' => '{assets_path}components/refreshcache/',
         ),
-
     ),
 
     /* ************************ CONTEXT(S) ************************* */
@@ -105,7 +144,7 @@ $components = array(
 
     /* ************************* CATEGORIES *************************** */
     /* (optional) List of categories. This is only necessary if you
-     * need to categories other than the one named for packageName
+     * need categories other than the one named for packageName
      * or want to nest categories.
     */
 
@@ -217,7 +256,7 @@ $components = array(
     /* These will automatically go under assets/components/yourcomponent/js/
        Format: directory:filename
        (no trailing slash on directory)
-       if 'createCmpFiles is true, these will be ignored.
+       if 'createCmpFiles' is true, these will be ignored.
     */
     $jsFiles = array(
     ),
@@ -251,7 +290,11 @@ $components = array(
         'default',
     ),
 
-    /* (optional) Validators can abort the install after checking
+    /* Dependencies */
+        'requires' => array('Guzzle7' => '>=1.0.0',
+    ),
+
+    /* (optional) Validators can abort the installation after checking
      * conditions. Array of validator names (no
      * prefix of suffix) or '' 'default' creates a default resolver
      *  named after the package suffix 'validator.php' will be added */
@@ -399,8 +442,8 @@ $components = array(
 
     /* ******************** LEXICON HELPER SETTINGS ***************** */
     /* These settings are used by LexiconHelper */
-    'rewriteCodeFiles' => true,  /* remove ~~descriptions */
-    'rewriteLexiconFiles' => true, /* automatically add missing strings to lexicon files */
+    'rewriteCodeFiles' => false,  /* remove ~~descriptions */
+    'rewriteLexiconFiles' => false, /* automatically add missing strings to lexicon files */
     /* ******************************************* */
 
     /* Array of aliases used in code for the properties array.
