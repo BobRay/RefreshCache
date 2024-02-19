@@ -1,4 +1,3 @@
-
 /* This function is triggered when the submit button is clicked.
    It gets the pagetitle and uri from the getlist.class.php
    processor and makes an Ajax call to the refresh.cache.php
@@ -17,7 +16,7 @@ function progress(percent, $element, index) {
 
     if (percent >= 100) {
         setTimeout(function () {
-            pageTitleDiv.fadeOut('slow',function () {
+            pageTitleDiv.fadeOut('slow', function () {
                 $(this).text(_('rc_refreshed') + ' ' + index + ' ' + _('rc_resources'))
             }).fadeIn('slow');
         }, 1000);
@@ -33,7 +32,6 @@ function displayError(msg) {
 
 $(document).ready(function (event) {
     $('#refreshcache_submit').click(function () {
-
         var connectorUrl = RefreshCache.config.connectorUrl;
         var pBar = $('#progressBar');
         var text = $('.pbar_text');
@@ -53,8 +51,8 @@ $(document).ready(function (event) {
             success: function (data) {
                 pBar.fadeIn('slow');
                 results.fadeIn('slow');
-                pageTitleDiv.fadeIn('slow', function() {
-                    text.text('('+ _('rc_getting_data') + ')');
+                pageTitleDiv.fadeIn('slow', function () {
+                    text.text('(' + _('rc_getting_data') + ')');
                 });
 
                 var lines = data.results;
@@ -63,7 +61,7 @@ $(document).ready(function (event) {
                 var index = 0;
                 /* Recursive function to make Ajax calls */
                 var sendToServer = function (index) {
-                    percent = Math.round((index/length) * 100);
+                    percent = Math.round((index / length) * 100);
 
                     /* Recurse if not at end of data */
                     if (index < length) {
@@ -75,16 +73,16 @@ $(document).ready(function (event) {
                             url: connectorUrl,
                             dataType: 'json',
                             data: {
-                                'uri' : item.uri,
-                                'id' : item.id,
+                                'context': item.context_key,
+                                'id': item.id,
                                 'action': "refresh"
                             },
                             /* Update progress bar and text */
                             success: function (msg) {
                                 text.text(lines[index].pagetitle);
                                 progress(percent, pBar, index);
-                                if (index < lines.length +1 ) {
-                                        sendToServer(index + 1);
+                                if (index < lines.length + 1) {
+                                    sendToServer(index + 1);
                                 }
                             },
                             error: function (XMLHttpRequest, textStatus, errorThrown) {
