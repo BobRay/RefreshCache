@@ -120,8 +120,14 @@ if($numFiles < $cacheMin) { // need to refresh the cache
   $mtime = $mtime[1] + $mtime[0];
   $tstart = $mtime;
 
+  if (file_exists(MODX_ASSETS_PATH . 'mycomponents/refreshcache/core/components/refreshcache/processors/')) {
+      $processorPath = MODX_ASSETS_PATH . 'mycomponents/refreshcache/core/components/refreshcache/processors/';
+  } else {
+      $processorPath = MODX_CORE_PATH . 'components/refreshcache/processors/';
+  }
+
   $options = array(
-    'processors_path' => MODX_ASSETS_PATH . 'mycomponents/refreshcache/core/components/refreshcache/processors/',
+    'processors_path' => $processorPath,
   );
   $processorReturn = $modx->runProcessor('getlist',array(), $options);
 
@@ -138,17 +144,17 @@ if($numFiles < $cacheMin) { // need to refresh the cache
     $modx->log(modX::LOG_LEVEL_ERROR, '[RefreshCache] No Cacheable Resources found');
   }
 
-  $ch = curl_init(); // Initialize Curl
+  /*$ch = curl_init(); // Initialize Curl
   if ($ch === false) {
       if ($debug) {
           echo "Failed to initialize cURL\n";
       }
-  }
+  }*/
 
-  @curl_setopt($ch, CURLOPT_NOBODY, true);
+ /* @curl_setopt($ch, CURLOPT_NOBODY, true);
   @curl_setopt($ch, CURLOPT_RETURNTRANSFER, false);
   @curl_setopt($ch, CURLOPT_USERAGENT, "Mozilla/4.0 (compatible; MSIE 5.01; Windows NT 5.0)");
-  @curl_setopt($ch, CURLOPT_FRESH_CONNECT, 1); // don't use a cached version of the url
+  @curl_setopt($ch, CURLOPT_FRESH_CONNECT, 1);*/ // don't use a cached version of the url
 
   set_time_limit(0);                   // ignore php timeout
   ignore_user_abort(true);             // keep on going even if user pulls the plug
@@ -161,7 +167,8 @@ if($numFiles < $cacheMin) { // need to refresh the cache
       ob_implicit_flush(true);  */           // output stuff directly
 
       if ($debug) {
-          echo "\nRefreshing " . count($resources) . " resources\n\n>";
+          echo "\nRefreshing " . count($resources) .
+              " resources\n****************************";
       }
 
   /* convince the browser we mean business */
@@ -175,17 +182,26 @@ if($numFiles < $cacheMin) { // need to refresh the cache
 
     $pageId = $resource['id'];
     $pagetitle = $resource['pagetitle'];
-    $url = $resource['uri'];
+   // $url = $resource['uri'];
+    $context = $resource['context_key'];
 
     /* Avoid infinite loop when requesting this page; skip CacheClear */
-    if (strpos($url, 'refresh-cache') || strpos($url, 'cache-clear')) {
+    /*if (stripos($pagetitle, 'Articles') || strpos($url, 'cache-clear')) {
+        continue;
+    }*/
+
+    if (stripos($pagetitle, 'Article') !== false) {
         continue;
     }
 
     if($debug) {
-        echo sprintf("%1$04d ",$i++) . "\n -- Refreshing: " .  $url;
+        echo sprintf("%1$04d ",$i++) . "\n -- Refreshing: " .  $pagetitle;
     }
-      $props = array('uri' => MODX_SITE_URL . $url);
+      $props = array(
+          'context' => $context,
+          'id' => $pageId,
+      );
+
       $processorReturn = $modx->runProcessor('refresh', $props, $options);
       usleep($delay);
 
