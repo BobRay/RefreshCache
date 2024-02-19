@@ -291,8 +291,8 @@ $components = array(
     ),
 
     /* Dependencies */
-        'requires' => array('Guzzle7' => '>=1.0.0',
-    ),
+        // 'requires' => array('Guzzle7' => '>=1.0.0', ),
+    'requires' => array(),
 
     /* (optional) Validators can abort the installation after checking
      * conditions. Array of validator names (no
