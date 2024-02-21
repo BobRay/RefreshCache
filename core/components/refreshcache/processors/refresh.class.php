@@ -1,8 +1,5 @@
 <?php
 
-use GuzzleHttp\Client;
-use GuzzleHttp\Exception\ClientException;
-
 /** @var modX $modx */
 if (!defined('MODX_CORE_PATH')) {
     /* For dev environment */
@@ -41,7 +38,6 @@ class refreshcacheRefreshProcessor extends modProcessor {
     }
 
     public function initialize() {
-        $this->client = new \GuzzleHttp\Client();
         $this->maxExecutionTime = ini_get('max_execution_time');
         parent::initialize();
         return true;
@@ -57,24 +53,6 @@ class refreshcacheRefreshProcessor extends modProcessor {
         $delay = $this->modx->getOption('refreshcache_request_delay', null, 0, true);
         usleep((int)$delay * 1000);
         set_time_limit($this->maxExecutionTime);
-        if (!empty($uri)) {
-            if ($doc && $doc->checkPolicy('view_resource') && strpos($doc->get('alias'), 'cache') === false ) {
-            try {
-                $this->client->head($uri);
-            } catch (GuzzleHttp\Exception\ClientException $e) {
-                /* These will mainly be unauthorized URLs or 404s */
-                if ($this->modx->getOption('refreshcache_log_all_errors', null, false, true)) {
-                    $this->modx->log(modX::LOG_LEVEL_ERROR, "Exception: " . $e->getMessage());
-                }
-            } catch (Exception $e) {
-                $this->modx->log(modX::LOG_LEVEL_ERROR, "Exception: " . $e->getMessage());
-            }
-            } else {
-                if ($this->modx->getOption('refreshcache_log_all_errors', null, false, true)) {
-                    $this->modx->log(modX::LOG_LEVEL_ERROR, 'Skipping unavailable Resource: ' . $id);
-                }
-            }
-        }
         error_reporting($errorLevel);
         return (json_encode((array('success' => true))));
     }
