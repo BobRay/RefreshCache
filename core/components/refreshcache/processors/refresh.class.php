@@ -6,31 +6,21 @@ if (file_exists(MODX_CORE_PATH . 'model/modx/modprocessor.class.php')) {
     include_once MODX_CORE_PATH . 'model/modx/modprocessor.class.php';
 }
 
-class refreshcacheRefreshProcessor extends modProcessor {
+$version = @ include_once MODX_CORE_PATH . "docs/version.inc.php";
+$isModx3 = $version['version'] >= 3;
 
-    public $classKey = 'modResource';
-    public $defaultSortField = 'pagetitle';
-    public $defaultSortDirection = 'asc';
-    public $objectType = 'modResource';
-    public $namespace = 'refreshcache';
-    public $maxExecutionTime;
-    /* @var $client \GuzzleHttp\Client */
-    public $client = null;
-
-    /**
-     * Gets Component Assets URL based on assets_path
-     * field of namespace
-     * @param $namespace
-     * @return string
-     */
-    public function getComponentCorePath($namespace) {
-        $obj = $this->modx->getObject('modNamespace', array('name' => $namespace));
-        $errorLevel = error_reporting();
-        error_reporting($errorLevel & ~E_DEPRECATED);
-        $cp =  $obj->getCorePath() . 'components/' . $namespace . '/';
-        error_reporting($errorLevel);
-        return $cp;
+if ($isModx3) {
+    abstract class tempRCprocessor extends MODX\Revolution\Processors\ModelProcessor {
+        protected string $prefix = 'MODX\REvolution\\';
     }
+} else {
+    abstract class tempRCprocessor extends modProcessor {
+        protected string $prefix = '';
+    }
+}
+
+class refreshcacheRefreshProcessor extends tempRCprocessor {
+    public string $maxExecutionTime;
 
     public function initialize() {
         $this->maxExecutionTime = ini_get('max_execution_time');
