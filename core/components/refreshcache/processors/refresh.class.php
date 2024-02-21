@@ -26,6 +26,7 @@ if ($isModx3) {
 class refreshcacheRefreshProcessor extends tempRCprocessor {
     public string $maxExecutionTime;
 
+    /** @return bool */
     public function initialize() {
         $this->maxExecutionTime = ini_get('max_execution_time');
         parent::initialize();
@@ -33,9 +34,13 @@ class refreshcacheRefreshProcessor extends tempRCprocessor {
     }
 
     public function process(array $scriptProperties = array()) {
+        /** @var modResource $doc */
         $cm = $this->modx->getCacheManager();
 
+        /* Save old error_reporting level */
         $errorLevel = error_reporting();
+
+        /* Prevent PHP 8 deprecation notices from crashing JS */
         error_reporting($errorLevel & ~E_DEPRECATED);
 
         /* Options for generateResource call */
@@ -51,10 +56,14 @@ class refreshcacheRefreshProcessor extends tempRCprocessor {
 
             xPDO::OPT_CACHE_PREFIX => '',
         );
+        /* Get Resource ID */
         $id = $this->getProperty('id');
 
+        /* Save original context key */
         $oldCtx = $this->modx->context->get('key');
 
+        /* Get Resource context key */
+        $context = $this->getProperty('context');
 
         /* Set context to prevent caching in 'mgr' dir */
         $this->modx->context->set('key', $context);
@@ -70,8 +79,10 @@ class refreshcacheRefreshProcessor extends tempRCprocessor {
         @$doc->process();
         @$cm->generateResource($doc, $options);
 
+        /* Restore $modx->context */
         $this->modx->context->set('key', $oldCtx);
 
+        /* restore error level reporting */
         error_reporting($errorLevel);
         return (json_encode((array('success' => true))));
     }
