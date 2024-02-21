@@ -1,11 +1,6 @@
 <?php
 
 /** @var modX $modx */
-if (!defined('MODX_CORE_PATH')) {
-    /* For dev environment */
-    include_once 'c:/xampp/htdocs/addons/assets/mycomponents/instantiatemodx/instantiatemodx.php';
-    $modx->log(modX::LOG_LEVEL_ERROR, 'Instantiated MODX');
-}
 
 if (file_exists(MODX_CORE_PATH . 'model/modx/modprocessor.class.php')) {
     include_once MODX_CORE_PATH . 'model/modx/modprocessor.class.php';
