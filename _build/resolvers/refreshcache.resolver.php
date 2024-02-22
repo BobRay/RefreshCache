@@ -40,7 +40,7 @@ if ($transport) {
    ? 'MODX\Revolution\\'
    : '';
 
-
+/* Remove obsolete files and directories */
 switch ($options[xPDOTransport::PACKAGE_ACTION]) {
     case xPDOTransport::ACTION_INSTALL:
     case xPDOTransport::ACTION_UPGRADE:
@@ -79,13 +79,11 @@ switch ($options[xPDOTransport::PACKAGE_ACTION]) {
        $dirs = array(
            $corePath . 'elements/snippets',
            $corePath . 'elements',
-           $corePath . 'model/refreshcache',
-           $corePath . 'model',
        );
 
        foreach($dirs as $dir) {
            if (file_exists($dir)) {
-               rmdir($dir);
+               @rrmdir($dir);
            }
        }
 
@@ -105,6 +103,23 @@ switch ($options[xPDOTransport::PACKAGE_ACTION]) {
 
     case xPDOTransport::ACTION_UNINSTALL:
         break;
+}
+
+/* Recursive function to remove non-empty directories */
+function rrmdir($dir) {
+    if (is_dir($dir)) {
+        $objects = scandir($dir);
+        foreach ($objects as $object) {
+            if ($object != "." && $object != "..") {
+                if (filetype($dir . "/" . $object) == "dir") {
+                    rrmdir($dir . "/" . $object);
+                } else {
+                    unlink($dir . "/" . $object);
+                }
+            }
+        }
+        rmdir($dir);
+    }
 }
 
 
