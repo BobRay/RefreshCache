@@ -1,6 +1,6 @@
 <?php
 /**
-* Connector file for UpgradeMODX extra
+* Connector file for RefreshCache extra
 *
 * Copyright 2015-2021 Bob Ray <https://bobsguides.com>
 * Created on 07-16-2018
