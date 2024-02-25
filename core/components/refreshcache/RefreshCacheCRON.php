@@ -185,15 +185,6 @@ if($numFiles < $cacheMin) { // need to refresh the cache
    // $url = $resource['uri'];
     $context = $resource['context_key'];
 
-    /* Avoid infinite loop when requesting this page; skip CacheClear */
-    /*if (stripos($pagetitle, 'Articles') || strpos($url, 'cache-clear')) {
-        continue;
-    }*/
-
-    if (stripos($pagetitle, 'Article') !== false) {
-        continue;
-    }
-
     if($debug) {
         echo sprintf("%1$04d ",$i++) . "\n -- Refreshing: " .  $pagetitle;
     }
