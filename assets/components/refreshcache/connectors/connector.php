@@ -33,8 +33,12 @@ require_once MODX_CORE_PATH . 'config/' . MODX_CONFIG_KEY . '.inc.php';
 require_once MODX_CONNECTORS_PATH . 'index.php';
 
 $modx->lexicon->load($namespace . ':default');
+
+$prefix = $modx->getVersionData()['version'] >=3
+    ?'MODX\Revolution\\'
+    : '';
 /** @var modNamespace $namespaceObject */
-$namespaceObject = $modx->getObject('modNamespace', array('name' => $namespace));
+$namespaceObject = $modx->getObject($prefix . 'modNamespace', array('name' => $namespace));
 
 $errorLevel = error_reporting();
 error_reporting($errorLevel & ~E_DEPRECATED);

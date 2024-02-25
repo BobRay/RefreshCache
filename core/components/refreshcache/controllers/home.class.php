@@ -20,6 +20,8 @@ class refreshcacheHomeManagerController extends modExtraManagerController {
     /** @var $namespaceObj modNamespace */
     public $namespaceObj = null;
 
+    public $prefix = '';
+
     public function getPageTitle() {
         return 'RefreshCache';
     }
@@ -29,9 +31,12 @@ class refreshcacheHomeManagerController extends modExtraManagerController {
     }
 
     public function initialize() {
+        $this->prefix = $this->modx->getVersionData()['version'] >= 3
+            ? 'MODX\Revolution\\'
+            : '';
         $this->modx->lexicon->load('refreshcache:default');
 
-        $this->namespaceObj = $this->modx->getObject('modNamespace', array('name' => $this->namespace));
+        $this->namespaceObj = $this->modx->getObject($this->prefix . 'modNamespace', array('name' => $this->namespace));
         $errorLevel = error_reporting();
         error_reporting($errorLevel & ~E_DEPRECATED);
 
