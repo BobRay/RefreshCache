@@ -178,11 +178,9 @@ if($numFiles < $cacheMin) { // need to refresh the cache
 
   foreach ($resources as $resource) {
 
-    //  $modx->cacheManager->refresh(array($resource->getCacheKey()));
-
     $pageId = $resource['id'];
     $pagetitle = $resource['pagetitle'];
-   // $url = $resource['uri'];
+
     $context = $resource['context_key'];
 
     if($debug) {
