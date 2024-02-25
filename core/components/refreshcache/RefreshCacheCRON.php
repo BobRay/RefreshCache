@@ -186,7 +186,7 @@ if($numFiles < $cacheMin) { // need to refresh the cache
     $context = $resource['context_key'];
 
     if($debug) {
-        echo sprintf("%1$04d ",$i++) . "\n -- Refreshing: " .  $pagetitle;
+        echo "\n-- Refreshing: " .  $pagetitle . ' (' . $pageId . ')';
     }
       $props = array(
           'context' => $context,
