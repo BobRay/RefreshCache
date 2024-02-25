@@ -38,7 +38,7 @@ $(document).ready(function (event) {
         var results = $('#refreshcache_results');
         var pageTitleDiv = $('#refreshcache_pagetitle');
 
-        $("#refreshcache_submit").fadeOut("slow");
+       $("#refreshcache_submit").fadeOut("fast");
 
         $.ajax({
             type: "get",
