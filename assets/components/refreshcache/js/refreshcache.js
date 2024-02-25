@@ -9,9 +9,9 @@ function progress(percent, $element, index) {
     var pageTitleDiv = $('#refreshcache_pagetitle');
     var progressBarWidth = percent * $element.width() / 100;
     if (percent >= 8) {
-        $element.find('div').animate({width: progressBarWidth}, 300, 'linear').html("&nbsp;" + percent + "%");
+        $element.find('div').animate({width: progressBarWidth}, 100, 'linear').html("&nbsp;" + percent + "%");
     } else {
-        $element.find('div').animate({width: progressBarWidth}, 300, 'linear');
+        $element.find('div').animate({width: progressBarWidth}, 100, 'linear');
     }
 
     if (percent >= 100) {
