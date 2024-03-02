@@ -76,6 +76,7 @@ class refreshcacheRefreshProcessor extends tempRCprocessor {
 
         set_time_limit($this->maxExecutionTime);
 
+        $this->modx->resource = $doc;
         @$doc->process();
         @$cm->generateResource($doc, $options);
 
