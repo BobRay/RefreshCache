@@ -72,10 +72,13 @@ $debug = true;  /* Turn this to see output during tests when running in a snippe
 $cacheMin = 350;  // minimum number of files that should be in the cache, set to 0 to always refresh cache
 $includeHidemenu = 0; // whether to include resources that are hidden from the menus (1 = yes, 0 = no)
 $sendEmail = false;
-$logCacheRefreshToErrorLog = false;
 $delay = 0; // delay in seconds between fetching the next resource, if needed to reduce server load
 $emailAddress = 'you@yoursite.com';
 
+/* Log final results to the MODX Error Log */
+$logResults = false;
+
+/* For dev env. */
 @include dirname(__FILE__, 7) . '/config.core.php';
 if (!defined('MODX_CORE_PATH')) {
     @include dirname(__FILE__, 4) . '/config.core.php';
@@ -188,7 +191,7 @@ if($numFiles < $cacheMin) { // need to refresh the cache
   /* keep MODX happy (MODX wants to close an output buffer - make sure there is one) */
   ob_start();
 
-  if ($sendEmail || $logCacheRefreshToErrorLog) {
+  if ($sendEmail || $logResults) {
       $message = "The " . $siteName . " cache was refreshed.\n  Number of pages: " . count($resources) . "\n   Execution time: {$totalTime}";
       $subject = $siteName . ' site cache refresh';
   }
@@ -196,7 +199,7 @@ if($numFiles < $cacheMin) { // need to refresh the cache
     mail($emailAddress, $subject, $message);
   }
 
-  if ($logCacheRefreshToErrorLog) {
+  if ($logResults) {
       $modx->log(modX::LOG_LEVEL_ERROR, $message);
   }
 }
