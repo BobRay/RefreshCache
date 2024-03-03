@@ -117,7 +117,7 @@ if($numFiles < $cacheMin) { // need to refresh the cache
 
   $mtime = microtime();
   $mtime = explode(" ", $mtime);
-  $mtime = $mtime[1] + $mtime[0];
+  $mtime = (float) $mtime[1] + (float) $mtime[0];
   $tstart = $mtime;
 
   if (file_exists(MODX_ASSETS_PATH . 'mycomponents/refreshcache/core/components/refreshcache/processors/')) {
@@ -179,7 +179,7 @@ if($numFiles < $cacheMin) { // need to refresh the cache
 
   $mtime = microtime();
   $mtime = explode(" ", $mtime);
-  $mtime = $mtime[1] + $mtime[0];
+  $mtime = (float) $mtime[1] + (float) $mtime[0];
   $tend = $mtime;
   $totalTime = ($tend - $tstart);
   $totalTime = sprintf("%2.2f s", $totalTime);
