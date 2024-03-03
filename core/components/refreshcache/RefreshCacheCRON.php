@@ -192,7 +192,7 @@ if($numFiles < $cacheMin) { // need to refresh the cache
       );
 
       $processorReturn = $modx->runProcessor('refresh', $props, $options);
-      usleep($delay);
+      usleep($delay * 1000);
 
 
     /* curl_setopt($ch, CURLOPT_URL, $url); // Set CURL options
