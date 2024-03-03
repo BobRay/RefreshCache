@@ -144,28 +144,6 @@ if($numFiles < $cacheMin) { // need to refresh the cache
     $modx->log(modX::LOG_LEVEL_ERROR, '[RefreshCache] No Cacheable Resources found');
   }
 
-  /*$ch = curl_init(); // Initialize Curl
-  if ($ch === false) {
-      if ($debug) {
-          echo "Failed to initialize cURL\n";
-      }
-  }*/
-
- /* @curl_setopt($ch, CURLOPT_NOBODY, true);
-  @curl_setopt($ch, CURLOPT_RETURNTRANSFER, false);
-  @curl_setopt($ch, CURLOPT_USERAGENT, "Mozilla/4.0 (compatible; MSIE 5.01; Windows NT 5.0)");
-  @curl_setopt($ch, CURLOPT_FRESH_CONNECT, 1);*/ // don't use a cached version of the url
-
-  set_time_limit(0);                   // ignore php timeout
-  ignore_user_abort(true);             // keep on going even if user pulls the plug
-
-
-
-     /* while (ob_get_level()) {
-          ob_end_clean();
-      } // remove output buffers
-      ob_implicit_flush(true);  */           // output stuff directly
-
       if ($debug) {
           echo "\nRefreshing " . count($resources) .
               " resources\n****************************";
@@ -193,18 +171,6 @@ if($numFiles < $cacheMin) { // need to refresh the cache
 
       $processorReturn = $modx->runProcessor('refresh', $props, $options);
       usleep($delay * 1000);
-
-
-    /* curl_setopt($ch, CURLOPT_URL, $url); // Set CURL options
-
-    $output = curl_exec($ch); // get the page
-
-    if (curl_errno($ch)) {
-        $modx->log(modX::LOG_LEVEL_ERROR, "[RefreshCache] cURL error: " . curl_errno($ch) . " - " . curl_error($ch));
-        if($debug) {
-            echo "\ncURL error: " . curl_errno($ch) . " - " . curl_error($ch);
-      }
-    } */
   } /* end foreach($resources) loop */
 
 //  curl_close($ch);
