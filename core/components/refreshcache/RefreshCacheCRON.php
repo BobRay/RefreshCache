@@ -29,50 +29,55 @@
 /**
 * MODx RefreshCache Snippet
 *
-* Description: refreshes the cache by visiting all site pages that are
+* Description: refreshes the cache using calls to MODX core methods.
+* Refreshes all site pages that are
 * published, undeleted, cacheable, and not hidden from menus.
 *
 * The point is for this program to spend time waiting for the pages so
 * the site visitors don't have to. They'll see cached pages, which will be
 * delivered much faster.
 *
-* RefreshCache is an inelegant, brute-force snippet. It refreshes the cache by
-* requesting every page with cURL. On many servers, it will produce no
-* visible output at all until finished -- you'll be looking at a blank screen.
 *
-* The larger the site, the longer it takes. It's intentionally slow to avoid
-* stressing the server and to keep from running afoul of bot-blocking software.
+* The larger the site, the longer it takes. If you run bot-blocking software,
+* you'll want to set the RefreshCache Request Delay setting to at least 1
+* (one second), to prevent triggering the software. You may also set it to
+* fractions of a second, e.g., 0.5
 *
-* On a 100-page site, at broadband speeds, it can take 5-10 minutes to run,
-* depending on the connection speed and how complex the pages are.
-* Larger sites can take much longer.
+* With a delay of 0, at Bob's Guides, it will refresh about 5 pages per second.
+* Complex pages with a lot of tags to process, many conditional output
+* filters, or long-running snippet can take longer.
 *
-* The only settable property is &delay, which sets the number of seconds to sleep
-* between page requests. The default is 1 second.
+* See the variables below to change options.
 *
-* To install, paste the code into a snippet called clear-cache. Create a resource
-* called ClearCache with just the snippet tag: [[!ClearCache]].
+* To install, paste the code into a snippet called refresh-cache. Create a resource
+* called Refresh Cache with just the snippet tag: [[!ClearCache]].
 *
-* The resource should not be cacheable and the alias should be
-* refresh-cache.
+* Important!: The resource should not be cacheable and the alias should be
+* refresh-cache to prevent an infinite loop and to prevent the cache-clear
+* snippet (if you have it installed) from undoing its work.
 *
 * Create an empty template with just this tag: [[*content]] and be sure to
 * assign that template to the resource.
 *
-* To run the snippet, preview the ClearCache resource.
+* To test the snippet, preview the Refresh Cache resource.
+*
+* The snippet can be further configured by setting the System Settings in the
+* refreshcache namespace.
 *
 * @package refreshCache
 *
 *
-* delay (optional) int - seconds to delay between requests; default: 1;
+* delay (optional) int - seconds to delay between requests; default: 0;
 */
 
-$debug = true;  /* Turn this to see output during tests when running in a snippet or
-                 from the command line. */
+$debug = true;  /* Turn this on to see output during tests when running in a snippet or from the command line. */
+
 $cacheMin = 350;  // minimum number of files that should be in the cache, set to 0 to always refresh cache
+
 $includeHidemenu = 0; // whether to include resources that are hidden from the menus (1 = yes, 0 = no)
+
+/* Attempt to send email for each run */
 $sendEmail = false;
-$delay = 0; // delay in seconds between fetching the next resource, if needed to reduce server load
 $emailAddress = 'you@yoursite.com';
 
 /* Log final results to the MODX Error Log */
@@ -80,6 +85,8 @@ $logResults = false;
 
 /* For dev env. */
 @include dirname(__FILE__, 7) . '/config.core.php';
+
+/* For production env. */
 if (!defined('MODX_CORE_PATH')) {
     @include dirname(__FILE__, 4) . '/config.core.php';
 }
@@ -88,6 +95,11 @@ if (!defined('MODX_CORE_PATH')) {
     echo "\nCould not find config.core.php file";
     exit;
 }
+
+/* Path to where your cached resources are. Used only to
+   help calculation for cacheMin. Does not affect cache
+   file location */
+$cachePath = MODX_CORE_PATH . 'cache/resource/web/resources/';
 
 require_once MODX_CORE_PATH . 'model/modx/modx.class.php';
 $modx = new modX();
@@ -109,7 +121,7 @@ $prefix = $modx->getVersionData()['version'] >= 3
     : '';
 
 $numFiles = 0;
-$cachePath = MODX_CORE_PATH . 'cache/resource/web/resources/';
+
 if(is_dir($cachePath)) {
   $numFiles = count(glob($cachePath . "*"));
 }
@@ -124,8 +136,10 @@ if($numFiles < $cacheMin) { // need to refresh the cache
   $tstart = $mtime;
 
   if (file_exists(MODX_ASSETS_PATH . 'mycomponents/refreshcache/core/components/refreshcache/processors/')) {
+      /* Development environment */
       $processorPath = MODX_ASSETS_PATH . 'mycomponents/refreshcache/core/components/refreshcache/processors/';
   } else {
+      /* Production env. */
       $processorPath = MODX_CORE_PATH . 'components/refreshcache/processors/';
   }
 
@@ -157,8 +171,9 @@ if($numFiles < $cacheMin) { // need to refresh the cache
 
   $i = 1;
 
+  /* Resources are not objects here, just arrays of fields
+     selected in GetList processor */
   foreach ($resources as $resource) {
-
     $pageId = $resource['id'];
     $pagetitle = $resource['pagetitle'];
 
@@ -175,8 +190,6 @@ if($numFiles < $cacheMin) { // need to refresh the cache
       $processorReturn = $modx->runProcessor('refresh', $props, $options);
       usleep($delay * 1000);
   } /* end foreach($resources) loop */
-
-//  curl_close($ch);
 
   unset($output, $ch, $pagetitle, $url, $pageId);
 
