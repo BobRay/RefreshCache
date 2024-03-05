@@ -47,6 +47,11 @@ if ($namespaceObject) {
 } else {
     $modx->log(modX::LOG_LEVEL_ERROR, 'Could not get namespace: ' . $namespace);
 }
+if (file_exists(MODX_ASSETS_PATH . 'mycomponents/refreshcache/core/components/refreshcache/processors/')) {
+    /* Development environment */
+    $extraCorePath = MODX_ASSETS_PATH . 'mycomponents/refreshcache/core/components/refreshcache/';
+}
+
 error_reporting($errorLevel);
 $path = $extraCorePath . 'processors/';
 
