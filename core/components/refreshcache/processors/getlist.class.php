@@ -80,7 +80,7 @@ class refreshcacheGetListProcessor extends tempRCGProcessor {
     }
 
     public function prepareRow(xPDOObject $object) {
-        $ta = $object->toArray('', false, true, true);
+        $ta = $object->toArray('', false, true, false);
 
         return $ta;
     }
