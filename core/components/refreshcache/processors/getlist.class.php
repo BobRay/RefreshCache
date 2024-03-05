@@ -53,8 +53,11 @@ class refreshcacheGetListProcessor extends tempRCGProcessor {
         }
 
         $omits = array(
-            'modWebLink', 'modSymLink', 'modStaticResource',
-            'Article', 'ArticlesContainer'
+            'modSymLink',
+            'modWebLink',
+         // 'modStaticResource',
+         // 'Article',
+         // 'ArticlesContainer'
         );
 
         $fields = array(
