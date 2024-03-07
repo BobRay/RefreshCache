@@ -35,27 +35,7 @@ class refreshcacheRefreshProcessor extends tempRCprocessor {
 
     public function process(array $scriptProperties = array()) {
         /** @var modResource $doc */
-        $cm = $this->modx->getCacheManager();
 
-        /* Save old error_reporting level */
-        $errorLevel = error_reporting();
-
-        /* Prevent PHP 8 deprecation notices from crashing JS */
-        error_reporting($errorLevel & ~E_DEPRECATED);
-
-        /* Options for generateResource call */
-        $options = array(
-            xPDO::OPT_CACHE_KEY => $this->modx->getOption
-            ('cache_db_key', null, 'db'),
-
-            xPDO::OPT_CACHE_HANDLER => $this->modx->getOption
-            (xPDO::OPT_CACHE_DB_HANDLER, null, $this->modx->getOption(xPDO::OPT_CACHE_HANDLER, null, 'xPDO\\Cache\\xPDOFileCache')),
-
-            xPDO::OPT_CACHE_FORMAT => (integer)$this->modx->getOption
-            ('cache_db_format', null, $this->modx->getOption(xPDO::OPT_CACHE_FORMAT, null, xPDOCacheManager::CACHE_PHP)),
-
-            xPDO::OPT_CACHE_PREFIX => '',
-        );
         /* Get Resource ID */
         $id = $this->getProperty('id');
 
@@ -79,7 +59,6 @@ class refreshcacheRefreshProcessor extends tempRCprocessor {
         $this->modx->resource = $doc;
         // $this->refreshResource_curl($doc);
 
-        /* Restore $modx->context */
         $this->refreshResource_generateResource($doc);
         $this->modx->context->set('key', $oldCtx);
 
