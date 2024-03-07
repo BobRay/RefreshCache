@@ -36,6 +36,7 @@ class refreshcacheGetListProcessor extends tempRCGProcessor {
 
     public function initialize() {
         parent::initialize();
+
         $this->classKey = $this->prefix . 'modResource';
         $limit = $this->modx->getOption('rc.limit', null, 0, true);
         $this->setProperty('limit', $limit);
@@ -44,7 +45,6 @@ class refreshcacheGetListProcessor extends tempRCGProcessor {
 
     public function prepareQueryBeforeCount(xPDOQuery $c) {
         $c->select('id,template,pagetitle,context_key,class_key');
-        $c->sortby('alias');
         $templates = $this->modx->getOption
         ('refreshcache_templates_enabled',
             null, array(), false);
