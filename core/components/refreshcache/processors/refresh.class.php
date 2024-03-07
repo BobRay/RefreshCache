@@ -57,13 +57,21 @@ class refreshcacheRefreshProcessor extends tempRCprocessor {
         set_time_limit($this->maxExecutionTime);
 
         $this->modx->resource = $doc;
+        $displayErrors = ini_set('display_errors', 0);
+        $errorLevel = error_reporting(0);
+
+        /* Old method */
         // $this->refreshResource_curl($doc);
 
         $this->refreshResource_generateResource($doc);
-        $this->modx->context->set('key', $oldCtx);
 
-        /* restore error level reporting */
+        /* Restore error settings and context */
+        if ($displayErrors) {
+            ini_set('display_errors', $displayErrors);
+        }
+        $this->modx->context->set('key', $oldCtx);
         error_reporting($errorLevel);
+
         return (json_encode((array('success' => true))));
     }
 
