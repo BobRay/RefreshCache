@@ -70,6 +70,8 @@
  * delay (optional) int - seconds to delay between requests; default: 0;
  */
 
+$newLine = php_sapi_name() == "cli" ? "\n" : '<br>';
+
 $debug = true;  /* Turn this on to see output during tests when running in a snippet or from the command line. */
 
 $cacheMin = 350;  // minimum number of files that should be in the cache, set to 0 to always refresh cache
@@ -92,7 +94,7 @@ if (!defined('MODX_CORE_PATH')) {
 }
 
 if (!defined('MODX_CORE_PATH')) {
-    echo "\nCould not find config.core.php file";
+    echo $newLine . "Could not find config.core.php file";
     exit;
 }
 
@@ -101,15 +103,18 @@ if (!defined('MODX_CORE_PATH')) {
    file location */
 $cachePath = MODX_CORE_PATH . 'cache/resource/web/resources/';
 
-require_once MODX_CORE_PATH . 'model/modx/modx.class.php';
-$modx = new modX();
-if (!$modx) {
-    if ($debug) {
-        echo "\nCould not create MODX class";
+if (!isset($modx) || ! is_object($modx)) {
+    require_once MODX_CORE_PATH . 'model/modx/modx.class.php';
+    $modx = new modX();
+    if (!$modx) {
+        if ($debug) {
+            echo $newLine . "Could not create MODX class";
+        }
+        exit;
     }
-    exit;
+    $modx->initialize('web');
 }
-$modx->initialize('web');
+
 $limit = 0;
 $delay = $modx->getOption('refreshcache_request_delay',
     null, 0, true);
@@ -162,8 +167,8 @@ if ($numFiles < $cacheMin) { // need to refresh the cache
     }
 
     if ($debug) {
-        echo "\nRefreshing " . count($resources) .
-            " resources\n****************************";
+        echo $newLine . 'Refreshing ' . count($resources) .
+            " resources" . $newLine . '****************************';
     }
 
     /* convince the browser we mean business */
@@ -182,7 +187,7 @@ if ($numFiles < $cacheMin) { // need to refresh the cache
         $context = $resource['context_key'];
 
         if ($debug) {
-            echo "\n-- Refreshing: " . $pagetitle . ' (' . $pageId . ')';
+            echo $newLine . "-- Refreshing: " . $pagetitle . ' (' . $pageId . ')';
         }
         $props = array(
             'context' => $context,
@@ -203,7 +208,7 @@ if ($numFiles < $cacheMin) { // need to refresh the cache
     $totalTime = sprintf("%2.2f s", $totalTime);
 
     if ($debug) {
-        echo "\nFINISHED -- Execution time: {$totalTime}";
+        echo $newLine. "FINISHED -- Execution time: {$totalTime}";
     }
     /* keep MODX happy (MODX wants to close an output buffer - make sure there is one) */
     ob_start();
