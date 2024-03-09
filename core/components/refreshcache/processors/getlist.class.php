@@ -3,14 +3,26 @@
 /** @var modX $modx */
 
 /* Set MODX_CORE_PATH */
-include dirname(__FILE__, 5) . '/config.core.php';
+if (!defined('MODX_CORE_PATH')) {
+    /* For dev env. */
+    @include_once dirname(__FILE__, 7) . '/config.core.php';
+
+    if (!defined('MODX_CORE_PATH')) {
+        @include dirname(__FILE__, 4) . '/config.core.php';
+    }
+}
+
+if (!defined('MODX_CORE_PATH')) {
+    echo "\nCould not find config.core.php file";
+    exit;
+}
 
 /* For MODX 2 */
 if (file_exists(MODX_CORE_PATH . 'model/modx/modprocessor.class.php')) {
     include_once MODX_CORE_PATH . 'model/modx/modprocessor.class.php';
 }
 
-$version = @ include_once MODX_CORE_PATH . "docs/version.inc.php";
+$version = @ include MODX_CORE_PATH . "docs/version.inc.php";
 $isModx3 = $version['version'] >= 3;
 
 if ($isModx3) {
