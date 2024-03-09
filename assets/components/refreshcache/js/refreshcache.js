@@ -16,8 +16,9 @@ function progress(percent, $element, index) {
 
     if (percent >= 100) {
         setTimeout(function () {
+            elapsedTime = end();
             pageTitleDiv.fadeOut('slow', function () {
-                $(this).text(_('rc_refreshed') + ' ' + index + ' ' + _('rc_resources'))
+                $(this).text(_('rc_refreshed') + ' ' + index + ' ' + _('rc_resources') + ' in ' + elapsedTime + ' seconds')
             }).fadeIn('slow');
         }, 1000);
     }
@@ -39,7 +40,7 @@ $(document).ready(function (event) {
         var pageTitleDiv = $('#refreshcache_pagetitle');
 
        $("#refreshcache_submit").fadeOut("fast");
-
+        start();
         $.ajax({
             type: "get",
             data: {
@@ -103,3 +104,18 @@ $(document).ready(function (event) {
     }) // end click function
 
 }); // end onready
+
+function start() {
+    startTime = new Date();
+}
+
+function end() {
+    endTime = new Date();
+    var timeDiff = endTime - startTime; //in ms
+    // strip the ms
+    timeDiff /= 1000;
+    return +(Math.round(timeDiff + "e+2") + "e-2");
+    // get seconds
+    // var seconds = Math.round(timeDiff,);
+    console.log(seconds + " seconds");
+}
