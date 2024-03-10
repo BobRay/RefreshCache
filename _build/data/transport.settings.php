@@ -52,7 +52,17 @@ $systemSettings[3]->fromArray(array (
   'xtype' => 'combo-boolean',
   'namespace' => 'refreshcache',
   'area' => 'RefreshCache',
-  'name' => 'Honor hidemenu',
+  'name' => 'Refresh Cache Honor hidemenu',
   'description' => 'Do not refresh resources hidden from menus; default; yes',
+), '', true, true);
+$systemSettings[4] = $modx->newObject('modSystemSetting');
+$systemSettings[4]->fromArray(array (
+  'key' => 'refreshcache_limit',
+  'value' => '0',
+  'xtype' => 'numberfield',
+  'namespace' => 'refreshcache',
+  'area' => 'RefreshCache',
+  'name' => 'Refresh Cache Limit',
+  'description' => 'Maximum number of resources for getList to retrieve; default: 0 (no limit)',
 ), '', true, true);
 return $systemSettings;
