@@ -50,7 +50,7 @@ class refreshcacheGetListProcessor extends tempRCGProcessor {
         parent::initialize();
 
         $this->classKey = $this->prefix . 'modResource';
-        $limit = $this->modx->getOption('rc.limit', null, 0, true);
+        $limit = $this->modx->getOption('refreshcache_limit', null, 0, true);
         $this->setProperty('limit', $limit);
         return true;
     }

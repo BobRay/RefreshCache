@@ -115,7 +115,7 @@ if (!isset($modx) || ! is_object($modx)) {
     $modx->initialize('web');
 }
 
-$limit = 0;
+$limit = $modx->getOption('refreshcache_limit', null, 0, true);
 $delay = $modx->getOption('refreshcache_request_delay',
     null, 0, true);
 
