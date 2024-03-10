@@ -434,6 +434,7 @@ $components = array(
         'systemSettings',
         'menus',
         'resources',
+        'snippets'
     ),
     /*  Array  of resources to process. You can specify specific resources
         or parent (container) resources, or both.
