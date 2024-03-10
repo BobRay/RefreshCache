@@ -72,9 +72,9 @@ Go to System | Package Management on the main menu in the MODX Manager and click
 
 <p>Thanks to Michael Snow, RefreshCache can be run as a cron job. Just point your cron job at <code>path/to/modx/core/components/refreshcache/RefreshCacheCRON.php</code>. If you are on a Mac, there is a version of a cron job file for you in <code>core/components/refreshcache/_MACOSX</code> directory (untested).</p>
 
-<p>There are variables in the <code>RefreshCacheCRON.php</code> file that set various options. A number of them have to be set manually in the file. You have the option to have the run reported to the MODX Error Log, or in an email, or both.</p>
+<p>There are variables in the <code>RefreshCacheCRON.php</code> file that set various options. Some of them are set by the RefreshCache System Settings. Others have to be set manually in the file. You have the option to have the run reported to the MODX Error Log, or in an email, or both.</p>
 
-<p>If you have cPanel, it should have Cron Jobs in the Advanced section. There's a wizard that will help you set the time and frequency of the cron job. </p>
+<p>If you have cPanel, it should have Cron Jobs in the Advanced section. There's a wizard that will help you set the time and frequency of the cron job. Be sure to get the case of the file (<code>RefreshCacheCRON.php</code>) correct if you are on a server like Apache, where file names are case-sensitive. </p>
 
 
 <h3>Troubleshooting</h3>
