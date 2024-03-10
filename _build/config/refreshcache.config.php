@@ -200,7 +200,10 @@ $components = array(
     'elements' => array(
 
         'snippets' => array(
-
+            'RefreshCache' => array(
+                'category' => 'RefreshCache',
+                'description' => 'Refreshes the site cache',
+            ),
         ),
         'chunks' => array(
         ),
@@ -215,6 +218,14 @@ $components = array(
      * ************************************************************** */
     /* Array of Resource pagetitles for your Extra; All other fields optional.
        You can set any resource field here */
+
+    'resources' => array(
+        'RefreshCache' => array(
+            'pagetitle' => 'RefreshCache',
+            'alias' => 'refresh-cache',
+            'template' => 'default',
+        ),
+    ),
 
     /* Array of languages for which you will have language files,
      *  and comma-separated list of topics
@@ -421,7 +432,8 @@ $components = array(
     */
     'process' => array(
         'systemSettings',
-        'menus'
+        'menus',
+        'resources',
     ),
     /*  Array  of resources to process. You can specify specific resources
         or parent (container) resources, or both.
@@ -432,6 +444,7 @@ $components = array(
     'getResourcesById' => false,
 
     'exportResources' => array(
+            'RefreshCache',
     ),
     /* Array of resource parent IDs to get children of. */
     'parents' => array(),
