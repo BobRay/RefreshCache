@@ -28,8 +28,12 @@ $snippets = array();
 $snippets[1] = $modx->newObject('modSnippet');
 $snippets[1]->fromArray(array (
   'id' => 1,
-  'description' => 'Refreshes the site cache',
+  'property_preprocess' => false,
   'name' => 'RefreshCache',
+  'description' => 'Refreshcs  the MODX cache',
+  'properties' => 
+  array (
+  ),
 ), '', true, true);
 $snippets[1]->setContent(file_get_contents($sources['source_core'] . '/elements/snippets/refreshcache.snippet.php'));
 
