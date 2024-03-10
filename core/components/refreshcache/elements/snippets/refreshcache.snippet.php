@@ -34,3 +34,9 @@
  *
  * @package refreshcache
  **/
+
+if (file_exists(MODX_ASSETS_PATH . 'mycomponents/refreshcache/core/components/refreshcache/RefreshCacheCRON.php' )) {
+    include MODX_ASSETS_PATH . 'mycomponents/refreshcache/core/components/refreshcache/RefreshCacheCRON.php';
+} else {
+    include MODX_CORE_PATH . 'components/refreshcache/RefreshCacheCRON.php';
+}
