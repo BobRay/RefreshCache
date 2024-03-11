@@ -41,6 +41,8 @@ $_lang['setting_refreshcache_request_delay'] = 'RefreshCache Request Delay';
 $_lang['setting_refreshcache_request_delay_desc'] = 'Delay between cURL requests (in seconds); note that there is a built-in delay of about 1 second; default: 0';
 $_lang['setting_refreshcache_honor_hidemenu'] = 'Honor hidemenu';
 $_lang['setting_refreshcache_honor_hidemenu_desc'] = 'Do not refresh resources hidden from menus; default; yes';
+$_lang['setting_refreshcache_limit'] = 'Refresh Cache Limit';
+$_lang['setting_refreshcache_limit_desc'] = 'Maximum number of resources for getList to retrieve; default: 0 (no limit)';
 
 /* Used in refreshcache.snippet.php */
 $_lang['rc_admin_only'] = 'This code can only be run by an administrator';
