@@ -49,10 +49,6 @@ switch ($options[xPDOTransport::PACKAGE_ACTION]) {
            $action->remove();
        }
 
-       $snippet = $modx->getObject($prefix . 'modSnippet', array('name' => 'RefreshCache'));
-       if ($snippet) {
-           $snippet->remove();
-       }
        $corePath = MODX_CORE_PATH . 'components/refreshcache/';
        $assetsPath = MODX_ASSETS_PATH . 'components/refreshcache/';
        $files = array(
