@@ -2,12 +2,18 @@ Changelog for RefreshCache
 
 RefreshCache 1.3.0-pl
 -------------------------
- - Switch to Mark Hamstra's Guzzle7 extra
  - Updates for MODX 3
  - Updates for PHP 8
+ - Handle multiple contexts
+ - Handle hidden resources
+ - Handle Articles
+ - Increase speed dramatically
+ - Use MODX internal cache generation
+ - No longer use cURL or Guzzle
+ - Stop affecting hit counters
  - Add honor_hidemenu System Setting
  - Improve timeout prevention
- - Add cron job code -- thanks to Snow Creative
+ - Add cron job code -- (thanks to Snow Creative)
 
 RefreshCache 1.2.1-pl
 -------------------------
