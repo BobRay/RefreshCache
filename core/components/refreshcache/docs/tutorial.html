@@ -1,86 +1,77 @@
-<br>
-<p>RefreshCache refreshes the cache by visiting all site pages that are
-published, undeleted, and cacheable, as long as they are not hidden in some way.</p>
 
-<p>The point is for this program to spend time waiting for the pages so
-the site visitors don't have to. They'll see cached pages, which will be
-delivered much faster.</p>
+<p>As of version 1.3.0-pl, RefreshCache refreshes the cache by using MODX internal methods to generate the cached Resources. Along the way, it will cache elements like snippets and chunks used by the Resources when possible.
+</p>
+
+<p>It's now much faster than previous methods, which used cURL to visit each page. It will no longer affect hit counters, and will not cause side effects by executing snippets or plugins attached to the Resources. It will also now refresh the cache for Resources hidden by permission rules and Articles.</p>
+
+<p>It skips Resources that are deleted, unpublished, not marked as cacheable, and (optionally) snippets hidden from menus.</p>
+
+<p>By default, MODX deletes most of the cached Resources and Elements when a Resource is saved, so page loads can be slow until each page is visited by a site visitor. With RefreshCache, you can Refresh the cache in as little as 3 to 5 seconds for a 100-page site.</p>
 
 <p>(Jump to <a href="[[~[[*id]]]]#SetttingsTable">Settings Table</a>.)</p>
 
-<p>RefreshCache is an inelegant, brute-force extra. It refreshes the cache by
-    requesting every page with Guzzle (which uses cURL or streams). The larger the site, the longer it takes. In many cases, <a href="https://bobsguides.com/cachemaster-tutorial.html" target="_blank">CacheMaster</a>, which clears only the cache for the current resource being saved is a better choice, especially on very large sites.</p>
-
-<p>On a 100-page site, at broadband speeds, RefreshCache can take 4-10 minutes to run,
-depending on the connection speed, the browser, and how complex the pages are.
-Larger sites can take much longer, especially if there are lots of images to load, lengthy getResources calls, or complex conditional output modifiers. The longer it takes RefreshCache to run, the more valuable it is to your site's visitors.</p>
-
-<br>
-<div class="box">
-<p>As of Version 1.2.0-pl, RefreshCache has been completely refactored to eliminate PHP timeouts. It has been tested by simulating a site with over 100,000 pages. It is much simpler, slightly prettier, and the RefreshCache Resource and snippet are no longer used. You can remove the RefreshCache Resource if it's still there. The RefreshCache snippet should be removed automatically during the upgrade. The new version reverts to using JQuery and requires Guzzle 7. It should run a little faster since the sleep times have been shortened.</p>
-
-<p>Important: Guzzle 7 requires PHP >= 7.2.5</p>
-</div>
-
-<br>
 <h3>Installing RefreshCache</h3>
 
-<p>
-Go to System | Package Management on the main menu in the MODX Manager and click on the &quot;Download Extras&quot; button. That will take you to the Revolution Repository. Put RefreshCache in the search box and press Enter. Click on the &quot;Download&quot; button, and when the download is finished, click on the &quot;Back to Package Manager&quot; button. That should bring you back to your Package Management grid. Click on the &quot;Install&quot; button next to RefreshCache in the grid. The RefreshCache package should now be installed.</p>
+<p>Go to Extras -> Installer on the MODX Main Menu to launch Package Manager. Click on the &quot;Download Extras&quot; button. That will take you to the Revolution Repository. Put RefreshCache in the search box and press Enter. Click on the &quot;Download&quot; button, and when the download is finished, click on the &quot;Back to Package Manager&quot; button. That should bring you back to your Package Management grid. Click on the &quot;Install&quot; button next to RefreshCache in the grid. The RefreshCache package should now be installed.</p>
 
-<p>After installing RefreshCache, you'll need to reload the Manager page before it will show up under the Extras menu. In fact, if you don't already have any components installed, the Components menu itself won't appear until after you install RefreshCache and then reload the Manager page.</p>
+<p>After installing RefreshCache, you'll need to reload the Manager page before it will show up under the Extras menu.</p>
 
-<br>
 <h3>Usage</h3>
 
-<p>To run RefreshCache, just select the RefreshCache menu item under Components in the Manager's Top Menu. Remember that you'll need to reload the Manager page after installing RefreshCache before the menu item will show up. Once RefreshCache has launched, click on the &quot;Refresh the Cache&quot; button at the top of the page. Important: Do not close the browser window or navigate to another page until RefreshCache has finished.</p>
+<p>There are now three different ways to run RefreshCache</p>
 
-<p>For security, only members of the Administrator group can run RefreshCache and it can only be run from inside the MODX Manager.</p>
+<h4>As a CMP</h4>
 
-<p>If you are using the Articles blog, RefreshCache will refresh Articles along with other Resources. It will refresh anything obtainable with <code>getCollection('modResource')</code>. If snippet results or chunks are processed and cached on any cacheable pages, it will refresh those as well. It will not refresh the cache for resources that are unpublished, hidden from menus, deleted, or restricted by user permissions. </p>
+<p>Click on the Extras main-menu item and select "Refresh Cache." Click on the "Refresh the Cache" button. RefreshCache will show a progress bar and the names of the Resources being refreshed. When it's finished, you'll see the number of resource cache files it has refreshed and the elapsed time.</p>
 
-<br>
-<h3>Settings</h3>
+<p>This is the slowest method, because of the JavaScript involved. This method will refresh about 4 Resources per second.</p>
 
-<p>The only settable options are the three System Settings in the <code>refreshcache</code> namespace. The <code>refreshcache_request_delay</code> System Setting sets the number of milliseconds to sleep between Ajax requests for the file that contains the progress messages. The default is 0 milliseconds, though there is some inherent delay in the process (about one second). You can increase it to take some pressure off the server, but it's usually not necessary.</p>
+<p>See the troubleshooting section below if the process does not finish or shows an error in red in the progress window.</p>
 
-<br>
-<div class="box">
-    <p>Having the Request delay at 0 does not mean that there will be many requests per second. RefreshCache now uses a tail-call-optimized, recursive Ajax function, so every request is started after the previous one has finished. The Request delay (if any) occurs after the Ajax request is completed, so the actual interval will be however long it takes for the Ajax request to complete, plus the delay. The initial delay is set to 0 and will vary depending on each page's load time.</p>
+<h4>As a Snippet</h4>
 
-<p>Some servers may complain about the repeated calls and could throttle them. You might also experience trouble with your browser popping up a message about excessive looping. Usually you can click on &quot;wait,&quot; &quot;OK,&quot; or &quot;Continue&quot; to resume RefreshCache. The results may depend on how well your browser optimizes recursions in JavaScript and on its stack limit.</p>
-</div>
-<br>
+<p>To run the snippet, simply view the "RefreshCache" resource. You'll see a blank page for a while, then the list of refreshed Resources will appear. This is much faster than the previous method. It should refresh 25 to 30 resources per second, depending on how complex the pages are (how many snippets are called in the Template and Resource, and how many tags have to be parsed.</p>
 
-<p>The <code>refreshcache_log_all_errors</code> setting determines if all page access errors are logged to the MODX error log. Most of these will be 401, 403, or 404 errors caused by inaccessible pages that require login or special conditions for access. </p>
+<p>Remember that you'll need to reload the Manager page after installing RefreshCache before the RefreshCache Resource will show up. Important: Do not close the browser window or navigate to another page until RefreshCache has finished.</p>
 
-<br>
-<h3>Files</h3>
+<p>Any Manager user can run RefreshCache with this or the previous method, but you can hide the page with permission rules. You can also hide the CMP on the Extras menu by providing it with a custom permission that only selected users have.</p>
 
-<p>RefreshCache now shows the pagetitles of resources it is refreshing the cache for, and no longer writes a log (though the <code>refreshcache_log_all_errors</code> System Setting will let you log all refresh failures). When finished, it will report how many resources were updated.</p>
+<h4>As a Cron Job</h4>
 
-<br>
-<h3>Program Speed</h3>
-<p>How long it takes the process to finish depends on the browser you use, the delay you've set, the speed of your internet connection, and the page-load time of each resource. I notice that on my localhost install, RefreshCache runs faster in some browsers than others. This depends on how well the browser optimizes JavaScript code. I ran a simulation with over 100,000 resources on Chrome, and it took around 24 hours. With the default settings, it should be around 1 second per resource.</p>
+<p>Thanks to Michael Snow, RefreshCache can be run as a cron job. Just point your cron job at <code>path/to/modx/core/components/refreshcache/RefreshCacheCRON.php</code>. Be sure to get the spelling of the file name right, especially if you are on a server where file names are case-sensitive.</p>
 
-<br>
-<h3>Important Warning!</h3>
+<p>This is the fastest method, and it can refresh up to 40 Resources per second. I would not recommend setting it to run too often &mdash; once per hour (or, better) once per day). Because of this, I prefer to run RefreshCache manually when I've done work on the site.</p>
 
-<p>RefreshCache visits every published, cacheable page on your site. If you have snippet tags on such a page, the snippets will run. If you have a page with a snippet that automatically sends an email (e.g., QuickEmail), you'll get an email. If you have a utility snippet that modifies the database, the database will be modified. I generally leave such pages unpublished, but you might not, so think about what will happen if every cacheable, published page is visited.</p>
-
-<h3>RefreshCache as Cron Job</h3>
-
-<p>Thanks to Michael Snow, RefreshCache can be run as a cron job. Just point your cron job at <code>path/to/modx/core/components/refreshcache/RefreshCacheCRON.php</code>. If you are on a Mac, there is a version of a cron job file for you in <code>core/components/refreshcache/_MACOSX</code> directory (untested).</p>
+<p>If you are on a Mac, there is a version of a cron job file for you in <code>core/components/refreshcache/_MACOSX</code> directory. That version has not been tested lately, and it has not been updated for version 1.3.0-pl, but it may still work.</p>
 
 <p>There are variables in the <code>RefreshCacheCRON.php</code> file that set various options. Some of them are set by the RefreshCache System Settings. Others have to be set manually in the file. You have the option to have the run reported to the MODX Error Log, or in an email, or both.</p>
 
+<p>The cron job will not run if there are already lots of files in the Resource cache. The number is set to 350, but you can change that in the RefreshCacheCRON file. </p>
+
 <p>If you have cPanel, it should have Cron Jobs in the Advanced section. There's a wizard that will help you set the time and frequency of the cron job. Be sure to get the case of the file (<code>RefreshCacheCRON.php</code>) correct if you are on a server like Apache, where file names are case-sensitive. </p>
 
+<h3>Speed Considerations</h3>
+
+<p>The CMP version uses a tail-call-optimized, recursive Ajax function, so every request is started after the previous one has finished. The Request delay you set in the System Settings (if any) occurs after the Ajax request is completed, so the actual interval will be however long it takes for the Ajax request to complete, plus the delay. The initial delay is set to 0 and will vary depending on each page's load time.</p>
+
+<p>Some servers may complain about the repeated calls and could throttle them. You might also experience trouble with your browser popping up a message about excessive looping. Usually you can click on &quot;wait,&quot; &quot;OK,&quot; or &quot;Continue&quot; to resume RefreshCache. The results may depend on how well your browser optimizes recursions in JavaScript and on its stack limit.</p>
+
+<p>In all versions (CMP, snippet, and cron job), there is one server request to get the list of resources, and another one for each resource that is refreshed.</p>
+
+<p>Having a delay of <code>0</code> does not mean the actual delay is that short. There is an inherent delay because of the time to make each request and create the cache file, and a longer one for the CMP version because of the JavaScript.</p>
+
+<p>If you use a bot blocker like BotBlockX to prevent bots from scraping the site, it may interfere with RefreshCache unless you increase the delay. A one-second delay (or even less) should be enough to prevent that. If you use a delay less than one second, put a leading 0 ahead of the decimal point.</p>
 
 <h3>Troubleshooting</h3>
 
-<p>Make sure the RefreshCache resource has the alias <code>cache-clear</code>. If the CacheClear extra is installed, make sure the resource for it has the alias <code>cache-clear</code>.
+<p>Make sure the RefreshCache Resource is not set a cacheable. If the CacheClear extra is installed, make sure it is set that way as well.
 </p>
+
+<p>If the refresh process does not finish, there is likely a problem with the last resource it shows in the list. A syntax error in a snippet is a common cause. RefreshCache sets the <code>error_reporting</code> level to <code>0</code> to prevent that, but any fatal error will still crash things. </p>
+
+<p>If you see a red (usually incomprehensible) error message in the progress box of the CMP. You can see the actual error in Dev. Tools. In Chrome, press Ctrl-shift-i to launch Dev. Tools. Reload the CMP page, click on the Network tag, and clear the log by clicking on the circle with the slash through it at the upper left of the Dev. Tools window. Then click on the "Refresh the Cache" button. When the error appears, click on the last line of the request list in the Dev. Tools window. Click on the "Headers" tab. You'll see the ID of the offending Resource near the end of the top line. (e.g., <code>id=273</code>). Then click on the "Response" tab. You should see the full error there, inside the HTML shown.</p>
+
+<p>If there is no error, but the refresh process is not completed, view the RefreshCache Resource. You should see the offending Resource and its ID at the end of the list. If it's a Resource you no longer need, delete it and refresh the cache using the Manage menu. If you need to keep it, you can either fix it, or uncheck the "Cacheable" box on the "Settings" tab while editing the Resource so RefreshCache will skip it.</p>
 
 
 <a id="SettingsTable"></a>
@@ -93,21 +84,28 @@ Go to System | Package Management on the main menu in the MODX Manager and click
         <th>Description</th>
         <th>Default</th>
     </tr>
-
+    <tr>
+        <td colspan="3" class="properties_header">RefreshCache</td>
+    </tr>
     <tr>
         <td>refreshcache_request_delay</td>
-        <td>Delay between cURL calls (in seconds -- 0.5 would be a half second); note that there is a built-in delay of about a second per resource</td>
+        <td>Delay between cURL requests (in seconds); note that there is a built-in delay of about 1 second</td>
         <td>0</td>
     </tr>
     <tr>
         <td>refreshcache_log_all_errors</td>
-        <td>Log all access errors to the MODX error log</td>
-        <td>No</td>
+        <td>Log all errors to MODX Error Log</td>
+        <td>no</td>
     </tr>
     <tr>
         <td>refreshcache_honor_hidemenu</td>
-        <td>Do not refresh resources hidden from menus</td>
-        <td>Yes</td>
+        <td>Do not refresh resources hidden from menus; default; yes</td>
+        <td>1</td>
+    </tr>
+    <tr>
+        <td>refreshcache_limit</td>
+        <td>Maximum number of resources for getList to retrieve</td>
+        <td>0 (no limit)</td>
     </tr>
 </table>
 
