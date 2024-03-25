@@ -26,7 +26,7 @@ $isModx3 = $version['version'] >= 3;
 
 if ($isModx3) {
     abstract class tempRCprocessor extends MODX\Revolution\Processors\ModelProcessor {
-        protected string $prefix = 'MODX\REvolution\\';
+        protected string $prefix = 'MODX\Revolution\\';
     }
 } else {
     abstract class tempRCprocessor extends modProcessor {
