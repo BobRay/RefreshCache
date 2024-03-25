@@ -86,16 +86,17 @@ class refreshcacheRefreshProcessor extends tempRCprocessor {
     public function refreshResource_generateResource(&$doc, $options = array()) {
         /* Options for generateResource call */
         $options = array(
+            /*xPDO::OPT_CACHE_HANDLER => $this->modx->getOption
+           (xPDO::OPT_CACHE_DB_HANDLER, null, $this->modx->getOption(xPDO::OPT_CACHE_HANDLER, null, 'xPDO\\Cache\\xPDOFileCache')),*/
+
+
             xPDO::OPT_CACHE_KEY => $this->modx->getOption
             ('cache_resource_key', null, 'resource'),
 
-            /*xPDO::OPT_CACHE_HANDLER => $this->modx->getOption
-            (xPDO::OPT_CACHE_DB_HANDLER, null, $this->modx->getOption(xPDO::OPT_CACHE_HANDLER, null, 'xPDO\\Cache\\xPDOFileCache')),*/
-
-            xPDO::OPT_CACHE_HANDLER => $this->modx->getOption('cache_resource_handler', null,
+            xPDO::OPT_CACHE_HANDLER => $this->modx->getOption('cache_handler', null,
                 $this->modx->getOption(xPDO::OPT_CACHE_HANDLER)),
 
-            xPDO::OPT_CACHE_FORMAT => (integer)$this->modx->getOption('cache_resource_format', null,
+            xPDO::OPT_CACHE_FORMAT => (integer)$this->modx->getOption('cache_format', null,
                 $this->modx->getOption(xPDO::OPT_CACHE_FORMAT, null, xPDOCacheManager::CACHE_PHP)),
 
             xPDO::OPT_CACHE_PREFIX => '',
