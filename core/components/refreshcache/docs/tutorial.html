@@ -2,11 +2,11 @@
 <p>As of version 1.3.0-pl, RefreshCache refreshes the cache by using MODX internal methods to generate the cached Resources. Along the way, it will cache elements like snippets and chunks used by the Resources when possible.
 </p>
 
-<p>It's now much faster than previous methods, which used cURL to visit each page. It will no longer affect hit counters, and will not cause side effects by executing snippets or plugins attached to the Resources. It will also now refresh the cache for Resources hidden by permission rules and Articles.</p>
+<p>It's now much faster than previous methods, which used cURL to visit each page. It will no longer affect hit counters, and is less likely to cause side effects by executing snippets or plugins attached to the Resources. It will also now refresh the cache for Resources hidden by permission rules, and it will refresh Articles (though not the Articles container).</p>
 
 <p>It skips Resources that are deleted, unpublished, not marked as cacheable, and (optionally) snippets hidden from menus.</p>
 
-<p>By default, MODX deletes most of the cached Resources and Elements when a Resource is saved, so page loads can be slow until each page is visited by a site visitor. With RefreshCache, you can Refresh the cache in as little as 3 to 5 seconds for a 100-page site.</p>
+<p>By default, MODX deletes the Resource and Element caches, so page loads can be slow until each page is visited by a site visitor. With RefreshCache, you can Refresh the cache in as little as 3 to 5 seconds for a 100-page site.</p>
 
 <p>(Jump to <a href="[[~[[*id]]]]#SetttingsTable">Settings Table</a>.)</p>
 
@@ -24,13 +24,13 @@
 
 <p>Click on the Extras main-menu item and select "Refresh Cache." Click on the "Refresh the Cache" button. RefreshCache will show a progress bar and the names of the Resources being refreshed. When it's finished, you'll see the number of resource cache files it has refreshed and the elapsed time.</p>
 
-<p>This is the slowest method, because of the JavaScript involved. This method will refresh about 4 Resources per second.</p>
+<p>This is the slowest method, because of the JavaScript involved. This method will typically refresh about 3-7 Resources per second. Pages that already have cache files will take less time. Pages with a lot of built-in processing may take longer.</p>
 
 <p>See the troubleshooting section below if the process does not finish or shows an error in red in the progress window.</p>
 
 <h4>As a Snippet</h4>
 
-<p>To run the snippet, simply view the "RefreshCache" resource. You'll see a blank page for a while, then the list of refreshed Resources will appear. This is much faster than the previous method. It should refresh 25 to 30 resources per second, depending on how complex the pages are (how many snippets are called in the Template and Resource, and how many tags have to be parsed.</p>
+<p>To run the snippet, simply view the "RefreshCache" resource. You'll see a blank page for a while. Be patient, nothing will be displayed until RefreshCache has refreshed all cacheable pages. When it's finished, then the list of refreshed Resources will appear. This is much faster than the previous method. It should refresh 20 to 100 resources per second, depending on how complex the pages are (how many snippets are called in the Template and Resource, and how many tags have to be parsed) and whether the pages are already cached.</p>
 
 <p>Remember that you'll need to reload the Manager page after installing RefreshCache before the RefreshCache Resource will show up. Important: Do not close the browser window or navigate to another page until RefreshCache has finished.</p>
 
@@ -40,13 +40,13 @@
 
 <p>Thanks to Michael Snow, RefreshCache can be run as a cron job. Just point your cron job at <code>path/to/modx/core/components/refreshcache/RefreshCacheCRON.php</code>. Be sure to get the spelling of the file name right, especially if you are on a server where file names are case-sensitive.</p>
 
-<p>This is the fastest method, and it can refresh up to 40 Resources per second. I would not recommend setting it to run too often &mdash; once per hour (or, better) once per day). Because of this, I prefer to run RefreshCache manually when I've done work on the site.</p>
+<p>This is the fastest method, and it can refresh as many as 130 Resources per second. I would not recommend setting it to run too often &mdash; once per hour (or, better) once per day). Because of this, I prefer to run RefreshCache manually when I've done work on the site.</p>
 
 <p>If you are on a Mac, there is a version of a cron job file for you in <code>core/components/refreshcache/_MACOSX</code> directory. That version has not been tested lately, and it has not been updated for version 1.3.0-pl, but it may still work.</p>
 
-<p>There are variables in the <code>RefreshCacheCRON.php</code> file that set various options. Some of them are set by the RefreshCache System Settings. Others have to be set manually in the file. You have the option to have the run reported to the MODX Error Log, or in an email, or both.</p>
+<p>There are variables in the <code>RefreshCacheCRON.php</code> file that set various options. Some of them are set by the RefreshCache System Settings. Others have to be set manually in the file. You have the option to have the run reported to the MODX Error Log, or in an email, or both. If you edit the file and set <code>$debug = false</code> it will run even faster.</p>
 
-<p>The cron job will not run if there are already lots of files in the Resource cache. The number is set to 350, but you can change that in the RefreshCacheCRON file. </p>
+<p>The cron job (and the snippet) will not run if there are already lots of files in the Resource cache. The number is set to 350. If there are more than 350 cache files already, RefreshCache will not run. You can change that value in the RefreshCacheCRON file.</p>
 
 <p>If you have cPanel, it should have Cron Jobs in the Advanced section. There's a wizard that will help you set the time and frequency of the cron job. Be sure to get the case of the file (<code>RefreshCacheCRON.php</code>) correct if you are on a server like Apache, where file names are case-sensitive. </p>
 
@@ -54,7 +54,7 @@
 
 <p>The CMP version uses a tail-call-optimized, recursive Ajax function, so every request is started after the previous one has finished. The Request delay you set in the System Settings (if any) occurs after the Ajax request is completed, so the actual interval will be however long it takes for the Ajax request to complete, plus the delay. The initial delay is set to 0 and will vary depending on each page's load time.</p>
 
-<p>Some servers may complain about the repeated calls and could throttle them. You might also experience trouble with your browser popping up a message about excessive looping. Usually you can click on &quot;wait,&quot; &quot;OK,&quot; or &quot;Continue&quot; to resume RefreshCache. The results may depend on how well your browser optimizes recursions in JavaScript and on its stack limit.</p>
+<p>Some servers may complain about the repeated calls and could throttle them. You might also experience trouble with your browser popping up a message about excessive looping. Usually you can click on &quot;wait,&quot; &quot;OK,&quot; or &quot;Continue&quot; to resume RefreshCache. The results may depend on how well your browser optimizes recursions in JavaScript and on its stack limit. I have not encountered these problems, but the largest site I've run it on had 198 cacheable resources.</p>
 
 <p>In all versions (CMP, snippet, and cron job), there is one server request to get the list of resources, and another one for each resource that is refreshed.</p>
 
