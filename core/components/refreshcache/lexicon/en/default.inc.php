@@ -2,7 +2,7 @@
 /**
  * en default topic lexicon file for RefreshCache extra
  *
- * Copyright 2011-2021 Bob Ray <http://bobsguides.com>
+ * Copyright 2011-2024 Bob Ray <http://bobsguides.com>
  * Created on 07-15-2013
  *
  * RefreshCache is free software; you can redistribute it and/or modify it under the

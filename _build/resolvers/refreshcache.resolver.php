@@ -2,7 +2,7 @@
 /**
  * Resolver for RefreshCache extra
  *
- * Copyright 2011-2021 Bob Ray <https://bobsguides.com>
+ * Copyright 2011-2024 Bob Ray <https://bobsguides.com>
  * Created on 12-21-2018
  *
  * RefreshCache is free software; you can redistribute it and/or modify it under the

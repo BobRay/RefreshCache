@@ -6,7 +6,7 @@
  *
  * RefreshCache
  *
- * Copyright 2011 Bob Ray
+ * Copyright 2011-2024 Bob Ray
  *
  * @author Bob Ray
  * 12/13/11
