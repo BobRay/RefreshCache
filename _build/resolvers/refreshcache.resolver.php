@@ -108,13 +108,13 @@ function rrmdir($dir) {
         foreach ($objects as $object) {
             if ($object != "." && $object != "..") {
                 if (filetype($dir . "/" . $object) == "dir") {
-                    rrmdir($dir . "/" . $object);
+                    @rrmdir($dir . "/" . $object);
                 } else {
                     unlink($dir . "/" . $object);
                 }
             }
         }
-        rmdir($dir);
+        @rmdir($dir);
     }
 }
 
