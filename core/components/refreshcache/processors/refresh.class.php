@@ -152,7 +152,6 @@ class refreshcacheRefreshProcessor extends tempRCprocessor {
                     $this->modx->loadedjscripts = array_merge($this->modx->loadedjscripts, $resource->get('_loadedjscripts'));
                 }
                 $isForward = $resource->_isForward;
-                // $resource->setProcessed(true);
                 $fromCache = true;
             }
         }
@@ -162,30 +161,22 @@ class refreshcacheRefreshProcessor extends tempRCprocessor {
             $criteria->where(array('id' => $resourceId));
 
             if ($resource = $this->modx->getObject($this->prefix . 'modResource', $criteria)) {
-                if ($resource) {
-                    if ($resource->get('context_key') !== $this->modx->context->get('key')) {
-                        if (!$isForward || ($isForward && !$this->modx->getOption('allow_forward_across_contexts', $options, false))) {
-                            if (!$this->modx->getCount('modContextResource', array($this->modx->context->get('key'), $resourceId))) {
-                                return null;
-                            }
-                        }
-                    }
-                    $resource->_isForward = $isForward;
+                $resource->_isForward = $isForward;
 
-                    if ($tvs = $resource->getMany('TemplateVars', 'all')) {
-                        /** @var modTemplateVar $tv */
-                        foreach ($tvs as $tv) {
-                            $resource->set($tv->get('name'), array(
-                                $tv->get('name'),
-                                $tv->getValue($resource->get('id')),
-                                $tv->get('display'),
-                                $tv->get('display_params'),
-                                $tv->get('type'),
-                            ));
-                        }
+                if ($tvs = $resource->getMany('TemplateVars', 'all')) {
+                    /** @var modTemplateVar $tv */
+                    foreach ($tvs as $tv) {
+                        $resource->set($tv->get('name'), array(
+                            $tv->get('name'),
+                            $tv->getValue($resource->get('id')),
+                            $tv->get('display'),
+                            $tv->get('display_params'),
+                            $tv->get('type'),
+                        ));
                     }
-                    $this->modx->resourceGenerated = true;
                 }
+                $this->modx->resourceGenerated = true;
+
             }
         } elseif ($fromCache && false) { // should be unnecessary
             if (($resource->get('published') || ($this->modx->getSessionState() === modX::SESSION_STATE_INITIALIZED && $this->modx->hasPermission('view_unpublished')))) {
