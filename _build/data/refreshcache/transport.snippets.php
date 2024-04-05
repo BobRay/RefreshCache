@@ -31,7 +31,7 @@ $snippets[1]->fromArray(array (
   'property_preprocess' => false,
   'name' => 'RefreshCache',
   'description' => 'Refreshes the MODX cache',
-  'properties' =>
+  'properties' => 
   array (
   ),
 ), '', true, true);
