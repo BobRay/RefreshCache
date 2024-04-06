@@ -10,7 +10,7 @@ The RefreshCache snippet refreshes the cache by calling MODX Manager code to gen
 
 RefreshCache no longer visits each page with cURL, so it is less likely to affect hit counters, trigger events, or execute snippet code on a page.
 
-RefreshCache now creates the cache files for regular resources, Articles resources, and pages hidden by ACL entries. It skips are SymLinks, WebLinks, and the ArticlesContainer. It also skips unpublished, deleted, non-cacheable, and (optionally), files hidden from menus.
+RefreshCache now creates the cache files for regular resources, Articles resources, and pages hidden by ACL entries. It skips SymLinks, WebLinks, and the ArticlesContainer. It also skips unpublished, deleted, non-cacheable, and (optionally), files hidden from menus.
 
 The point is for this program to spend time waiting for the pages so
 the site visitors don't have to. They'll see cached pages, which will be
