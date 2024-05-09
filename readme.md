@@ -5,6 +5,7 @@ RefreshCache Extra for MODx Revolution
 
 Documentation is available at [Bob's Guides](https://bobsguides.com/refreshcache-tutorial.html)
 
+[Updated for MODX 3 and PHP 8]
 
 The RefreshCache snippet refreshes the cache by calling MODX Manager code to generate cache files. This is much faster than the previous version. 
 

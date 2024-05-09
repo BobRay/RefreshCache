@@ -1,5 +1,5 @@
 
-<p>As of version 1.3.0-pl, RefreshCache refreshes the cache by using MODX internal methods to generate the cached Resources. Along the way, it will cache elements like snippets and chunks used by the Resources when possible.
+<p>As of version 1.3.0-pl, RefreshCache refreshes the cache by using MODX internal methods to generate the cached Resources. Along the way, it will cache elements like snippets and chunks used by the Resources when possible. It is fully compatible with MODX 3 and PHP 8.
 </p>
 
 <p>It's now much faster than previous methods, which used cURL to visit each page. It will no longer affect hit counters, and is less likely to cause side effects by executing snippets or plugins attached to the Resources. It will also now refresh the cache for Resources hidden by permission rules, and it will refresh Articles (though not the Articles container).</p>
