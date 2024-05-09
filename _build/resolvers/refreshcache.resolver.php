@@ -44,10 +44,6 @@ if ($transport) {
 switch ($options[xPDOTransport::PACKAGE_ACTION]) {
     case xPDOTransport::ACTION_INSTALL:
     case xPDOTransport::ACTION_UPGRADE:
-       $action = @$modx->getObject($prefix . 'modAction', array('namespace' => 'refreshcache'));
-       if ($action) {
-           $action->remove();
-       }
 
        $corePath = MODX_CORE_PATH . 'components/refreshcache/';
        $assetsPath = MODX_ASSETS_PATH . 'components/refreshcache/';
