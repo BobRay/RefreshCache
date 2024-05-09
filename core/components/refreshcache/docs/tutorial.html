@@ -1,6 +1,4 @@
-
-<p>As of version 1.3.0-pl, RefreshCache refreshes the cache by using MODX internal methods to generate the cached Resources. Along the way, it will cache elements like snippets and chunks used by the Resources when possible. It is fully compatible with MODX 3 and PHP 8.
-</p>
+<p>As of version 1.3.0-pl, RefreshCache refreshes the cache by using MODX internal methods to generate the cached Resources. Along the way, it will cache elements like snippets and chunks used by the Resources when possible. It is fully compatible with MODX 3 and PHP 8. </p>
 
 <p>It's now much faster than previous methods, which used cURL to visit each page. It will no longer affect hit counters, and is less likely to cause side effects by executing snippets or plugins attached to the Resources. It will also now refresh the cache for Resources hidden by permission rules, and it will refresh Articles (though not the Articles container).</p>
 
@@ -8,7 +6,7 @@
 
 <p>By default, MODX deletes the Resource and Element caches, so page loads can be slow until each page is visited by a site visitor. With RefreshCache, you can Refresh the cache in as little as 3 to 5 seconds for a 100-page site.</p>
 
-<p>(Jump to <a href="[[~[[*id]]]]#SetttingsTable">Settings Table</a>.)</p>
+<p>(Jump to <a href="[[~[[*id]]]]#SettingsTable">Properties Table</a>.)</p>
 
 <h3>Installing RefreshCache</h3>
 
@@ -64,8 +62,7 @@
 
 <h3>Troubleshooting</h3>
 
-<p>Make sure the RefreshCache Resource is not set a cacheable. If the CacheClear extra is installed, make sure it is set that way as well.
-</p>
+<p>Make sure the RefreshCache Resource is not set a cacheable. If the CacheClear extra is installed, make sure it is set that way as well. </p>
 
 <p>If the refresh process does not finish, there is likely a problem with the last resource it shows in the list. A syntax error in a snippet is a common cause. RefreshCache sets the <code>error_reporting</code> level to <code>0</code> to prevent that, but any fatal error will still crash things. </p>
 
@@ -74,7 +71,7 @@
 <p>If there is no error, but the refresh process is not completed, view the RefreshCache Resource. You should see the offending Resource and its ID at the end of the list. If it's a Resource you no longer need, delete it and refresh the cache using the Manage menu. If you need to keep it, you can either fix it, or uncheck the "Cacheable" box on the "Settings" tab while editing the Resource so RefreshCache will skip it.</p>
 
 
-<a id="SettingsTable"></a>
+<div id="SettingsTable"></div>
 
 <h3>RefreshCache System Settings</h3>
 
