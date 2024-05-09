@@ -27,7 +27,7 @@ $isModx3 = $version['version'] >= 3;
 
 if ($isModx3) {
     abstract class tempRCGProcessor extends modObjectGetListProcessor {
-        protected string $prefix = 'MODX\REvolution\\';
+        protected string $prefix = 'MODX\Revolution\\';
     }
 } else {
     abstract class tempRCGProcessor extends modObjectGetListProcessor {
