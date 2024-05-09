@@ -38,7 +38,7 @@ $components = array(
     'packageName' => 'RefreshCache',  /* No spaces, no dashes */
     'packageNameLower' => $packageNameLower,
     'packageDescription' => 'RefreshCache project',
-    'version' => '1.3.0',
+    'version' => '1.3.2',
     'release' => 'pl',
     'author' => 'Bob Ray',
     'email' => '<https://bobsguides.com>',
@@ -202,7 +202,7 @@ $components = array(
         'snippets' => array(
             'RefreshCache' => array(
                 'category' => 'RefreshCache',
-                'description' => 'Refreshes the site cache',
+                'description' => 'Refreshes the MODX cache',
             ),
         ),
         'chunks' => array(
