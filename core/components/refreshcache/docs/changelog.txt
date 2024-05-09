@@ -1,6 +1,6 @@
 Changelog for RefreshCache
 
-RefreshCache 1.3.1-pl
+RefreshCache 1.3.2-pl
 -------------------------
  - Updates for MODX 3
  - Updates for PHP 8
@@ -14,6 +14,8 @@ RefreshCache 1.3.1-pl
  - Add honor_hidemenu System Setting
  - Improve timeout prevention
  - Add cron job code -- (thanks to Snow Creative)
+ - Fix bug with installation
+ - Fix bug with class name in MODX 3
 
 RefreshCache 1.2.1-pl
 -------------------------
